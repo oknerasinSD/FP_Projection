@@ -1,4 +1,4 @@
-package com.example.mvc1;
+package com.example.mvc1.controller;
 
 import com.example.mvc1.domain.Message;
 import com.example.mvc1.repos.MessageRepo;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 
 @Controller
-public class GreetingController {
+public class MainController {
     @Autowired
     private MessageRepo messageRepo;
 
