@@ -28,6 +28,7 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+
         <!-- DataBase support -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -38,6 +39,8 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -57,5 +60,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
