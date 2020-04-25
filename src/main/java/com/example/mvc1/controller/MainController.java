@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Controller
@@ -52,7 +53,7 @@ public class MainController {
             @RequestParam("file") MultipartFile file
     ) throws IOException {
         Message message = new Message(text, tag, user);
-        if (file != null) {
+        if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
             File uploadDirectory = new File(uploadPath);
             if (!uploadDirectory.exists()) {
                 uploadDirectory.mkdir();
