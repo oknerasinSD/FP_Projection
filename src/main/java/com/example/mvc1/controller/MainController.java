@@ -29,10 +29,10 @@ public class MainController {
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
-        return "greeting";
+        return "main";
     }
 
-    @GetMapping("/main")
+    @GetMapping("/clients")
     public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
         Iterable<Message> messages = messageRepo.findAll();
         if (filter != null && !filter.isEmpty()) {
@@ -42,10 +42,10 @@ public class MainController {
         }
         model.addAttribute("messages", messages);
         model.addAttribute("filter", filter);
-        return "main";
+        return "clientslist";
     }
 
-    @PostMapping("/main")
+    @PostMapping("/clients")
     public String add(
             @AuthenticationPrincipal User user,
             @RequestParam String text,
@@ -66,6 +66,6 @@ public class MainController {
         messageRepo.save(message);
         Iterable<Message> messages = messageRepo.findAll();
         model.put("messages", messages);
-        return "main";
+        return "clientslist";
     }
 }

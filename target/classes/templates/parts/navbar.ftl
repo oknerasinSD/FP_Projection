@@ -13,12 +13,12 @@
             </li>
             <li class="nav-item">
                 <#if !user??>
-                <a class="nav-link" href="/main">Авторизация</a>
+                <a class="nav-link" href="/login">Авторизация/Регистрация</a>
             </#if>
             </li>
             <li class="nav-item">
                 <#if user??>
-                <a class="nav-link" href="/main">Клиенты</a>
+                <a class="nav-link" href="/clients">Клиенты</a>
                 </#if>
             </li>
             <#if user??>
