@@ -18,7 +18,7 @@
             </li>
             <li class="nav-item">
                 <#if user??>
-                <a class="nav-link" href="/clients">Клиенты</a>
+                <a class="nav-link" href="/clients/${user.username}">Клиенты</a>
                 </#if>
             </li>
             <#if user??>

@@ -31,9 +31,15 @@ public class User implements UserDetails {
     @NotBlank(message = "Email can't be empty")
     private String email;
     private String activationCode;
+    @OneToMany(mappedBy = "executor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Customer> customers;
 
     public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
+    }
+
+    public boolean hasCustomers() {
+        return customers != null && customers.isEmpty();
     }
 
     public Long getId() {
@@ -123,5 +129,13 @@ public class User implements UserDetails {
 
     public void setPasswordConfirmation(String passwordConfirmation) {
         this.passwordConfirmation = passwordConfirmation;
+    }
+
+    public Set<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(Set<Customer> customers) {
+        this.customers = customers;
     }
 }

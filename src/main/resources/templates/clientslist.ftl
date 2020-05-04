@@ -1,7 +1,7 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-<#if messages?hasContent>
+<#if true>
 <div class="form-row">
     <div class="form-group col-md-6">
         <form method="get" action="/clients" class="form-inline">
@@ -18,13 +18,13 @@
     <div class="form-group mt-3">
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <input type="text" class="form-control" name="text" placeholder="Компания" />
+                <input type="text" class="form-control" name="name" placeholder="Компания" />
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="tag" placeholder="Адрес">
+                <input type="text" class="form-control" name="address" placeholder="Адрес">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="number" placeholder="Номер телефона">
+                <input type="text" class="form-control" name="phoneNumber" placeholder="Номер телефона">
             </div>
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
             <div class="form-group">
@@ -34,24 +34,30 @@
     </div>
 </div>
 
-<div class="card-columns mt-2">
-    <#list messages as message>
-    <div class="card my-3">
-        <#if message.filename??>
-            <img src="/img/${message.filename}" class="card-img-top">
-        </#if>
-    <div class="m-2">
-        <span>${message.text}</span>
-        <i>${message.tag}</i>
-    </div>
-    <div class="card-footer text-muted">
-        ${message.authorName}
-    </div>
-    </div>
+<#if true>
+<table class="table table-bordered mt-3">
+    <caption>Список клиентов</caption>
+    <thead class="thread-dark">
+    <tr>
+        <th scope="col">Клиент</th>
+        <th scope="col">Адрес</th>
+        <th scope="col">Телефон</th>
+    </tr>
+    </thead>
+    <tbody>
+    <#list customers as customer>
+    <tr>
+        <td>${customer.name}</td>
+        <td>${customer.address}</td>
+        <td>${customer.phoneNumber}</td>
+    </tr>
+    </#list>
+    </tbody>
+</table>
 <#else>
     <div>
         У вас пока нет клиентов
     </div>
-</#list>
+</#if>
 </div>
 </@c.page>
