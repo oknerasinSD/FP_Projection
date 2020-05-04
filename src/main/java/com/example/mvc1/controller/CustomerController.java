@@ -29,7 +29,7 @@ public class CustomerController {
     }
 
     @GetMapping("/clients/{user}")
-    public String main(@RequestParam(required = false, defaultValue = "") String filter,
+    public String open(@RequestParam(required = false, defaultValue = "") String filter,
                        @AuthenticationPrincipal User user,
                        Model model) {
         Iterable<Customer> customers = user.getCustomers();
@@ -47,14 +47,13 @@ public class CustomerController {
             @RequestParam String name,
             @RequestParam String address,
             @RequestParam String phoneNumber,
-            Map<String, Object> model
+            Model model
     ) throws InterruptedException {
         Customer customer = new Customer(name, address, phoneNumber, user);
         customerRepo.save(customer);
-        Thread.sleep(1);
         Set<Customer> customers = user.getCustomers();
         customers.add(customer);
-        model.put("customers", customers);
-        return "clientslist";
+        model.addAttribute("customers", customers);
+        return "redirect:/clients/{user}";
     }
 }
