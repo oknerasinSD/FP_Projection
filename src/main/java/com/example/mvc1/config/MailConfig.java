@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-public class MainConfig {
+public class MailConfig {
     @Value("${spring.mail.host}")
     private String host;
     @Value("${spring.mail.username}")
@@ -22,6 +22,7 @@ public class MainConfig {
     private String protocol;
     @Value("${mail.debug}")
     private String debug;
+
     @Bean
     public JavaMailSender getMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
