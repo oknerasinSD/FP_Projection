@@ -1,6 +1,6 @@
 package com.example.mvc1.service;
 
-import com.example.mvc1.domain.Role;
+import com.example.mvc1.domain.UserRole;
 import com.example.mvc1.domain.User;
 import com.example.mvc1.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class UserService implements UserDetailsService {
             return false;
         }
         user.setActive(true);
-        user.setRoles(Collections.singleton(Role.USER));
+        user.setRoles(Collections.singleton(UserRole.USER));
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
@@ -74,13 +74,13 @@ public class UserService implements UserDetailsService {
 
     public void saveUser(User user, String username, Map<String, String> form) {
         user.setUsername(username);
-        Set<String> roles = Arrays.stream(Role.values())
-                .map(Role::name)
+        Set<String> roles = Arrays.stream(UserRole.values())
+                .map(UserRole::name)
                 .collect(Collectors.toSet());
         user.getRoles().clear();
         for (String key : form.keySet()) {
             if (roles.contains(key)) {
-                user.getRoles().add(Role.valueOf(key));
+                user.getRoles().add(UserRole.valueOf(key));
             }
         }
         userRepo.save(user);

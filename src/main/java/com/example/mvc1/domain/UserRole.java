@@ -2,7 +2,7 @@ package com.example.mvc1.domain;
 
 import org.springframework.security.core.GrantedAuthority;
 
-public enum Role implements GrantedAuthority {
+public enum UserRole implements GrantedAuthority {
     USER,
     ADMIN;
 

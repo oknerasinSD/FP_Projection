@@ -23,10 +23,10 @@ public class User implements UserDetails {
     @NotBlank(message = "Password confirmation can't be empty")
     private String passwordConfirmation;
     private boolean active;
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private Set<UserRole> roles;
     @Email(message = "Email isn't correct")
     @NotBlank(message = "Email can't be empty")
     private String email;
@@ -35,7 +35,7 @@ public class User implements UserDetails {
     private Set<Test> customers;
 
     public boolean isAdmin() {
-        return roles.contains(Role.ADMIN);
+        return roles.contains(UserRole.ADMIN);
     }
 
     public boolean hasCustomers() {
@@ -99,11 +99,11 @@ public class User implements UserDetails {
         this.active = active;
     }
 
-    public Set<Role> getRoles() {
+    public Set<UserRole> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
     }
 

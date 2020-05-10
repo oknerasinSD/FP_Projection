@@ -1,6 +1,6 @@
 package com.example.mvc1.controller;
 
-import com.example.mvc1.domain.Role;
+import com.example.mvc1.domain.UserRole;
 import com.example.mvc1.domain.User;
 import com.example.mvc1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class UserController {
     @GetMapping("{user}")
     public String userEditForm(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
-        model.addAttribute("roles", Role.values());
+        model.addAttribute("roles", UserRole.values());
         return "userEdit";
     }
 
