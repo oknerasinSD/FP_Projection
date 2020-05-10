@@ -32,7 +32,7 @@ public class User implements UserDetails {
     private String email;
     private String activationCode;
     @OneToMany(mappedBy = "executor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Customer> customers;
+    private Set<Test> customers;
 
     public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
@@ -131,11 +131,11 @@ public class User implements UserDetails {
         this.passwordConfirmation = passwordConfirmation;
     }
 
-    public Set<Customer> getCustomers() {
+    public Set<Test> getCustomers() {
         return customers;
     }
 
-    public void setCustomers(Set<Customer> customers) {
+    public void setCustomers(Set<Test> customers) {
         this.customers = customers;
     }
 }

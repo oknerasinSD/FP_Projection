@@ -1,17 +1,20 @@
-package com.example.mvc1.analysis;
+package com.example.mvc1.analysis.dataset;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
 
-class DataSet1 {
+public class DataSet {
 
-    private List<DataInstance1> dataSet = new ArrayList<>();
+    private List<DataInstance> dataSet = new ArrayList<>();
     private double[] result = new double[20];
 
-    void readDataSet1() throws FileNotFoundException {
+    public void readDataSet() throws FileNotFoundException {
         File inputFile = new File("dataset.csv");
         Scanner scanner = new Scanner(inputFile);
         scanner.nextLine();
@@ -20,7 +23,7 @@ class DataSet1 {
             if ("RFPL".equals(currentLine[0])) {
                 break;
             }
-            DataInstance1 data = new DataInstance1(
+            DataInstance data = new DataInstance(
                     Integer.parseInt(currentLine[2]),
                     Double.parseDouble(currentLine[12])
             );
@@ -29,8 +32,8 @@ class DataSet1 {
         scanner.close();
     }
 
-    void analyseByPosition() {
-        SortDataSetByPosition();
+    public void analyseByPosition() {
+        sortDataSetByPosition();
         for (int i = 0; i < 18; ++i) {
             for (int j = 0; j < 25; ++j) {
                 result[i] += dataSet.get(i * 25 + j).getxG_difference();
@@ -43,16 +46,16 @@ class DataSet1 {
         }
     }
 
-    void SortDataSetByPosition() {
-        dataSet.sort(new Comparator<DataInstance1>() {
+    public void sortDataSetByPosition() {
+        dataSet.sort(new Comparator<DataInstance>() {
             @Override
-            public int compare(DataInstance1 dataLine1, DataInstance1 dataLine2) {
+            public int compare(DataInstance dataLine1, DataInstance dataLine2) {
                 return dataLine1.getPosition() - dataLine2.getPosition();
             }
         });
     }
 
-    void writeDataSet1() throws IOException {
+    public void writeDataSet1() throws IOException {
         File outputFile = new File("output1.txt");
         FileWriter writer = new FileWriter(outputFile);
         for (int i = 0; i < 20; ++i) {
@@ -61,7 +64,7 @@ class DataSet1 {
         writer.close();
     }
 
-    double countDifferencePerGame() {
+    public double countDifferencePerGame() {
         double sum = 0;
         for (Double d : result) {
             sum += d;
@@ -69,7 +72,7 @@ class DataSet1 {
         return sum / 9130;
     }
 
-    List<DataInstance1> getDataSet() {
+    public List<DataInstance> getDataSet() {
         return dataSet;
     }
 

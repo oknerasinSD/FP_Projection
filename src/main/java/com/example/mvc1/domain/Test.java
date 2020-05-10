@@ -3,7 +3,7 @@ package com.example.mvc1.domain;
 import javax.persistence.*;
 
 @Entity
-public class Customer {
+public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -14,10 +14,10 @@ public class Customer {
     @JoinColumn(name = "user_id")
     private User executor;
 
-    public Customer() {
+    public Test() {
     }
 
-    public Customer(String name, String address, String phoneNumber, User executor) {
+    public Test(String name, String address, String phoneNumber, User executor) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
