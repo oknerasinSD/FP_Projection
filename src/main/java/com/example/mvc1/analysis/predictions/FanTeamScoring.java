@@ -1,6 +1,6 @@
 package com.example.mvc1.analysis.predictions;
 
-public abstract class Scoring {
+public class FanTeamScoring {
     public final int appearance = 1;
     public final int play60minutes = 1;
     public final int play90minutes = 1;
