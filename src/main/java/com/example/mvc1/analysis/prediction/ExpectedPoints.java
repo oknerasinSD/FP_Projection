@@ -1,4 +1,4 @@
-package com.example.mvc1.analysis.predictions;
+package com.example.mvc1.analysis.prediction;
 
 import java.io.File;
 import java.io.FileNotFoundException;

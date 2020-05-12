@@ -1,8 +1,8 @@
 package com.example.mvc1.controller;
 
-import com.example.mvc1.domain.Test;
+import com.example.mvc1.domain.Customer;
 import com.example.mvc1.domain.User;
-import com.example.mvc1.repos.TestRepo;
+import com.example.mvc1.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,7 +18,7 @@ import java.util.Set;
 @Controller
 public class CustomerController {
     @Autowired
-    private TestRepo customerRepo;
+    private CustomerRepository customerRepo;
     /** Значение upload.path из properties */
     @Value("${upload.path}")
     private String uploadPath;
@@ -32,7 +32,7 @@ public class CustomerController {
     public String open(@RequestParam(required = false, defaultValue = "") String filter,
                        @AuthenticationPrincipal User user,
                        Model model) {
-        Iterable<Test> customers = user.getCustomers();
+        Iterable<Customer> customers = user.getCustomers();
         if (filter != null && !filter.isEmpty()) {
             customers = customerRepo.findByName(filter);
         }
@@ -49,9 +49,9 @@ public class CustomerController {
             @RequestParam String phoneNumber,
             Model model
     ) throws InterruptedException {
-        Test customer = new Test(name, address, phoneNumber, user);
+        Customer customer = new Customer(name, address, phoneNumber, user);
         customerRepo.save(customer);
-        Set<Test> customers = user.getCustomers();
+        Set<Customer> customers = user.getCustomers();
         customers.add(customer);
         model.addAttribute("customers", customers);
         return "redirect:/clients/{user}";

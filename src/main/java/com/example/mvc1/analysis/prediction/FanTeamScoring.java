@@ -1,4 +1,4 @@
-package com.example.mvc1.analysis.predictions;
+package com.example.mvc1.analysis.prediction;
 
 public class FanTeamScoring {
     public final int appearance = 1;

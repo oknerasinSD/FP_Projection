@@ -2,7 +2,7 @@ package com.example.mvc1.service;
 
 import com.example.mvc1.domain.UserRole;
 import com.example.mvc1.domain.User;
-import com.example.mvc1.repos.UserRepo;
+import com.example.mvc1.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepo;
     @Autowired
-    private MailSender mailSender;
+    private MailService mailSender;
     @Autowired
     private PasswordEncoder passwordEncoder;
 

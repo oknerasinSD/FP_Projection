@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class AnalysisTest {
 
-    @DisplayName("File Reading Test")
+    @DisplayName("File Reading Customer")
     @Test
     public void fileReadingTest() throws IOException {
         DataSet dataSet1 = new DataSet();
