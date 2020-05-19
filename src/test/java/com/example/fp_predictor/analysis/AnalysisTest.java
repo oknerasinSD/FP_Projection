@@ -13,6 +13,7 @@ public class AnalysisTest {
     @DisplayName("XG_difference Test")
     @Test
     public void xg_differenceTest() throws IOException {
+
         Analysis analysis = new Analysis();
         analysis.readDataSet();
         analysis.analyseByPosition();
