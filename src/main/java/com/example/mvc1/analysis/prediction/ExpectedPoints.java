@@ -2,6 +2,8 @@ package com.example.mvc1.analysis.prediction;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,10 +11,11 @@ import java.util.Scanner;
 public class ExpectedPoints {
 
     private List<DataInstance> dataSet = new ArrayList<>();
+    private List<PredictionInstance> result = new ArrayList<>();
     private double totalTimePlayedInTournament = 2550;
 
     public void readDataSet() throws FileNotFoundException {
-        File file = new File("players.csv");
+        File file = new File("PredictionInput.txt");
         Scanner scanner = new Scanner(file);
         scanner.nextLine();
         while (scanner.hasNext()) {
@@ -42,17 +45,9 @@ public class ExpectedPoints {
      * Расчет ожидаемых очков игрока на ближайший матч.
      * @param dataInstance - данные со необходимой для вычислений статистикой.
      */
-    public double countExpectedPoints(DataInstance dataInstance) {
+    public double countPlayerPoints(DataInstance dataInstance) {
         FanTeamScoring fanTeamScoring = new FanTeamScoring();
         double result = fanTeamScoring.appearance + fanTeamScoring.play60minutes;
-        /*
-        Поправка на уровень исполнительского мастерства.
-         */
-        double expectedGoals = dataInstance.getPlayerXG();
-        if (dataInstance.getMinutesPlayed() > totalTimePlayedInTournament * 0.5
-                && !"def".equals(dataInstance.getPosition())) {
-            expectedGoals = dataInstance.getGoals();
-        }
         /*
         Вычисление ожидаемых очков за результативные действия и матч без пропущенных мячей.
          */
@@ -79,11 +74,9 @@ public class ExpectedPoints {
         /*
         Вычисление ожидаемых очков за карточки.
          */
-        double averageTimePlayed = (double) dataInstance.getMinutesPlayed() / dataInstance.getNumberOfGames();
         double yellowCardsPerMinute = (double) dataInstance.getYellowCards() / dataInstance.getMinutesPlayed();
-        double redCardsPerGame = (double) dataInstance.getRedCards() / dataInstance.getMinutesPlayed();
-        result += averageTimePlayed *
-                (yellowCardsPerMinute * fanTeamScoring.yellowCard + redCardsPerGame + fanTeamScoring.redCard);
+        double redCardsPerMinute = (double) dataInstance.getRedCards() / dataInstance.getMinutesPlayed();
+        result += (yellowCardsPerMinute * fanTeamScoring.yellowCard + redCardsPerMinute * fanTeamScoring.redCard);
         /*
         Вычисление ожидаемых очков за импакт.
          */
@@ -92,5 +85,32 @@ public class ExpectedPoints {
         result += expectedImpact;
 
         return result;
+    }
+
+    public void countExpectedPoints() {
+        for (DataInstance dataInstance : dataSet) {
+            result.add(new PredictionInstance(dataInstance.getPlayerName(), countPlayerPoints(dataInstance)));
+        }
+    }
+
+    public void writeData() throws IOException {
+        File outputFile = new File("PredictionOutput.txt");
+        FileWriter writer = new FileWriter(outputFile);
+        for (PredictionInstance resultInstance : result) {
+            writer.write(resultInstance.getPlayerName() + "\t" + resultInstance.getExpectedPoints() + "\n");
+        }
+        writer.close();
+    }
+
+    public List<DataInstance> getDataSet() {
+        return dataSet;
+    }
+
+    public List<PredictionInstance> getResult() {
+        return result;
+    }
+
+    public double getTotalTimePlayedInTournament() {
+        return totalTimePlayedInTournament;
     }
 }

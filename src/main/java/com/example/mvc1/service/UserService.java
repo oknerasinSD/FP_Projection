@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
-    private UserRepository userRepo;
+    private UserRepository userRepository;
     @Autowired
     private MailService mailSender;
     @Autowired
@@ -25,7 +25,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean addUser(User user) {
-        User userFromDb = userRepo.findByUsername(user.getUsername());
+        User userFromDb = userRepository.findByUsername(user.getUsername());
         if (userFromDb != null) {
             return false;
         }
@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
         user.setRoles(Collections.singleton(UserRole.USER));
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepo.save(user);
+        userRepository.save(user);
         sendMessage(user);
         return true;
     }
@@ -59,17 +59,17 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean activateUser(String code) {
-        User user = userRepo.findByActivationCode(code);
+        User user = userRepository.findByActivationCode(code);
         if (user == null) {
             return false;
         }
         user.setActivationCode(null);
-        userRepo.save(user);
+        userRepository.save(user);
         return true;
     }
 
     public List<User> findAll() {
-        return userRepo.findAll();
+        return userRepository.findAll();
     }
 
     public void saveUser(User user, String username, Map<String, String> form) {
@@ -83,7 +83,7 @@ public class UserService implements UserDetailsService {
                 user.getRoles().add(UserRole.valueOf(key));
             }
         }
-        userRepo.save(user);
+        userRepository.save(user);
     }
 
     public void updateProfile(User user, String password, String email) {
@@ -98,7 +98,7 @@ public class UserService implements UserDetailsService {
         if (!StringUtils.isEmpty(password)) {
             user.setPassword(passwordEncoder.encode(password));
         }
-        userRepo.save(user);
+        userRepository.save(user);
         if (isEmailChanged) {
             sendMessage(user);
         }

@@ -15,14 +15,26 @@ import java.util.Map;
 
 @Controller
 public class RegistrationController {
+    /**
+     * Бин, внедряемый фреймворком Spring.
+     */
     @Autowired
     private UserService userService;
 
+    /**
+     * Возвращаем Представление registration при Get запросе по маппингу /registration.
+     */
     @GetMapping("/registration")
     public String registration() {
         return "registration";
     }
 
+    /**
+     * Добавляем пользователя в систему при Post запросе на странице регистрации.
+     * @param user - новый экземпляр класса User.
+     * @param bindingResult - объект, из которого извлекаются ошибки валидаци.
+     * @param model - модель.
+     */
     @PostMapping("/registration")
     public String addUser(@Valid User user, BindingResult bindingResult, Model model) {
         if (user.getPassword() != null && !user.getPassword().equals(user.getPasswordConfirmation())) {
@@ -38,16 +50,5 @@ public class RegistrationController {
             return "registration";
         }
         return "redirect:/login";
-    }
-
-    @GetMapping("/activate/{code}")
-    public String activate(Model model, @PathVariable String code) {
-        boolean isActivated = userService.activateUser(code);
-        if (isActivated) {
-            model.addAttribute("message", "User successfully activated.");
-        } else {
-            model.addAttribute("message", "Activation code is not found.");
-        }
-        return "login";
     }
 }

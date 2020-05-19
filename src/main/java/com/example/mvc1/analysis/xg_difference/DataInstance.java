@@ -1,4 +1,4 @@
-package com.example.mvc1.analysis.dataset;
+package com.example.mvc1.analysis.xg_difference;
 
 public class DataInstance {
 

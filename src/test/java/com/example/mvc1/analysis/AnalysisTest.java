@@ -1,6 +1,8 @@
 package com.example.mvc1.analysis;
 
-import com.example.mvc1.analysis.dataset.DataSet;
+import com.example.mvc1.analysis.prediction.Estimation;
+import com.example.mvc1.analysis.prediction.ExpectedPoints;
+import com.example.mvc1.analysis.xg_difference.Analysis;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,13 +10,26 @@ import java.io.IOException;
 
 public class AnalysisTest {
 
-    @DisplayName("File Reading Customer")
+    @DisplayName("XG_difference Test")
     @Test
-    public void fileReadingTest() throws IOException {
-        DataSet dataSet1 = new DataSet();
-        dataSet1.readDataSet();
-        dataSet1.analyseByPosition();
-        dataSet1.writeDataSet1();
-        System.out.println(dataSet1.countDifferencePerGame());
+    public void xg_differenceTest() throws IOException {
+        Analysis analysis = new Analysis();
+        analysis.readDataSet();
+        analysis.analyseByPosition();
+        analysis.writeDataSet();
+    }
+
+    @DisplayName("Prediction Test")
+    @Test
+    public void predictionTest() throws IOException {
+
+        ExpectedPoints expectedPoints = new ExpectedPoints();
+        expectedPoints.readDataSet();
+        expectedPoints.countExpectedPoints();
+        expectedPoints.writeData();
+
+        Estimation estimation = new Estimation();
+        estimation.readDataSet();
+        System.out.printf("MAPE = %.2f", estimation.countMAPE());
     }
 }

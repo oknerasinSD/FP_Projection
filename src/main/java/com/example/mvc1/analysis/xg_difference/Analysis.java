@@ -1,4 +1,4 @@
-package com.example.mvc1.analysis.dataset;
+package com.example.mvc1.analysis.xg_difference;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,13 +9,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-public class DataSet {
+public class Analysis {
 
     private List<DataInstance> dataSet = new ArrayList<>();
     private double[] result = new double[20];
 
     public void readDataSet() throws FileNotFoundException {
-        File inputFile = new File("dataset.csv");
+        File inputFile = new File("xGDifferenceDataSet.txt");
         Scanner scanner = new Scanner(inputFile);
         scanner.nextLine();
         while (scanner.hasNext()) {
@@ -55,8 +55,8 @@ public class DataSet {
         });
     }
 
-    public void writeDataSet1() throws IOException {
-        File outputFile = new File("output1.txt");
+    public void writeDataSet() throws IOException {
+        File outputFile = new File("xGDifferenceResult.txt");
         FileWriter writer = new FileWriter(outputFile);
         for (int i = 0; i < 20; ++i) {
             writer.write((i + 1) + "\t" + result[i] + "\n");

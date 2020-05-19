@@ -16,21 +16,32 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    /** Бин класса UserService. */
     @Autowired
     private UserService userService;
+    /** Бин класса, реализующего интерфейс PasswordEncoder. */
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Метод, возвращающий созданный фреймворком бин класса BCryptPasswordEncoder,
+     * который реализует интерфейс PasswordEncoder и используется для шифрования паролей.
+     */
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder(8);
     }
 
+    /**
+     * Определяем страницы, доступные незарегистрированным
+     * пользователям и подключаем готовые Spring Security решения для логина и логаута.
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/registration", "/static/**", "/activate/*").permitAll()
+                    .antMatchers("/", "/registration").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -41,6 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll();
     }
 
+    /**
+     * Верифицируем запрос на авторизацию.
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService)
