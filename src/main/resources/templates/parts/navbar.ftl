@@ -15,14 +15,6 @@
                 <#if !user??>
                 <a class="nav-link" href="/login">Авторизация/Регистрация</a>
             </#if>
-            </li>
-                <a class="nav-link" href="/players">Игроки</a>
-            </li>
-            <li class="nav-item">
-                <#if user??>
-                <a class="nav-link" href="/clients/${user.username}">Клиенты</a>
-                </#if>
-            </li>
             <#if user??>
             <li class="nav-item">
                 <a class="nav-link" href="/user/profile">Профиль</a>

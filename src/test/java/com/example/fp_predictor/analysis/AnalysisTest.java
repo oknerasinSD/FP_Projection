@@ -18,6 +18,7 @@ public class AnalysisTest {
         analysis.readDataSet();
         analysis.analyseByPosition();
         analysis.writeDataSet();
+        System.out.println("Kaggle DataSet MAPE = " + analysis.countMAPE() * 100);
     }
 
     @DisplayName("Prediction Test")
@@ -31,6 +32,6 @@ public class AnalysisTest {
 
         Estimation estimation = new Estimation();
         estimation.readDataSet();
-        System.out.printf("MAPE = %.2f", estimation.countMAPE());
+        System.out.printf("Model MAPE = %.2f", estimation.countMAPE());
     }
 }

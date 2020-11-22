@@ -1,9 +1,5 @@
 package com.example.fp_predictor.analysis.prediction;
 
-import com.example.fp_predictor.domain.Player;
-import com.example.fp_predictor.repository.PlayerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -49,22 +45,33 @@ public class Estimation {
             if (instance.getResultPoints() != 0) {
                 ++count;
                 sumRelativeError += instance.getDifference() / instance.getResultPoints();
-                try {
-                    String url = "jdbc:postgresql://localhost/fp_predictor";
-                    String username = "postgres";
-                    String password = "postgrespass";
-                    try (Connection connection = DriverManager.getConnection(url, username, password)) {
-                        Statement statement = connection.createStatement();
-                        statement.executeUpdate(
-                                "INSERT into player values (" + count + ", '" + instance.getPlayerName() + "', " + instance.getExpectedPoints() + ")"
-                        );
-                    }
-                    Player player = new Player(instance.getPlayerName(), instance.getExpectedPoints());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                writeToDb(count, instance);
             }
         }
         return Math.abs(sumRelativeError / count) * 100;
+    }
+
+    private void writeToDb(int count, EstimationInstance instance) {
+        try {
+            String url = "jdbc:postgresql://localhost/fp_predictor";
+            String username = "postgres";
+            String password = "postgrespass";
+            try (Connection connection = DriverManager.getConnection(url, username, password)) {
+                Statement statement = connection.createStatement();
+                try {
+                    statement.executeUpdate(
+                            "INSERT into player values ("
+                                    + count + ", '"
+                                    + instance.getPlayerName()
+                                    + "', " + instance.getExpectedPoints()
+                                    + ")"
+                    );
+                } catch (Exception e) {
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

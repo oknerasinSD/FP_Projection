@@ -12,25 +12,34 @@ import java.util.Set;
 @Entity
 @Table(name = "usr")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @NotBlank(message = "Username can't be empty")
     private String username;
+
     @NotBlank(message = "Password can't be empty")
     private String password;
+
     @Transient
     @NotBlank(message = "Password confirmation can't be empty")
     private String passwordConfirmation;
+
     private boolean active;
+
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
+
     @Email(message = "Email isn't correct")
     @NotBlank(message = "Email can't be empty")
     private String email;
+
     private String activationCode;
+
     @OneToMany(mappedBy = "executor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Customer> customers;
 

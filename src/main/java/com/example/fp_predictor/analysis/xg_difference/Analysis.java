@@ -25,7 +25,8 @@ public class Analysis {
             }
             DataInstance data = new DataInstance(
                     Integer.parseInt(currentLine[2]),
-                    Double.parseDouble(currentLine[12])
+                    Double.parseDouble(currentLine[12]),
+                    Integer.parseInt(currentLine[9])
             );
             dataSet.add(data);
         }
@@ -70,6 +71,14 @@ public class Analysis {
             sum += d;
         }
         return sum / 9130;
+    }
+
+    public double countMAPE() {
+        double sumRelativeError = 0;
+        for (DataInstance instance : dataSet) {
+            sumRelativeError += instance.getxG_difference() / instance.getNumberOfGoals();
+        }
+        return Math.abs(sumRelativeError / dataSet.size());
     }
 
     public List<DataInstance> getDataSet() {
