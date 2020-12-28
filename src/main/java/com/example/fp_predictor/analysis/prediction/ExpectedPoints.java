@@ -134,7 +134,7 @@ public class ExpectedPoints {
     }
 
     /**
-     * Старт процесса по рассчету ожидаемых очков игрока на ближайший матч.
+     * Подсчет ожидаемых очков игрока.
      */
     public double countPlayerPoints(FanTeamPlayer fanTeamPlayer, ParsedPlayer parsedPlayer) throws IOException {
 
