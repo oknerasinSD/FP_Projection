@@ -1,6 +1,6 @@
 package com.example.fp_predictor.analysis.prediction;
 
-public class EstimationInstance extends PredictionInstance {
+public class EstimationInstance extends ResultInstance {
 
     private double resultPoints;
     private double difference;
@@ -25,7 +25,7 @@ public class EstimationInstance extends PredictionInstance {
     @Override
     public String toString() {
         return "EstimationInstance{" +
-                "playerName=" + getPlayerName() +
+                "playerName=" + getName() +
                 ", expectedPoints=" + getExpectedPoints() +
                 ", resultPoints=" + resultPoints +
                 ", difference=" + difference +

@@ -15,7 +15,7 @@ public class DataInstance {
 
     @Override
     public String toString() {
-        return "DataInstance{" +
+        return "StatsInstance{" +
                 "position=" + position +
                 ", xG_difference=" + xG_difference +
                 '}';

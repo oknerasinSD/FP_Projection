@@ -62,7 +62,7 @@ public class Estimation {
                     statement.executeUpdate(
                             "INSERT into player values ("
                                     + count + ", '"
-                                    + instance.getPlayerName()
+                                    + instance.getName()
                                     + "', " + instance.getExpectedPoints()
                                     + ")"
                     );

@@ -8,7 +8,7 @@ public class FanTeamScoring {
     public final int defenderGoal = 6;
     public final int midfielderGoal = 5;
     public final int forwardGoal = 4;
-    public final int cleanSheet = 4;
+    public final int defenderCleanSheet = 4;
     public final int midfielderCleanSheet = 1;
     public final int miss2goals = -1;
     public final int assist = 3;

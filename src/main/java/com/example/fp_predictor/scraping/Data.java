@@ -32,7 +32,7 @@ public class Data {
     };
 
     private final String[] playersTableBannedItems = {
-            "Player",
+            "ParsedPlayer",
             "Squad Total",
             "Opponent Total",
             ""

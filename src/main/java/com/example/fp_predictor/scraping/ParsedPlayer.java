@@ -1,6 +1,6 @@
 package com.example.fp_predictor.scraping;
 
-public class Player {
+public class ParsedPlayer {
 
     private String name;
     private int matchesPlayed;
@@ -13,8 +13,8 @@ public class Player {
     private double xg90;
     private double xa90;
 
-    public Player(String name, int matchesPlayed, int matchesStarted, int minutesPlayed, int yellowCards, int redCards,
-                  double totalXg, double totalXa, double xg90, double xa90)
+    public ParsedPlayer(String name, int matchesPlayed, int matchesStarted, int minutesPlayed, int yellowCards,
+                        int redCards, double totalXg, double totalXa, double xg90, double xa90)
     {
         this.name = name;
         this.matchesPlayed = matchesPlayed;
@@ -30,7 +30,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player{" +
+        return "ParsedPlayer{" +
                 "name='" + name + '\'' +
                 ", matchesPlayed=" + matchesPlayed +
                 ", matchesStarted=" + matchesStarted +

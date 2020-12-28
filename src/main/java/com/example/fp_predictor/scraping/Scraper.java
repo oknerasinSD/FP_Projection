@@ -4,39 +4,61 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Парсер статистики.
+ */
 public class Scraper {
 
-    private static final String tableReference =
+    /** Ссылка на таблицу */
+    private static final String TABLE_REFERENCE =
             "table.min_width tr";
 
-    public void scrape() throws IOException {
+    /**
+     * Запуск парсинга.
+     * @throws IOException - ошибка при построении списка с объектами, содержащими HTML-код таблиц для парсинга.
+     */
+    public List<ParsedPlayer> scrape() throws IOException {
         Data data = new Data();
         List<Document> documents = data.buildDocumentsList(League.EPL);
-        parseTables(data, documents);
+        return parseTables(data, documents);
     }
 
-    private void parseTables(Data data, List<Document> documents) {
+    /**
+     * Парсинг статистики из HTML-кода таблиц.
+     * @param data - объект с вспомогательными данными;
+     * @param documents - список оъектов с HTML-кодами таблиц для парсинга.
+     */
+    private List<ParsedPlayer> parseTables(Data data, List<Document> documents) {
+        List<ParsedPlayer> players = new ArrayList<>();
         for (Document document : documents) {
-            for (Element row : document.select(tableReference)) {
+            for (Element row : document.select(TABLE_REFERENCE)) {
                 String playerName = row.select(data.getColumn("name")).text();
                 if (!data.checkNameCorrectness(playerName)) {
                     continue;
                 }
-                Player player = buildPlayer(data, row, playerName);
-                System.out.println(player);
+                players.add(buildPlayer(data, row, playerName));
             }
         }
+        return players;
     }
 
-    private Player buildPlayer(Data data, Element row, String playerName) {
+    /**
+     * Парсинг объекта типа ParsedPlayer из строки таблицы.
+     * @param data - объект с вспомогательными данными;
+     * @param row - строка таблицы;
+     * @param playerName - имя игрока.
+     * @return - экземпляр класса ParsedPlayer.
+     */
+    private ParsedPlayer buildPlayer(Data data, Element row, String playerName) {
 
         String value = row.select(data.getColumn("matchesPlayed")).text();
-        int matchesPlayed = Integer.parseInt(value);
+        int matchesPlayed = (int) checkIfEmpty(value);
 
         value = row.select(data.getColumn("matchesStarted")).text();
-        int matchesStarted = Integer.parseInt(value);
+        int matchesStarted = (int) checkIfEmpty(value);
 
         value = row.select(data.getColumn("minutesPlayed")).text();
         int minutesPlayed = (int) checkIfEmpty(value);
@@ -59,7 +81,7 @@ public class Scraper {
         value = row.select(data.getColumn("xa90")).text();
         double xa90 = checkIfEmpty(value);
 
-        return new Player(
+        return new ParsedPlayer(
                 playerName,
                 matchesPlayed,
                 matchesStarted,
@@ -73,6 +95,11 @@ public class Scraper {
         );
     }
 
+    /**
+     * Проверка является ли строка пустой.
+     * @param value - проверяемая строка.
+     * @return - 0, если строка пустая; число, если непустая.
+     */
     private double checkIfEmpty(String value) {
         return "".equals(value) ? 0 : Double.parseDouble(value);
     }

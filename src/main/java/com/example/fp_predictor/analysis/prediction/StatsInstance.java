@@ -1,6 +1,6 @@
 package com.example.fp_predictor.analysis.prediction;
 
-public class DataInstance {
+public class StatsInstance {
 
     private String playerName;
     private double teamXG;
@@ -17,20 +17,20 @@ public class DataInstance {
     private int redCards;
     private int numberOfGames;
 
-    public DataInstance(String playerName,
-                        double teamXG,
-                        double playerXG,
-                        double playerXA,
-                        int minutesPlayed,
-                        double cleanSheetProbability,
-                        double teamToScoreProbability,
-                        String position,
-                        int goals,
-                        double winningProbability,
-                        double loosingProbability,
-                        int yellowCards,
-                        int redCards,
-                        int numberOfGames
+    public StatsInstance(String playerName,
+                         double teamXG,
+                         double playerXG,
+                         double playerXA,
+                         int minutesPlayed,
+                         double cleanSheetProbability,
+                         double teamToScoreProbability,
+                         String position,
+                         int goals,
+                         double winningProbability,
+                         double loosingProbability,
+                         int yellowCards,
+                         int redCards,
+                         int numberOfGames
     ) {
         this.playerName = playerName;
         this.teamXG = teamXG;
