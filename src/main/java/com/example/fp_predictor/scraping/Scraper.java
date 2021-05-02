@@ -1,20 +1,26 @@
 package com.example.fp_predictor.scraping;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Парсер статистики.
  */
 public class Scraper {
 
-    /** Ссылка на таблицу */
-    private static final String TABLE_REFERENCE =
-            "table.min_width tr";
+//    /** Ссылка на таблицу */
+//    private static final String TABLE_REFERENCE =
+//            "table.min_width tr";
+
+    private static final String TABLE_REFERENCE = "table.stats_table";
+    private Map<String, String> links;
 
     /**
      * Запуск парсинга.
@@ -22,24 +28,28 @@ public class Scraper {
      */
     public List<ParsedPlayer> scrape() throws IOException {
         Data data = new Data();
-        List<Document> documents = data.buildDocumentsList(League.EPL);
-        return parseTables(data, documents);
+        links = data.getEplLinks();
+        return parseTables(data);
     }
 
     /**
      * Парсинг статистики из HTML-кода таблиц.
-     * @param data - объект с вспомогательными данными;
-     * @param documents - список оъектов с HTML-кодами таблиц для парсинга.
+     * @param data - объект с вспомогательными данными.
      */
-    private List<ParsedPlayer> parseTables(Data data, List<Document> documents) {
+    private List<ParsedPlayer> parseTables(Data data) throws IOException {
         List<ParsedPlayer> players = new ArrayList<>();
-        for (Document document : documents) {
-            for (Element row : document.select(TABLE_REFERENCE)) {
+        for (String team : links.keySet()) {
+            Document document = Jsoup.connect(links.get(team)).get();
+            Element table = document.select(TABLE_REFERENCE).first();
+            Elements rows = table.select("tr");
+            for (Element row : rows) {
                 String playerName = row.select(data.getColumn("name")).text();
                 if (!data.checkNameCorrectness(playerName)) {
                     continue;
+                } else if ("Squad Total".equals(playerName)) {
+                    break;
                 }
-                players.add(buildPlayer(data, row, playerName));
+                players.add(buildPlayer(data, row, playerName, team));
             }
         }
         return players;
@@ -52,7 +62,7 @@ public class Scraper {
      * @param playerName - имя игрока.
      * @return - экземпляр класса ParsedPlayer.
      */
-    private ParsedPlayer buildPlayer(Data data, Element row, String playerName) {
+    private ParsedPlayer buildPlayer(Data data, Element row, String playerName, String team) {
 
         String value = row.select(data.getColumn("matchesPlayed")).text();
         int matchesPlayed = (int) checkIfEmpty(value);
@@ -83,6 +93,7 @@ public class Scraper {
 
         return new ParsedPlayer(
                 playerName,
+                team,
                 matchesPlayed,
                 matchesStarted,
                 minutesPlayed,
@@ -101,6 +112,7 @@ public class Scraper {
      * @return - 0, если строка пустая; число, если непустая.
      */
     private double checkIfEmpty(String value) {
+        value = value.replaceAll(",", "");
         return "".equals(value) ? 0 : Double.parseDouble(value);
     }
 }

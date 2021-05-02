@@ -1,35 +1,31 @@
 package com.example.fp_predictor.scraping;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import java.io.IOException;
-import java.util.*;
+import java.util.Map;
 
 public class Data {
 
-    private final String[] eplLinks = {
-            "https://fbref.com/en/share/UiTdO", // Arsenal
-            "https://fbref.com/en/share/ivKcD", // Aston Villa
-            "https://fbref.com/en/share/YGGAO", // Brighton
-            "https://fbref.com/en/share/9sylW", // Burnley
-            "https://fbref.com/en/share/1fouZ", // Chelsea
-            "https://fbref.com/en/share/uslIX", // Crystal Palace
-            "https://fbref.com/en/share/xRDQS", // Everton
-            "https://fbref.com/en/share/RsLAW",    // Fulham
-            "https://fbref.com/en/share/StB3y",  // Leeds
-            "https://fbref.com/en/share/oZOYL",    // Leicester
-            "https://fbref.com/en/share/8z0j9", // Liverpool
-            "https://fbref.com/en/share/zJVPu",   // Man City
-            "https://fbref.com/en/share/PfMyi", // Man United
-            "https://fbref.com/en/share/DlxnI",  // Newcastle
-            "https://fbref.com/en/share/kow2p",  // Sheffield Utd
-            "https://fbref.com/en/share/V57xT",   // Southampton
-            "https://fbref.com/en/share/u8KRK", // Tottenham
-            "https://fbref.com/en/share/ojJNb",  // West Brom
-            "https://fbref.com/en/share/Tigzh",   // West Ham
-            "https://fbref.com/en/share/2JnAK"  // Wolverhampton
-    };
+    private final Map<String, String> eplLinks = Map.ofEntries(
+            Map.entry("ARS", "https://fbref.com/en/squads/18bb7c10/Arsenal-Stats"),
+            Map.entry("AV", "https://fbref.com/en/squads/8602292d/Aston-Villa-Stats"),
+            Map.entry("BHA", "https://fbref.com/en/squads/d07537b9/Brighton-and-Hove-Albion-Stats"),
+            Map.entry("BUR", "https://fbref.com/en/squads/943e8050/Burnley-Stats"),
+            Map.entry("CHE", "https://fbref.com/en/squads/cff3d9bb/Chelsea-Stats"),
+            Map.entry("CRY", "https://fbref.com/en/squads/47c64c55/Crystal-Palace-Stats"),
+            Map.entry("EVE", "https://fbref.com/en/squads/d3fd31cc/Everton-Stats"),
+            Map.entry("FUL", "https://fbref.com/en/squads/fd962109/Fulham-Stats"),
+            Map.entry("LEE", "https://fbref.com/en/squads/5bfb9659/Leeds-United-Stats"),
+            Map.entry("LEI", "https://fbref.com/en/squads/a2d435b3/Leicester-City-Stats"),
+            Map.entry("LIV", "https://fbref.com/en/squads/822bd0ba/Liverpool-Stats"),
+            Map.entry("MCI", "https://fbref.com/en/squads/b8fd03ef/Manchester-City-Stats"),
+            Map.entry("MUN", "https://fbref.com/en/squads/19538871/Manchester-United-Stats"),
+            Map.entry("NEW", "https://fbref.com/en/squads/b2b47a98/Newcastle-United-Stats"),
+            Map.entry("SHU", "https://fbref.com/en/squads/1df6b87e/Sheffield-United-Stats"),
+            Map.entry("SOU", "https://fbref.com/en/squads/33c895d4/Southampton-Stats"),
+            Map.entry("TOT", "https://fbref.com/en/squads/361ca564/Tottenham-Hotspur-Stats"),
+            Map.entry("WBA", "https://fbref.com/en/squads/60c6b05f/West-Bromwich-Albion-Stats"),
+            Map.entry("WHU", "https://fbref.com/en/squads/7c21e445/West-Ham-United-Stats"),
+            Map.entry("WOL", "https://fbref.com/en/squads/8cec06e1/Wolverhampton-Wanderers-Stats")
+    );
 
     private final String[] playersTableBannedItems = {
             "ParsedPlayer",
@@ -43,12 +39,12 @@ public class Data {
             Map.entry("matchesPlayed", "td.group_start.right:nth-of-type(4)"),
             Map.entry("matchesStarted", "td.right:nth-of-type(5)"),
             Map.entry("minutesPlayed", "td.right:nth-of-type(6)"),
-            Map.entry("yellowCards", "td.right:nth-of-type(11)"),
-            Map.entry("redCards", "td.iz.right:nth-of-type(12)"),
-            Map.entry("totalXg", "td.group_start.right:nth-of-type(18)"),
-            Map.entry("totalXa", "td.right:nth-of-type(20)"),
-            Map.entry("xg90", "td.group_start.right:nth-of-type(21)"),
-            Map.entry("xa90", "td.right:nth-of-type(22)")
+            Map.entry("yellowCards", "td.right:nth-of-type(13)"),
+            Map.entry("redCards", "td.right:nth-of-type(14)"),
+            Map.entry("totalXg", "td.group_start.right:nth-of-type(20)"),
+            Map.entry("totalXa", "td.right:nth-of-type(22)"),
+            Map.entry("xg90", "td.group_start.right:nth-of-type(24)"),
+            Map.entry("xa90", "td.right:nth-of-type(25)")
     );
 
     public String getColumn(String item) {
@@ -64,11 +60,7 @@ public class Data {
         return true;
     }
 
-    public List<Document> buildDocumentsList(League league) throws IOException {
-        List<Document> documents = new ArrayList<>();
-        for (String link : eplLinks) {
-            documents.add(Jsoup.connect(link).get());
-        }
-        return documents;
+    public Map<String, String> getEplLinks() {
+        return eplLinks;
     }
 }

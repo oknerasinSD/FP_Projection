@@ -1,11 +1,17 @@
 package com.example.fp_predictor.analysis.prediction;
 
-public class EstimationInstance extends ResultInstance {
+/**
+ * Экземпляр данных, необходимых для сравнения количества ожидаемых голов с фактическим.
+ */
+public class ComparisonResultInstance extends ResultInstance {
 
+    /** Фактическое количество очков. */
     private double resultPoints;
+
+    /** Разница. */
     private double difference;
 
-    public EstimationInstance(String playerName, double expectedPoints, double resultPoints) {
+    public ComparisonResultInstance(String playerName, double expectedPoints, double resultPoints) {
         super(playerName, expectedPoints);
         this.resultPoints = resultPoints;
     }

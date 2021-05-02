@@ -1,5 +1,8 @@
 package com.example.fp_predictor.analysis.prediction;
 
+/**
+ * Класс для описания объектов, хранящих статистические данные, необходимые для расчета ожидаемых фэнтези-очков.
+ */
 public class StatsInstance {
 
     private String playerName;

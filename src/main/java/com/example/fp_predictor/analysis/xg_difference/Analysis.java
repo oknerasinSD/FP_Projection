@@ -9,11 +9,26 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+
+/**
+ * Анализ выборки, состоящей из статистики выступлений команд чемпионатов Англии, Испании, Германии, Италии и Франции
+ * в период с 2014 по 2018 годы, на предмет разницы между количеством ожидаемых голов согласно модели xG и фактическим
+ * количеством голов.
+ *
+ * Цель - выявление зависимости между итоговыми позициями команд и расхождением между ожидаемыми и фактическими голами.
+ */
 public class Analysis {
 
+    /** Список данных для анализа. */
     private List<DataInstance> dataSet = new ArrayList<>();
+
+    /** Результат, равный разнице между ожидаемым и фактическим количеством голов. */
     private double[] result = new double[20];
 
+    /**
+     * Считывание списка данных из файла.
+     * @throws FileNotFoundException - файл не найден.
+     */
     public void readDataSet() throws FileNotFoundException {
         File inputFile = new File("xGDifferenceDataSet.txt");
         Scanner scanner = new Scanner(inputFile);
@@ -33,20 +48,26 @@ public class Analysis {
         scanner.close();
     }
 
+    /**
+     * Выявление зависимости между итоговыми позициями команд и расхождением между ожидаемыми и фактическими голами.
+     */
     public void analyseByPosition() {
         sortDataSetByPosition();
         for (int i = 0; i < 18; ++i) {
             for (int j = 0; j < 25; ++j) {
-                result[i] += dataSet.get(i * 25 + j).getxG_difference();
+                result[i] += dataSet.get(i * 25 + j).get_xG_difference();
             }
         }
         for (int i = 0; i < 2; ++i) {
             for (int j = 0; j < 20; ++j) {
-                result[18 + i] += dataSet.get(450 + i * 20 + j).getxG_difference();
+                result[18 + i] += dataSet.get(450 + i * 20 + j).get_xG_difference();
             }
         }
     }
 
+    /**
+     * Сортировка списка данных по значению позиций команд по итогам сезона.
+     */
     public void sortDataSetByPosition() {
         dataSet.sort(new Comparator<DataInstance>() {
             @Override
@@ -56,6 +77,10 @@ public class Analysis {
         });
     }
 
+    /**
+     * Запись результата в выходной файл.
+     * @throws IOException - ошибка ввода/вывода.
+     */
     public void writeDataSet() throws IOException {
         File outputFile = new File("xGDifferenceResult.txt");
         FileWriter writer = new FileWriter(outputFile);
@@ -65,6 +90,10 @@ public class Analysis {
         writer.close();
     }
 
+    /**
+     * Вычисление разницы между ожидаемым и фактическим количеством голов в конкретной игре.
+     * @return - разница.
+     */
     public double countDifferencePerGame() {
         double sum = 0;
         for (Double d : result) {
@@ -73,10 +102,14 @@ public class Analysis {
         return sum / 9130;
     }
 
+    /**
+     * Вычисление среднего абсолютного процентного отклонения ожидаемых голов от фактических (MAPE).
+     * @return - MAPE.
+     */
     public double countMAPE() {
         double sumRelativeError = 0;
         for (DataInstance instance : dataSet) {
-            sumRelativeError += instance.getxG_difference() / instance.getNumberOfGoals();
+            sumRelativeError += instance.get_xG_difference() / instance.getNumberOfGoals();
         }
         return Math.abs(sumRelativeError / dataSet.size());
     }

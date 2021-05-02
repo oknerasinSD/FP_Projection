@@ -3,6 +3,7 @@ package com.example.fp_predictor.scraping;
 public class ParsedPlayer {
 
     private String name;
+    private String team;
     private int matchesPlayed;
     private int matchesStarted;
     private int minutesPlayed;
@@ -13,10 +14,11 @@ public class ParsedPlayer {
     private double xg90;
     private double xa90;
 
-    public ParsedPlayer(String name, int matchesPlayed, int matchesStarted, int minutesPlayed, int yellowCards,
-                        int redCards, double totalXg, double totalXa, double xg90, double xa90)
+    public ParsedPlayer(String name, String team, int matchesPlayed, int matchesStarted, int minutesPlayed,
+                        int yellowCards, int redCards, double totalXg, double totalXa, double xg90, double xa90)
     {
         this.name = name;
+        this.team = team;
         this.matchesPlayed = matchesPlayed;
         this.matchesStarted = matchesStarted;
         this.minutesPlayed = minutesPlayed;
@@ -50,6 +52,10 @@ public class ParsedPlayer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getTeam() {
+        return team;
     }
 
     public int getMatchesPlayed() {

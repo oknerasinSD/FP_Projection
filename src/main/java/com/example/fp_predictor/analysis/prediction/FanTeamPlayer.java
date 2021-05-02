@@ -1,26 +1,26 @@
 package com.example.fp_predictor.analysis.prediction;
 
 /**
- * Описание игрока от фэнтези-провайдера.
+ * Данные об игроке от фэнтези-провайдера.
  */
 public class FanTeamPlayer {
 
-    /** Имя */
+    /** Имя. */
     private final String name;
 
-    /** Фамилия */
+    /** Фамилия. */
     private final String surname;
 
-    /** Команда */
+    /** Команда. */
     private final String team;
 
-    /** Позиция */
+    /** Позиция. */
     private final String position;
 
-    /** Цена */
+    /** Цена. */
     private final double price;
 
-    /** Ожидаемые очки */
+    /** Ожидаемые очки. */
     private double expectedPoints;
 
     public FanTeamPlayer(String name, String surname, String team, String position, double price) {
@@ -53,5 +53,17 @@ public class FanTeamPlayer {
 
     public void setExpectedPoints(double expectedPoints) {
         this.expectedPoints = expectedPoints;
+    }
+
+    @Override
+    public String toString() {
+        return "FanTeamPlayer{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", team='" + team + '\'' +
+                ", position='" + position + '\'' +
+                ", price=" + price +
+                ", expectedPoints=" + expectedPoints +
+                '}';
     }
 }

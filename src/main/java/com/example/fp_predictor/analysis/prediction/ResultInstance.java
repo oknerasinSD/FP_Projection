@@ -5,16 +5,16 @@ package com.example.fp_predictor.analysis.prediction;
  */
 public class ResultInstance {
 
-    /** Игрок */
+    /** Игрок. */
     private String name;
 
-    /** Команда */
+    /** Команда. */
     private String team;
 
-    /** Позиция */
+    /** Позиция игрока на поле. */
     private String position;
 
-    /** Ожидаемые очки */
+    /** Ожидаемые фэнтези-очки. */
     private double expectedPoints;
 
     public ResultInstance(String name, Double expectedPoints) {
