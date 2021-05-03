@@ -3,7 +3,7 @@ package com.example.fp_predictor.analysis.prediction;
 /**
  * Экземпляр данных, необходимых для сравнения количества ожидаемых голов с фактическим.
  */
-public class ComparisonResultInstance extends ResultInstance {
+public class ComparisonResultInstance extends PlayerForecast {
 
     /** Фактическое количество очков. */
     private double resultPoints;

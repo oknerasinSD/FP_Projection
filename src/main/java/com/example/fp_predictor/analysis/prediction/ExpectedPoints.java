@@ -36,13 +36,13 @@ public class ExpectedPoints {
     private final Map<String, Double> over05Map = new HashMap<>();
 
     /** Список с результатами прогноза. */
-    private final List<ResultInstance> forecast = new ArrayList<>();
+    private final List<PlayerForecast> forecast = new ArrayList<>();
 
     /**
      * Подсчет ожидаемых очков для всех игроков.
      * @throws IOException - ошибка при парсинге статистики или считывании файлов.
      */
-    public void count() throws IOException {
+    public List<PlayerForecast> count() throws IOException {
 
         List<ParsedPlayer> parsedPlayers = new Scraper().scrape();
         List<FanTeamPlayer> fanTeamPlayers = readFanTeamPlayers();
@@ -54,16 +54,19 @@ public class ExpectedPoints {
         for (FanTeamPlayer fanTeamPlayer : fanTeamPlayers) {
             for (ParsedPlayer parsedPlayer : parsedPlayers) {
                 if (isSamePlayer(fanTeamPlayer, parsedPlayer)) {
-                    forecast.add(new ResultInstance(
+                    forecast.add(new PlayerForecast(
                                     parsedPlayer.getName(),
                                     fanTeamPlayer.getTeam(),
                                     fanTeamPlayer.getPosition(),
-                                    countPlayerPoints(fanTeamPlayer, parsedPlayer)
+                                    countPlayerPoints(fanTeamPlayer, parsedPlayer),
+                                    fanTeamPlayer.getPrice()
                             )
                     );
                 }
             }
         }
+
+        return forecast;
     }
 
     /**
@@ -230,7 +233,7 @@ public class ExpectedPoints {
     public void writeData() throws IOException {
         File outputFile = new File("PredictionOutput.txt");
         FileWriter writer = new FileWriter(outputFile);
-        for (ResultInstance resultInstance : forecast) {
+        for (PlayerForecast resultInstance : forecast) {
             writer.write(
                     resultInstance.getName() + "\t"
                             + resultInstance.getTeam() + "\t"

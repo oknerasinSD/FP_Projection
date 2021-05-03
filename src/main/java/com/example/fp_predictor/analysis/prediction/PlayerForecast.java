@@ -3,7 +3,7 @@ package com.example.fp_predictor.analysis.prediction;
 /**
  * Результат прогнозирования для подачи информации на дальнейшую обработку.
  */
-public class ResultInstance {
+public class PlayerForecast {
 
     /** Игрок. */
     private String name;
@@ -17,15 +17,19 @@ public class ResultInstance {
     /** Ожидаемые фэнтези-очки. */
     private double expectedPoints;
 
-    public ResultInstance(String name, Double expectedPoints) {
+    /** Цена на игрока в текущем турнире. */
+    private double price;
+
+    public PlayerForecast(String name, Double expectedPoints) {
 
     }
 
-    public ResultInstance(String name, String team, String position, double expectedPoints) {
+    public PlayerForecast(String name, String team, String position, double expectedPoints, double price) {
         this.name = name;
         this.team = team;
         this.position = position;
         this.expectedPoints = expectedPoints;
+        this.price = price;
     }
 
     public String getName() {
@@ -42,5 +46,20 @@ public class ResultInstance {
 
     public double getExpectedPoints() {
         return expectedPoints;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerForecast{" +
+                "name='" + name + '\'' +
+                ", team='" + team + '\'' +
+                ", position='" + position + '\'' +
+                ", expectedPoints=" + expectedPoints +
+                ", price=" + price +
+                '}';
     }
 }
