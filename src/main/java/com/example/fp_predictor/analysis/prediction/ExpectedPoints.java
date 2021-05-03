@@ -99,7 +99,8 @@ public class ExpectedPoints {
      */
     private boolean isSamePlayer(FanTeamPlayer fanTeamPlayer, ParsedPlayer parsedPlayer) {
         return parsedPlayer.getName().contains(fanTeamPlayer.getSurname())
-                && parsedPlayer.getName().contains(fanTeamPlayer.getName());
+                && parsedPlayer.getName().contains(fanTeamPlayer.getName())
+                && fanTeamPlayer.getTeam().equals(parsedPlayer.getTeam());
     }
 
     /**
