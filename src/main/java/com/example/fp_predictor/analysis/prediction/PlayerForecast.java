@@ -24,6 +24,9 @@ public class PlayerForecast {
 
     }
 
+    public PlayerForecast() {
+    }
+
     public PlayerForecast(String name, String team, String position, double expectedPoints, double price) {
         this.name = name;
         this.team = team;

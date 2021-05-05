@@ -1,4 +1,4 @@
-package com.example.fp_predictor.optimization.combinations.data;
+package com.example.fp_predictor.optimization.stacks.data;
 
 import com.example.fp_predictor.scraping.League;
 

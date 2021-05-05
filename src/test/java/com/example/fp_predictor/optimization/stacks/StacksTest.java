@@ -1,19 +1,20 @@
-package com.example.fp_predictor.optimization.combinations;
+package com.example.fp_predictor.optimization.stacks;
 
 import com.example.fp_predictor.analysis.prediction.ExpectedPoints;
-import com.example.fp_predictor.optimization.combinations.stacks.DoubleStack;
-import com.example.fp_predictor.optimization.combinations.stacks.TripleStack;
+import com.example.fp_predictor.optimization.stacks.DoubleStack;
+import com.example.fp_predictor.optimization.stacks.Stacks;
+import com.example.fp_predictor.optimization.stacks.TripleStack;
 import com.example.fp_predictor.scraping.League;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class CombinationsTest {
+public class StacksTest {
 
     @Test
     public void testCombinationsBuilding() throws IOException {
 
-        Combinations combinations = new Combinations(new ExpectedPoints().count(), League.EPL);
+        Stacks combinations = new Stacks(new ExpectedPoints().count(), League.EPL);
         combinations.build();
 
         for (String team : combinations.getDoubleStacksByTeam().keySet()) {

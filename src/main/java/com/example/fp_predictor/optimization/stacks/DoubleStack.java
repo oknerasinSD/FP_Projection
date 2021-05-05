@@ -1,27 +1,31 @@
-package com.example.fp_predictor.optimization.combinations.stacks;
+package com.example.fp_predictor.optimization.stacks;
 
 import com.example.fp_predictor.analysis.prediction.PlayerForecast;
 
 public class DoubleStack implements Stackable {
 
-    private final PlayerForecast player1;
-    private final PlayerForecast player2;
+    private final PlayerForecast[] players = new PlayerForecast[2];
     private double price;
     private double expectedPoints;
 
     public DoubleStack(PlayerForecast player1, PlayerForecast player2) {
-        this.player1 = player1;
-        this.player2 = player2;
+        players[0] = player1;
+        players[1] = player2;
         price = player1.getPrice() + player2.getPrice();
         expectedPoints = player1.getExpectedPoints() + player2.getExpectedPoints();
     }
 
     public PlayerForecast getPlayer1() {
-        return player1;
+        return players[0];
     }
 
     public PlayerForecast getPlayer2() {
-        return player2;
+        return players[1];
+    }
+
+    @Override
+    public PlayerForecast[] getPlayers() {
+        return players;
     }
 
     @Override
@@ -37,8 +41,8 @@ public class DoubleStack implements Stackable {
     @Override
     public String toString() {
         return "DoubleStack{" +
-                "player1=" + player1 +
-                ", player2=" + player2 +
+                "player1=" + players[1] +
+                ", player2=" + players[2] +
                 ", price=" + price +
                 ", expectedPoints=" + expectedPoints +
                 '}';

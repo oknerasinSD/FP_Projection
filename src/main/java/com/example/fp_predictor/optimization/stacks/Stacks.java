@@ -1,9 +1,7 @@
-package com.example.fp_predictor.optimization.combinations;
+package com.example.fp_predictor.optimization.stacks;
 
 import com.example.fp_predictor.analysis.prediction.PlayerForecast;
-import com.example.fp_predictor.optimization.combinations.data.Teams;
-import com.example.fp_predictor.optimization.combinations.stacks.DoubleStack;
-import com.example.fp_predictor.optimization.combinations.stacks.TripleStack;
+import com.example.fp_predictor.optimization.stacks.data.Teams;
 import com.example.fp_predictor.scraping.League;
 
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ import java.util.Map;
 /**
  * Класс для построения стеков.
  */
-public class Combinations {
+public class Stacks {
 
     /** Лига, для команд которой строятся стеки. */
     private final League league;
@@ -31,8 +29,13 @@ public class Combinations {
     /** Мапа вида <Команда : Список игроков команды>. */
     private Map<String, List<PlayerForecast>> forecastsByTeam = new HashMap<>();
 
+    /** Все трипл-стеки без сортировки по командам. */
+    private List<TripleStack> tripleStacksList = new ArrayList<>();
 
-    public Combinations(List<PlayerForecast> forecasts, League league) {
+    /** Все дабл-стеки по командам. */
+    private List<DoubleStack> doubleStacksList = new ArrayList<>();
+
+    public Stacks(List<PlayerForecast> forecasts, League league) {
         this.forecasts = forecasts;
         this.league = league;
     }
@@ -44,6 +47,7 @@ public class Combinations {
         buildForecastsByTeam(league);
         buildDoubleStacksByTeam();
         buildTripleStacksByTeam();
+        buildAllStacks();
     }
 
     /**
@@ -64,7 +68,7 @@ public class Combinations {
     /**
      * Построение дабл-стеков для команд.
      */
-    public void buildDoubleStacksByTeam() {
+    private void buildDoubleStacksByTeam() {
         for (String team : forecastsByTeam.keySet()) {
             List<PlayerForecast> teamList = forecastsByTeam.get(team);
             List<DoubleStack> teamDoubleStacks = new ArrayList<>();
@@ -80,7 +84,7 @@ public class Combinations {
     /**
      * Построение трип-стеков для команд.
      */
-    public void buildTripleStacksByTeam() {
+    private void buildTripleStacksByTeam() {
         for (String team : forecastsByTeam.keySet()) {
             List<PlayerForecast> teamList = forecastsByTeam.get(team);
             List<TripleStack> teamTripleStacks = new ArrayList<>();
@@ -92,6 +96,18 @@ public class Combinations {
                 }
             }
             tripleStacksByTeam.put(team, teamTripleStacks);
+        }
+    }
+
+    /**
+     * Построение списка всех трипл-стеков и дабл-стеков.
+     */
+    private void buildAllStacks() {
+        for (String team : tripleStacksByTeam.keySet()) {
+            tripleStacksList.addAll(tripleStacksByTeam.get(team));
+        }
+        for (String team : doubleStacksByTeam.keySet()) {
+            doubleStacksList.addAll(doubleStacksByTeam.get(team));
         }
     }
 
