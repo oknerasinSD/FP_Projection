@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Фэнтези-команда.
  */
-public class Team {
+public class FantasyTeam {
 
     /** Список трипл-стеков команды. */
     private List<TripleStack> tripleStacks = new ArrayList<>();

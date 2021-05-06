@@ -4,10 +4,7 @@ import com.example.fp_predictor.analysis.prediction.PlayerForecast;
 import com.example.fp_predictor.optimization.stacks.data.Teams;
 import com.example.fp_predictor.scraping.League;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Класс для построения стеков.
@@ -20,34 +17,40 @@ public class Stacks {
     /** Список игроков, из которого собираются стеки. */
     private List<PlayerForecast> forecasts;
 
-    /** Мапа вида <Команда : Список дабл-стеков команды>. */
-    private Map<String, List<DoubleStack>> doubleStacksByTeam = new HashMap<>();
+    /** Список команд, игроков которых пользователь хочет видеть в фэнтези-составе. */
+    private final Set<String> chosenTeams;
 
-    /** Мапа вида <Команда : Список трипл-стеков команды>. */
-    private Map<String, List<TripleStack>> tripleStacksByTeam = new HashMap<>();
+    /** Мапа вида <Команда : Список дабл-стеков команды> для команд, выьранных пользователем. */
+    private List<DoubleStack> chosenDoubleStacks = new ArrayList<>();
+
+    /** Мапа вида <Команда : Список трипл-стеков команды> для команд, выбранных пользователем. */
+    private List<TripleStack> chosenTripleStacks = new ArrayList<>();
+
+    /** Список трипл-стеков для команд, не выбранных пользователем. */
+    private List<TripleStack> restTripleStacks = new ArrayList<>();
+
+    /** Список дабл-стеков для команд, не выбранных пользователем. */
+    private List<DoubleStack> restDoubleStacks = new ArrayList<>();
 
     /** Мапа вида <Команда : Список игроков команды>. */
     private Map<String, List<PlayerForecast>> forecastsByTeam = new HashMap<>();
 
-    /** Все трипл-стеки без сортировки по командам. */
-    private List<TripleStack> tripleStacksList = new ArrayList<>();
-
-    /** Все дабл-стеки по командам. */
-    private List<DoubleStack> doubleStacksList = new ArrayList<>();
-
-    public Stacks(List<PlayerForecast> forecasts, League league) {
+    public Stacks(List<PlayerForecast> forecasts, League league, Set<String> chosenTeams) {
         this.forecasts = forecasts;
         this.league = league;
+        this.chosenTeams = chosenTeams;
     }
 
     /**
-     * Построение всех стеков.
+     * Построение стеков.
      */
     public void build() {
         buildForecastsByTeam(league);
-        buildDoubleStacksByTeam();
-        buildTripleStacksByTeam();
-        buildAllStacks();
+        buildChosenDoubleStacks();
+        buildChosenTripleStacks();
+        if (chosenTeams.size() != 4) {
+            buildRestStacks();
+        }
     }
 
     /**
@@ -66,48 +69,76 @@ public class Stacks {
     }
 
     /**
-     * Построение дабл-стеков для команд.
+     * Построение дабл-стеков для выбранных пользователем команд.
      */
-    private void buildDoubleStacksByTeam() {
+    private void buildChosenDoubleStacks() {
         for (String team : forecastsByTeam.keySet()) {
-            List<PlayerForecast> teamList = forecastsByTeam.get(team);
-            List<DoubleStack> teamDoubleStacks = new ArrayList<>();
-            for (int i = 0; i < teamList.size() - 1; ++i) {
-                for (int j = i + 1; j < teamList.size(); ++j) {
-                    teamDoubleStacks.add(new DoubleStack(teamList.get(i), teamList.get(j)));
-                }
+            if (chosenTeams.contains(team)) {
+                List<PlayerForecast> teamList = forecastsByTeam.get(team);
+                chosenDoubleStacks.addAll(buildTeamDoubleStacks(teamList));
             }
-            doubleStacksByTeam.put(team, teamDoubleStacks);
         }
     }
 
     /**
-     * Построение трип-стеков для команд.
+     * Построение дабл-стеков команды.
+     * @param teamList - список игроков команды.
+     * @return - список всех дабл-стеков команды.
      */
-    private void buildTripleStacksByTeam() {
-        for (String team : forecastsByTeam.keySet()) {
-            List<PlayerForecast> teamList = forecastsByTeam.get(team);
-            List<TripleStack> teamTripleStacks = new ArrayList<>();
-            for (int i = 0; i < teamList.size() - 2; ++i) {
-                for(int j = i + 1; j < teamList.size() - 1; ++j) {
-                    for (int k = j + 1; k < teamList.size(); ++k) {
-                        teamTripleStacks.add(new TripleStack(teamList.get(i), teamList.get(j), teamList.get(k)));
-                    }
-                }
+    private List<DoubleStack> buildTeamDoubleStacks(List<PlayerForecast> teamList) {
+
+        List<DoubleStack> result = new ArrayList<>();
+
+        for (int i = 0; i < teamList.size() - 1; ++i) {
+            for (int j = i + 1; j < teamList.size(); ++j) {
+                result.add(new DoubleStack(teamList.get(i), teamList.get(j)));
             }
-            tripleStacksByTeam.put(team, teamTripleStacks);
+        }
+
+        return result;
+    }
+
+    /**
+     * Построение трип-стеков для выбранных пользователем команд.
+     */
+    private void buildChosenTripleStacks() {
+        for (String team : forecastsByTeam.keySet()) {
+            if (chosenTeams.contains(team)) {
+                List<PlayerForecast> teamList = forecastsByTeam.get(team);
+                chosenTripleStacks.addAll(buildTeamTripleStacks(teamList));
+            }
         }
     }
 
     /**
-     * Построение списка всех трипл-стеков и дабл-стеков.
+     * Построение трипл-стеков команды.
+     * @param teamList - список игроков команды.
+     * @return - список всех трипл-стеков команды.
      */
-    private void buildAllStacks() {
-        for (String team : tripleStacksByTeam.keySet()) {
-            tripleStacksList.addAll(tripleStacksByTeam.get(team));
+    private List<TripleStack> buildTeamTripleStacks(List<PlayerForecast> teamList) {
+
+        List<TripleStack> result = new ArrayList<>();
+
+        for (int i = 0; i < teamList.size() - 2; ++i) {
+            for (int j = i + 1; j < teamList.size() - 1; ++j) {
+                for (int k = j + 1; k < teamList.size(); ++k) {
+                    result.add(new TripleStack(teamList.get(i), teamList.get(j), teamList.get(k)));
+                }
+            }
         }
-        for (String team : doubleStacksByTeam.keySet()) {
-            doubleStacksList.addAll(doubleStacksByTeam.get(team));
+
+        return result;
+    }
+
+    /**
+     * Построение списка трипл-стеков и дабл-стеков для команд, не выбранных пользователем.
+     */
+    private void buildRestStacks() {
+        for (String team : forecastsByTeam.keySet()) {
+            if (!chosenTeams.contains(team)) {
+                restDoubleStacks.addAll(buildTeamDoubleStacks(forecastsByTeam.get(team)));
+                restTripleStacks.addAll(buildTeamTripleStacks(forecastsByTeam.get(team)));
+            }
         }
     }
 
@@ -119,12 +150,20 @@ public class Stacks {
         return forecasts;
     }
 
-    public Map<String, List<DoubleStack>> getDoubleStacksByTeam() {
-        return doubleStacksByTeam;
+    public List<DoubleStack> getChosenDoubleStacks() {
+        return chosenDoubleStacks;
     }
 
-    public Map<String, List<TripleStack>> getTripleStacksByTeam() {
-        return tripleStacksByTeam;
+    public List<TripleStack> getChosenTripleStacks() {
+        return chosenTripleStacks;
+    }
+
+    public List<TripleStack> getRestTripleStacks() {
+        return restTripleStacks;
+    }
+
+    public List<DoubleStack> getRestDoubleStacks() {
+        return restDoubleStacks;
     }
 
     public Map<String, List<PlayerForecast>> getForecastsByTeam() {
