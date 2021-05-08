@@ -15,7 +15,10 @@ import java.util.*;
 public class ExpectedPoints {
 
     /** Игровая неделя. */
-    private int gameWeek = 33;
+    private int gameWeek = 35;
+
+    /** ID турнира в системе FanTeam. */
+    private int tournamentId;
 
     /** Мапа с общим xG для каждой команды. */
     private final Map<String, Double> teamXgMap = new HashMap<>();
@@ -55,6 +58,7 @@ public class ExpectedPoints {
             for (ParsedPlayer parsedPlayer : parsedPlayers) {
                 if (isSamePlayer(fanTeamPlayer, parsedPlayer)) {
                     forecast.add(new PlayerForecast(
+                                    fanTeamPlayer.getId(),
                                     parsedPlayer.getName(),
                                     fanTeamPlayer.getTeam(),
                                     fanTeamPlayer.getPosition(),
@@ -220,11 +224,12 @@ public class ExpectedPoints {
         scanner.nextLine();
         while (scanner.hasNext()) {
             String[] currentLine = scanner.nextLine().split(",");
+            tournamentId = Integer.parseInt(currentLine[0]);
             if ("injured".equals(currentLine[5]) || "unexpected".equals(currentLine[5])) {
                 continue;
             }
             result.add(new FanTeamPlayer(
-                    currentLine[3], currentLine[2], currentLine[4], currentLine[6], Double.parseDouble(currentLine[7]))
+                    Integer.parseInt(currentLine[1]), currentLine[3], currentLine[2], currentLine[4], currentLine[6], Double.parseDouble(currentLine[7]))
             );
         }
         return result;
@@ -237,14 +242,20 @@ public class ExpectedPoints {
     public void writeData() throws IOException {
         File outputFile = new File("PredictionOutput.txt");
         FileWriter writer = new FileWriter(outputFile);
-        for (PlayerForecast resultInstance : forecast) {
+        for (PlayerForecast player : forecast) {
             writer.write(
-                    resultInstance.getName() + "\t"
-                            + resultInstance.getTeam() + "\t"
-                            + resultInstance.getPosition() + "\t"
-                            + resultInstance.getExpectedPoints() + "\n"
+                    tournamentId + "\t"
+                            + player.getId() + "\t"
+                            + player.getName() + "\t"
+                            + player.getTeam() + "\t"
+                            + player.getPosition() + "\t"
+                            + player.getExpectedPoints() + "\n"
             );
         }
         writer.close();
+    }
+
+    public int getTournamentId() {
+        return tournamentId;
     }
 }

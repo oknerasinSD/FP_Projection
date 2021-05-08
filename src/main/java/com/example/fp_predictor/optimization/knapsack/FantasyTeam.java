@@ -5,12 +5,19 @@ import com.example.fp_predictor.optimization.stacks.DoubleStack;
 import com.example.fp_predictor.optimization.stacks.Stackable;
 import com.example.fp_predictor.optimization.stacks.TripleStack;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.*;
 
 /**
  * Фэнтези-команда.
  */
-public class FantasyTeam /*implements Stackable*/ {
+public class FantasyTeam {
+
+    /** ID турнира в системе FanTeam. */
+    private int tournamentId;
 
     /** Список трипл-стеков команды. */
     private List<TripleStack> tripleStacks = new ArrayList<>();
@@ -29,29 +36,91 @@ public class FantasyTeam /*implements Stackable*/ {
     /** Цена команды. */
     private double price = 0;
 
+    /** Ожидаемые очки. */
     private double expectedPoints = 0;
 
-    public FantasyTeam() {}
+    /** Имя капитана. */
+    private String captainName;
+
+    /** Имя вице-капитана. */
+    private String viceCaptainName;
+
+    /** Ожидаемые очки капитана. */
+    private double captainExpectedPoints = 0;
+
+    /** Ожидаемые очки вице-капитана. */
+    private double viceCaptainExpectedPoints = 0;
+
+    /** ID капитана в системе FanTeam. */
+    private int captainId;
+
+    /** ID вице-капитана в системе FanTeam. */
+    private int viceCaptainId;
+
+    public FantasyTeam(int tournamentId) {
+        this.tournamentId = tournamentId;
+    }
 
     public FantasyTeam(
             TripleStack tripleStack1,
             TripleStack tripleStack2,
             TripleStack tripleStack3,
-            DoubleStack doubleStack
+            DoubleStack doubleStack,
+            int tournamentId
     ) {
+        this.tournamentId = tournamentId;
         tripleStacks.addAll(Arrays.asList(tripleStack1, tripleStack2, tripleStack3));
         doubleStacks.add(doubleStack);
+        findCaptains();
     }
 
-    public FantasyTeam(FantasyTeam team, Stackable stack) {
+    public FantasyTeam(FantasyTeam team, Stackable stack, int tournamentId) {
+        this.tournamentId = tournamentId;
         tripleStacks.addAll(team.getTripleStacks());
         doubleStacks.addAll(team.getDoubleStacks());
         this.addUnknownStack(stack);
+        findCaptains();
     }
 
-    public FantasyTeam(List<Stackable> stackables) {
+    public FantasyTeam(List<Stackable> stackables, int tournamentId) {
+        this.tournamentId = tournamentId;
         for (Stackable stackable : stackables) {
             addUnknownStack(stackable);
+        }
+        findCaptains();
+    }
+
+    /**
+     * Поиск капитана и вице-капитана.
+     * Капитаном считается игрок с наивысшим матожиданием, вице-капитаном - игрок со вторым наивысшим матожиданием.
+     */
+    private void findCaptains() {
+        for (TripleStack stack : tripleStacks) {
+            checkStackForCaptains(stack);
+        }
+        for (DoubleStack stack : doubleStacks) {
+            checkStackForCaptains(stack);
+        }
+    }
+
+    /**
+     * Проверка стека на наличие капитана или вице-капитана.
+     * @param stackable - проверяемый стек.
+     */
+    private void checkStackForCaptains(Stackable stackable) {
+        for (PlayerForecast player : stackable.getPlayers()) {
+            if (player.getExpectedPoints() > captainExpectedPoints) {
+                viceCaptainExpectedPoints = captainExpectedPoints;
+                viceCaptainName = captainName;
+                viceCaptainId = captainId;
+                captainExpectedPoints = player.getExpectedPoints();
+                captainName = player.getName();
+                captainId = player.getId();
+            } else if (player.getExpectedPoints() > viceCaptainExpectedPoints) {
+                viceCaptainExpectedPoints = player.getExpectedPoints();
+                viceCaptainName = player.getName();
+                viceCaptainId = player.getId();
+            }
         }
     }
 
@@ -159,6 +228,23 @@ public class FantasyTeam /*implements Stackable*/ {
         }
     }
 
+    public void createFanTeamInputFile() throws IOException {
+        File file = new File("FanTeamInput.csv");
+        FileWriter writer = new FileWriter(file);
+        writer.write(tournamentId + ",");
+        for (TripleStack stack : tripleStacks) {
+            for (PlayerForecast player : stack.getPlayers()) {
+                writer.write(player.getId() + ",");
+            }
+        }
+        for (PlayerForecast player : doubleStacks.get(0).getPlayers()) {
+            writer.write(player.getId() + ",");
+        }
+        writer.write(captainId + ",");
+        writer.write(String.valueOf(viceCaptainId));
+        writer.close();
+    }
+
     public double getExpectedPoints() {
         double points = 0;
         for (TripleStack stack : tripleStacks) {
@@ -178,66 +264,9 @@ public class FantasyTeam /*implements Stackable*/ {
         return doubleStacks;
     }
 
-    /*@Override
-    public double getPrice() {
-        return price;
-    }
-
-    @Override
-    public PlayerForecast[] getPlayers() {
-        return new PlayerForecast[0];
-    }
-
-    @Override*/
     public int getNumberOfPlayers() {
         return 3 * tripleStacks.size() + 2 * doubleStacks.size();
     }
-
-    /*@Override
-    public String toString() {
-        OutputPlayer goalkeeper = null;
-        List<OutputPlayer> defenders = new ArrayList<>();
-        List<OutputPlayer> midfielders= new ArrayList<>();
-        List<OutputPlayer> forwards = new ArrayList<>();
-        for (TripleStack stack : tripleStacks) {
-            for (PlayerForecast player: stack.getPlayers()) {
-                if ("goalkeeper".equals(player.getPosition())) {
-                    goalkeeper = new OutputPlayer(player.getName(), player.getPrice(), player.getTeam());
-                } else if ("defender".equals(player.getPosition())) {
-                    defenders.add(new OutputPlayer(player.getName(), player.getPrice(), player.getTeam()));
-                } else if ("midfielder".equals(player.getPosition())) {
-                    midfielders.add(new OutputPlayer(player.getName(), player.getPrice(), player.getTeam()));
-                } else if ("forward".equals(player.getPosition())) {
-                    forwards.add(new OutputPlayer(player.getName(), player.getPrice(), player.getTeam()));
-                }
-            }
-        }
-        for (DoubleStack stack : doubleStacks) {
-            for (PlayerForecast player: stack.getPlayers()) {
-                if ("goalkeeper".equals(player.getPosition())) {
-                    goalkeeper = new OutputPlayer(player.getName(), player.getPrice(), player.getTeam());
-                } else if ("defender".equals(player.getPosition())) {
-                    defenders.add(new OutputPlayer(player.getName(), player.getPrice(), player.getTeam()));
-                } else if ("midfielder".equals(player.getPosition())) {
-                    midfielders.add(new OutputPlayer(player.getName(), player.getPrice(), player.getTeam()));
-                } else if ("forward".equals(player.getPosition())) {
-                    forwards.add(new OutputPlayer(player.getName(), player.getPrice(), player.getTeam()));
-                }
-            }
-        }
-        StringBuilder stringBuilder = new StringBuilder(goalkeeper.toString());
-        stringBuilder.append("\n");
-        for (OutputPlayer player : defenders) {
-            stringBuilder.append(player.toString()).append("\n");
-        }
-        for (OutputPlayer player : midfielders) {
-            stringBuilder.append(player.toString()).append("\n");
-        }
-        for (OutputPlayer player : forwards) {
-            stringBuilder.append(player.toString()).append("\n");
-        }
-        return stringBuilder.toString();
-    }*/
 
     public boolean containsStake(Stackable stack) {
         return doubleStacks.contains(stack) || tripleStacks.contains(stack);

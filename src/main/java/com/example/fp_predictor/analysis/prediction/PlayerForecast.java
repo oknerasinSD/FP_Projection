@@ -5,6 +5,9 @@ package com.example.fp_predictor.analysis.prediction;
  */
 public class PlayerForecast {
 
+    /** ID игрока в системе FanTeam. */
+    private int id;
+
     /** Игрок. */
     private String name;
 
@@ -27,12 +30,17 @@ public class PlayerForecast {
     public PlayerForecast() {
     }
 
-    public PlayerForecast(String name, String team, String position, double expectedPoints, double price) {
+    public PlayerForecast(int id, String name, String team, String position, double expectedPoints, double price) {
+        this.id = id;
         this.name = name;
         this.team = team;
         this.position = position;
         this.expectedPoints = expectedPoints;
         this.price = price;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

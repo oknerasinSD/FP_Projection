@@ -1,10 +1,13 @@
 package com.example.fp_predictor.optimization.knapsack;
 
 import com.example.fp_predictor.analysis.prediction.ExpectedPoints;
+import com.example.fp_predictor.analysis.prediction.PlayerForecast;
 import com.example.fp_predictor.scraping.League;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,8 +34,11 @@ public class GreedyTest {
         teams3.add("LIV");
         teams3.add("ARS");
 
-        Greedy greedy = new Greedy(new ExpectedPoints().count(), League.EPL, teams3);
+        ExpectedPoints expectedPoints = new ExpectedPoints();
+        List<PlayerForecast> players = expectedPoints.count();
+        Greedy greedy = new Greedy(players, League.EPL, teams3, expectedPoints.getTournamentId());
         greedy.solve();
         System.out.println(greedy.getFinalTeam());
+        greedy.getFinalTeam().createFanTeamInputFile();
     }
 }

@@ -16,6 +16,9 @@ import java.util.Set;
  */
 public class Greedy {
 
+    /** ID турнира в системе FanTeam. */
+    private int tournamentId;
+
     /** Стеки для построения фэнтези-команды. */
     private Stacks stacks;
 
@@ -43,9 +46,10 @@ public class Greedy {
      * @param league - лига, для турнира по которой проводится расчет.
      * @param chosenTeams - выбранные пользователем команды.
      */
-    public Greedy(List<PlayerForecast> forecasts, League league, Set<String> chosenTeams) {
+    public Greedy(List<PlayerForecast> forecasts, League league, Set<String> chosenTeams, int tournamentId) {
 
         this.chosenTeams = chosenTeams;
+        this.tournamentId = tournamentId;
         stacks = new Stacks(forecasts, league, chosenTeams);
         stacks.build();
 
@@ -106,7 +110,8 @@ public class Greedy {
                                 chosenTripleStacks.get(i),
                                 chosenTripleStacks.get(j),
                                 chosenTripleStacks.get(k),
-                                chosenDoubleStacks.get(s)
+                                chosenDoubleStacks.get(s),
+                                tournamentId
                         );
                         if (currentTeam.isValid()) {
                             finalTeam = currentTeam;
@@ -147,7 +152,8 @@ public class Greedy {
                                 tripleStack,
                                 restTripleStacks.get(i),
                                 restTripleStacks.get(j),
-                                doubleStack
+                                doubleStack,
+                                tournamentId
                         );
                         if (currentTeam.isValid()) {
                             finalTeam = currentTeam;
@@ -194,7 +200,8 @@ public class Greedy {
                                 chosenTripleStacks.get(i),
                                 chosenTripleStacks.get(j),
                                 restTripleStacks.get(k),
-                                restDoubleStacks.get(s)
+                                restDoubleStacks.get(s),
+                                tournamentId
                         );
                         if (currentTeam.isValid()) {
                             finalTeam = currentTeam;
@@ -235,7 +242,8 @@ public class Greedy {
                                 chosenTripleStacks.get(i),
                                 chosenTripleStacks.get(j),
                                 chosenTripleStacks.get(k),
-                                restDoubleStacks.get(s)
+                                restDoubleStacks.get(s),
+                                tournamentId
                         );
                         if (currentTeam.isValid()) {
                             finalTeam = currentTeam;
@@ -276,7 +284,8 @@ public class Greedy {
                                 restTripleStacks.get(i),
                                 restTripleStacks.get(j),
                                 restTripleStacks.get(k),
-                                doubleStack
+                                doubleStack,
+                                tournamentId
                         );
                         if (currentTeam.isValid()) {
                             finalTeam = currentTeam;
