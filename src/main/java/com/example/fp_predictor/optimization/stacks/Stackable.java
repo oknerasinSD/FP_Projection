@@ -9,5 +9,9 @@ public interface Stackable {
 
     public double getPrice();
     public double getExpectedPoints();
+    public double getValue();
     public PlayerForecast[] getPlayers();
+    public int getNumberOfPlayers();
+    public String getTeam();
+    public Boolean isInSameTeam(Stackable stackable);
 }

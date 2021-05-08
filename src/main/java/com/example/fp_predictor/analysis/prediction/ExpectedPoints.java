@@ -220,6 +220,9 @@ public class ExpectedPoints {
         scanner.nextLine();
         while (scanner.hasNext()) {
             String[] currentLine = scanner.nextLine().split(",");
+            if ("injured".equals(currentLine[5]) || "unexpected".equals(currentLine[5])) {
+                continue;
+            }
             result.add(new FanTeamPlayer(
                     currentLine[3], currentLine[2], currentLine[4], currentLine[6], Double.parseDouble(currentLine[7]))
             );

@@ -2,11 +2,18 @@ package com.example.fp_predictor.optimization.stacks;
 
 import com.example.fp_predictor.analysis.prediction.PlayerForecast;
 
+/**
+ * Класс для представления трипл-стеков.
+ */
 public class TripleStack implements Stackable {
 
     private final PlayerForecast[] players = new PlayerForecast[3];
+
     private double price;
+
     private double expectedPoints;
+
+    private String team;
 
     public TripleStack(PlayerForecast player1, PlayerForecast player2, PlayerForecast player3) {
         players[0] = player1;
@@ -14,6 +21,7 @@ public class TripleStack implements Stackable {
         players[2] = player3;
         this.price = player1.getPrice() + player2.getPrice() + player3.getPrice();
         this.expectedPoints = player1.getExpectedPoints() + player2.getExpectedPoints() + player3.getExpectedPoints();
+        team = player1.getTeam();
     }
 
     public PlayerForecast getPlayer1() {
@@ -26,6 +34,21 @@ public class TripleStack implements Stackable {
 
     public PlayerForecast getPlayer3() {
         return players[2];
+    }
+
+    @Override
+    public String getTeam() {
+        return team;
+    }
+
+    @Override
+    public Boolean isInSameTeam(Stackable stackable) {
+        return team.equals(stackable.getTeam());
+    }
+
+    @Override
+    public double getValue() {
+        return expectedPoints / price;
     }
 
     @Override
@@ -44,13 +67,12 @@ public class TripleStack implements Stackable {
     }
 
     @Override
+    public int getNumberOfPlayers() {
+        return 3;
+    }
+
+    @Override
     public String toString() {
-        return "TripleStack{" +
-                "player1=" + players[0] +
-                ", player2=" + players[1] +
-                ", player3=" + players[2] +
-                ", price=" + price +
-                ", expectedPoints=" + expectedPoints +
-                '}';
+        return players[0] + " " + players[1] + " " + players[2];
     }
 }

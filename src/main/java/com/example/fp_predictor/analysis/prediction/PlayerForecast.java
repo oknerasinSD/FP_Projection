@@ -57,12 +57,6 @@ public class PlayerForecast {
 
     @Override
     public String toString() {
-        return "PlayerForecast{" +
-                "name='" + name + '\'' +
-                ", team='" + team + '\'' +
-                ", position='" + position + '\'' +
-                ", expectedPoints=" + expectedPoints +
-                ", price=" + price +
-                '}';
+        return name + " " + price + " " + team + "\n";
     }
 }
