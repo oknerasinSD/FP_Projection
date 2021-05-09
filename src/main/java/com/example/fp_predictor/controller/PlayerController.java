@@ -2,7 +2,6 @@ package com.example.fp_predictor.controller;
 
 import com.example.fp_predictor.domain.Player;
 import com.example.fp_predictor.repository.PlayerRepository;
-import org.aspectj.asm.IModelFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
