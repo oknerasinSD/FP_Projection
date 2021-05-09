@@ -2,7 +2,7 @@
 
 <@c.page>
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Название:</label>
@@ -64,14 +64,14 @@
             </div>
         </div>
 
-        <form>
-            <div class="form-group row">
-                <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Входные данные</label>
-                <div class="col-sm-6">
-                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
-                </div>
-            </div>
         </form>-->
+
+        <div class="form-group row">
+            <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Входные данные</label>
+            <div class="col-sm-6">
+                <input type="file" class="form-control-file" id="exampleFormControlFile1" name="file">
+            </div>
+        </div>
 
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <div>

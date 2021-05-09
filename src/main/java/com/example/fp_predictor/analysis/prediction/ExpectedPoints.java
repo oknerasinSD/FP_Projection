@@ -250,16 +250,17 @@ public class ExpectedPoints {
      * @throws IOException - ошибка записи данных.
      */
     public void writeData() throws IOException {
-        File outputFile = new File("PredictionOutput.txt");
+        File outputFile = new File("PredictionOutput.csv");
         FileWriter writer = new FileWriter(outputFile);
         for (PlayerForecast player : forecast) {
             writer.write(
-                    tournamentId + "\t"
-                            + player.getId() + "\t"
-                            + player.getName() + "\t"
-                            + player.getTeam() + "\t"
-                            + player.getPosition() + "\t"
-                            + player.getExpectedPoints() + "\n"
+                    tournamentId + ","
+                            + player.getId() + ","
+                            + player.getName() + ","
+                            + player.getTeam() + ","
+                            + player.getPosition() + ","
+                            + player.getExpectedPoints() + ","
+                            + player.getPrice() + "\n"
             );
         }
         writer.close();
