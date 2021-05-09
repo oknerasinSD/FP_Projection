@@ -49,6 +49,6 @@ public class TournamentController {
         );
         repository.save(tournament);
 
-        return "main";
+        return "redirect:/";
     }
 }

@@ -20,6 +20,7 @@ public class Tournament {
     private Date endDate;
     @Column(name = "endtime")
     private Time endTime;
+    private String filename = "";
 
     public Tournament() {
     }
@@ -31,6 +32,7 @@ public class Tournament {
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
+        filename = league.split(":")[0] + ".png";
     }
 
     public Tournament(String title, String league) {
@@ -92,5 +94,13 @@ public class Tournament {
 
     public void setEndTime(Time endTime) {
         this.endTime = endTime;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

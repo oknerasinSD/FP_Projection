@@ -4,20 +4,20 @@
 
     Список турниров
 
-    <#--<div class="card-columns">
+    <div class="card-columns">
         <#list tournaments as tournament>
             <div class="card my-3">
-                <#if tournament.filename??>
-                    <img src="/img/${tournament.filename}" class="card-img-top">
-                </#if>
                 <div class="m-2">
-                    <b>${tournament.title}</b>
-                    <i>${tournament.league}</i>
+                    <div style="text-align: center">
+                        <a href="/tournament?id=${tournament.id}" style="color: black">
+                            <b>${tournament.title}</b>
+                        </a>
+                    </div>
                 </div>
             </div>
         <#else>
-            No message
+            No tournaments
         </#list>
-    </div>-->
+    </div>
 
 </@c.page>

@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <#--<div class="form-group row">
             <label class="col-sm-2 col-form-label">Лига:</label>
             <div class="col-sm-6">
                 <input type="text"
@@ -22,9 +22,9 @@
                        class="form-control"
                        placeholder="Лига" />
             </div>
-        </div>
+        </div>-->
 
-        <#--<div class="form-group row">
+        <div class="form-group row">
             <label class="col-sm-2 col-form-label">Лига:</label>
             <div class="col-sm-6">
                 <select class="form-control" name="league">
@@ -34,7 +34,7 @@
                     <option>Италия: Серия А</option>
                 </select>
             </div>
-        </div>-->
+        </div>
 
         <#--<div class="form-group row">
             <label class="col-sm-2 col-form-label">Дата старта:</label>

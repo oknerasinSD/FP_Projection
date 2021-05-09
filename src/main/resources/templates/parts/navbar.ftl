@@ -36,6 +36,11 @@
                     <a class="nav-link" href="/addTournament">Добавить турнир</a>
                 </li>
             </#if>
+            <#if isAdmin>
+                <li class="nav-item">
+                    <a class="nav-link" href="/uploads">Загрузка файлов</a>
+                </li>
+            </#if>
         </ul>
         <div class="navbar-text mr-3"><#if user??>${name}<#else>Гость</#if></div>
         <#if user??><@l.logout /></#if>
