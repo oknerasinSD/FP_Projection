@@ -9,10 +9,26 @@
             <div class="card my-3">
                 <div class="m-2">
                     <div style="text-align: center">
-                        <a href="/tournament?id=${tournament.id}" style="color: black">
+                        <a href="/tournament?id=${tournament.convertId()}" style="color: black">
                             <b>${tournament.title}</b>
                         </a>
                     </div>
+                    <div style="text-align: center">
+                        <a>Старт: ${tournament.startDate} ${tournament.getStringStartTime()}</a>
+                    </div>
+                    <div style="text-align: center">
+                        <a>Окончание: ${tournament.endDate} ${tournament.getStringEndTime()}</a>
+                    </div>
+
+                    <#--<div style="text-align: center">
+                        <a>Окончание: ${tournament.endDate} ${tournament.endTime.hours}:${tournament.endTime.minutes}</a>
+                    </div>-->
+                    <#--<div>
+                        <#if tournament.filename??>
+                            <img src="/img/${tournament.filename}">
+                        </#if>
+                    </div>-->
+
                 </div>
             </div>
         <#else>

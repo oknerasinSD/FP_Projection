@@ -10,12 +10,12 @@ import java.time.format.DateTimeFormatter;
 public class DateConverter {
 
     /**
-     * Конвертирование объекта String в формат для представления в БД.
+     * Конвертирование объекта String в формат для представления даты в БД.
      * @param stringDate - конвертируемыый объект.
      * @return - объект типа java.sql.Date.
      */
     public Date toDatabase(String stringDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(stringDate, formatter);
         if (localDate != null) {
             return Date.valueOf(localDate);

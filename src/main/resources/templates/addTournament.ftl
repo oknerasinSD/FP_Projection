@@ -14,16 +14,6 @@
             </div>
         </div>
 
-        <#--<div class="form-group row">
-            <label class="col-sm-2 col-form-label">Лига:</label>
-            <div class="col-sm-6">
-                <input type="text"
-                       name="league"
-                       class="form-control"
-                       placeholder="Лига" />
-            </div>
-        </div>-->
-
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Лига:</label>
             <div class="col-sm-6">
@@ -36,7 +26,7 @@
             </div>
         </div>
 
-        <#--<div class="form-group row">
+        <div class="form-group row">
             <label class="col-sm-2 col-form-label">Дата старта:</label>
             <div class="col-sm-6">
                 <input type="date" class="form-control" id="date" name="startDate" placeholder="Дата начала">
@@ -64,14 +54,21 @@
             </div>
         </div>
 
-        </form>-->
-
         <div class="form-group row">
             <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Входные данные</label>
             <div class="col-sm-6">
                 <input type="file" class="form-control-file" id="exampleFormControlFile1" name="file">
             </div>
         </div>
+
+
+
+        <#--<div class="form-group row">
+            <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Логотип</label>
+            <div class="col-sm-6">
+                <input type="file" class="form-control-file" id="exampleFormControlFile1" name="image">
+            </div>
+        </div>-->
 
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <div>

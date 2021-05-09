@@ -9,7 +9,7 @@ import java.time.LocalTime;
 public class TimeConverter {
 
     /**
-     * Конвертирование объекта типа String в формат для представления в БД.
+     * Конвертирование объекта типа String в формат для представления времени в БД.
      * @param stringTime - конвертируемый объект.
      * @return - объект типа java.sql.Time.
      */

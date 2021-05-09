@@ -9,9 +9,9 @@
             <div class="col-sm-6">
                 <select class="form-control" name="league">
                     <option value="" selected disabled>Выбор игрока</option>
-                    <option>Англия: АПЛ</option>
-                    <option>Испания: Ла Лига</option>
-                    <option>Италия: Серия А</option>
+                    <#list teams as team>
+                        <option>${team}</option>
+                    </#list>
                 </select>
             </div>
         </div>
@@ -21,9 +21,9 @@
             <div class="col-sm-6">
                 <select class="form-control" name="league">
                     <option value="" selected disabled>Выбор игрока</option>
-                    <option>Англия: АПЛ</option>
-                    <option>Испания: Ла Лига</option>
-                    <option>Италия: Серия А</option>
+                    <#list teams as team>
+                        <option>${team}</option>
+                    </#list>
                 </select>
             </div>
         </div>
@@ -33,9 +33,9 @@
             <div class="col-sm-6">
                 <select class="form-control" name="league">
                     <option value="" selected disabled>Выбор игрока</option>
-                    <option>Англия: АПЛ</option>
-                    <option>Испания: Ла Лига</option>
-                    <option>Италия: Серия А</option>
+                    <#list teams as team>
+                        <option>${team}</option>
+                    </#list>
                 </select>
             </div>
         </div>
@@ -45,9 +45,9 @@
             <div class="col-sm-6">
                 <select class="form-control" name="league">
                     <option value="" selected disabled>Выбор игрока</option>
-                    <option>Англия: АПЛ</option>
-                    <option>Испания: Ла Лига</option>
-                    <option>Италия: Серия А</option>
+                    <#list teams as team>
+                        <option>${team}</option>
+                    </#list>
                 </select>
             </div>
         </div>

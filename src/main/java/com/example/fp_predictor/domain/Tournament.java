@@ -1,8 +1,12 @@
 package com.example.fp_predictor.domain;
 
+import com.example.fp_predictor.converter.TimeConverter;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.format.DateTimeFormatter;
+import java.util.Set;
 
 @Entity
 public class Tournament {
@@ -38,6 +42,30 @@ public class Tournament {
     public Tournament(String title, String league) {
         this.title = title;
         this.league = league;
+    }
+
+    public String getStringStartTime() {
+        TimeConverter converter = new TimeConverter();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("kk:mm");
+        String result = converter.fromDatabase(startTime).format(formatter);
+        if ("24:00".equals(result)) {
+            result = "00:00";
+        }
+        return result;
+    }
+
+    public String getStringEndTime() {
+        TimeConverter converter = new TimeConverter();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("kk:mm");
+        String result = converter.fromDatabase(endTime).format(formatter);
+        if ("24:00".equals(result)) {
+            result = "00:00";
+        }
+        return result;
+    }
+
+    public String convertId() {
+        return String.valueOf(id);
     }
 
     public String getTitle() {
