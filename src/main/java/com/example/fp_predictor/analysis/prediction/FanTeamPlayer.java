@@ -5,6 +5,9 @@ package com.example.fp_predictor.analysis.prediction;
  */
 public class FanTeamPlayer {
 
+    /** UD игрока в системе FanTeam. */
+    private final int tournamentId;
+
     /** ID игрока в системе FanTeam. */
     private final int id;
 
@@ -26,13 +29,24 @@ public class FanTeamPlayer {
     /** Ожидаемые очки. */
     private double expectedPoints;
 
-    public FanTeamPlayer(int id, String name, String surname, String team, String position, double price) {
+    public FanTeamPlayer(int tournamentId,
+                         int id,
+                         String name,
+                         String surname,
+                         String team,
+                         String position,
+                         double price) {
+        this.tournamentId = id;
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.team = team;
         this.position = position;
         this.price = price;
+    }
+
+    public int getTournamentId() {
+        return tournamentId;
     }
 
     public int getId() {

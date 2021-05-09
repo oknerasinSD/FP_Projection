@@ -15,7 +15,7 @@ import java.util.*;
 public class ExpectedPoints {
 
     /** Игровая неделя. */
-    private int gameWeek = 35;
+    private final int gameWeek;
 
     /** ID турнира в системе FanTeam. */
     private int tournamentId;
@@ -40,6 +40,10 @@ public class ExpectedPoints {
 
     /** Список с результатами прогноза. */
     private final List<PlayerForecast> forecast = new ArrayList<>();
+
+    public ExpectedPoints(int gameWeek) {
+        this.gameWeek = gameWeek;
+    }
 
     /**
      * Подсчет ожидаемых очков для всех игроков.
@@ -229,7 +233,13 @@ public class ExpectedPoints {
                 continue;
             }
             result.add(new FanTeamPlayer(
-                    Integer.parseInt(currentLine[1]), currentLine[3], currentLine[2], currentLine[4], currentLine[6], Double.parseDouble(currentLine[7]))
+                    Integer.parseInt(currentLine[0]),
+                    Integer.parseInt(currentLine[1]),
+                    currentLine[3],
+                    currentLine[2],
+                    currentLine[4],
+                    currentLine[6],
+                    Double.parseDouble(currentLine[7]))
             );
         }
         return result;
@@ -257,5 +267,9 @@ public class ExpectedPoints {
 
     public int getTournamentId() {
         return tournamentId;
+    }
+
+    public int getGameWeek() {
+        return gameWeek;
     }
 }

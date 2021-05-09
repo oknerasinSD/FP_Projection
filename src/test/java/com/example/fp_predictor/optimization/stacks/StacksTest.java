@@ -13,7 +13,7 @@ public class StacksTest {
     @Test
     public void testStacksBuilding() throws IOException {
 
-        Stacks stacks = new Stacks(new ExpectedPoints().count(), League.EPL, Collections.emptySet());
+        Stacks stacks = new Stacks(new ExpectedPoints(35).count(), League.EPL, Collections.emptySet());
         stacks.build();
         Assertions.assertTrue(stacks.getChosenDoubleStacks().isEmpty());
         Assertions.assertTrue(stacks.getChosenTripleStacks().isEmpty());

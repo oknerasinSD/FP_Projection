@@ -34,7 +34,7 @@ public class GreedyTest {
         teams3.add("LIV");
         teams3.add("ARS");
 
-        ExpectedPoints expectedPoints = new ExpectedPoints();
+        ExpectedPoints expectedPoints = new ExpectedPoints(35);
         List<PlayerForecast> players = expectedPoints.count();
         Greedy greedy = new Greedy(players, League.EPL, teams3, expectedPoints.getTournamentId());
         greedy.solve();

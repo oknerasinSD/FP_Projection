@@ -8,7 +8,7 @@ public class ExpectedPointsTest {
 
     @Test
     public void countTest() throws IOException {
-        ExpectedPoints expectedPoints = new ExpectedPoints();
+        ExpectedPoints expectedPoints = new ExpectedPoints(35);
         expectedPoints.count();
         expectedPoints.writeData();
     }
