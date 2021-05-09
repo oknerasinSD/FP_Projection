@@ -8,7 +8,7 @@
             <label class="col-sm-2 col-form-label">Команда 1:</label>
             <div class="col-sm-6">
                 <select class="form-control" name="league">
-                    <option value="" selected disabled>Выбор игрока</option>
+                    <option value="" selected disabled>Выбор команды</option>
                     <#list teams as team>
                         <option>${team}</option>
                     </#list>
@@ -20,7 +20,7 @@
             <label class="col-sm-2 col-form-label">Команда 2:</label>
             <div class="col-sm-6">
                 <select class="form-control" name="league">
-                    <option value="" selected disabled>Выбор игрока</option>
+                    <option value="" selected disabled>Выбор команды</option>
                     <#list teams as team>
                         <option>${team}</option>
                     </#list>
@@ -32,7 +32,7 @@
             <label class="col-sm-2 col-form-label">Команда 3:</label>
             <div class="col-sm-6">
                 <select class="form-control" name="league">
-                    <option value="" selected disabled>Выбор игрока</option>
+                    <option value="" selected disabled>Выбор команды</option>
                     <#list teams as team>
                         <option>${team}</option>
                     </#list>
@@ -44,7 +44,7 @@
             <label class="col-sm-2 col-form-label">Команда 4:</label>
             <div class="col-sm-6">
                 <select class="form-control" name="league">
-                    <option value="" selected disabled>Выбор игрока</option>
+                    <option value="" selected disabled>Выбор команды</option>
                     <#list teams as team>
                         <option>${team}</option>
                     </#list>

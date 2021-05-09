@@ -14,7 +14,8 @@ import java.util.Set;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private Long id;
 
     @NotBlank(message = "Username can't be empty")
@@ -40,15 +41,8 @@ public class User implements UserDetails {
 
     private String activationCode;
 
-    @OneToMany(mappedBy = "executor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Customer> customers;
-
     public boolean isAdmin() {
         return roles.contains(UserRole.ADMIN);
-    }
-
-    public boolean hasCustomers() {
-        return customers != null && customers.isEmpty();
     }
 
     public Long getId() {
@@ -138,13 +132,5 @@ public class User implements UserDetails {
 
     public void setPasswordConfirmation(String passwordConfirmation) {
         this.passwordConfirmation = passwordConfirmation;
-    }
-
-    public Set<Customer> getCustomers() {
-        return customers;
-    }
-
-    public void setCustomers(Set<Customer> customers) {
-        this.customers = customers;
     }
 }

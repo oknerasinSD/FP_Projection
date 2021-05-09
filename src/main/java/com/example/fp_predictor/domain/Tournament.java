@@ -12,7 +12,8 @@ import java.util.Set;
 public class Tournament {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private long id;
     private String title;
     private String league;

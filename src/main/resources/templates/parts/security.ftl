@@ -7,8 +7,6 @@
         user = Session.SPRING_SECURITY_CONTEXT.authentication.principal
         name = user.getUsername()
         isAdmin = user.isAdmin()
-        hasCustomers = user.hasCustomers()
-        currentCustomers = user.getCustomers()
     >
 <#else>
     <#assign
