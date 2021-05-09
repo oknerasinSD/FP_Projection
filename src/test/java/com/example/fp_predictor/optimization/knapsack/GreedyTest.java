@@ -1,3 +1,4 @@
+/*
 package com.example.fp_predictor.optimization.knapsack;
 
 import com.example.fp_predictor.analysis.prediction.ExpectedPoints;
@@ -42,3 +43,4 @@ public class GreedyTest {
         greedy.getFinalTeam().createFanTeamInputFile();
     }
 }
+*/

@@ -2,10 +2,10 @@ package com.example.fp_predictor.controller;
 
 import com.example.fp_predictor.converter.DateConverter;
 import com.example.fp_predictor.converter.TimeConverter;
-import com.example.fp_predictor.domain.PlayerForecast;
+import com.example.fp_predictor.domain.Player;
 import com.example.fp_predictor.domain.Tournament;
 import com.example.fp_predictor.domain.TournamentTeam;
-import com.example.fp_predictor.repository.PlayerForecastRepository;
+import com.example.fp_predictor.repository.PlayerRepository;
 import com.example.fp_predictor.repository.TournamentRepository;
 import com.example.fp_predictor.repository.TournamentTeamRepository;
 import com.opencsv.CSVReader;
@@ -32,7 +32,7 @@ public class TournamentController {
     private TournamentRepository tournamentRepository;
 
     @Autowired
-    private PlayerForecastRepository playerForecastRepository;
+    private PlayerRepository playerForecastRepository;
 
     @Autowired
     private TournamentTeamRepository tournamentTeamsRepository;
@@ -86,21 +86,25 @@ public class TournamentController {
         }*/
 
         tournamentRepository.save(tournament);
-        parseForecastsAndTeams(file, tournament);
+        long fanteam_id = parseForecastsAndTeams(file, tournament);
+        tournamentRepository.setFanteamId(fanteam_id, tournament.getId());
+        System.out.println("HERE!!!!!!!!!!!!!!!");
 
         return "redirect:/";
     }
 
-    private void parseForecastsAndTeams(MultipartFile file, Tournament tournament) throws IOException {
+    private long parseForecastsAndTeams(MultipartFile file, Tournament tournament) throws IOException {
         Reader reader = new InputStreamReader(file.getInputStream());
         CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(0).build();
         Set<String> teams = new HashSet<>();
+        long fanteam_id = 0;
         String[] line;
         while ((line = csvReader.readNext()) != null) {
+            fanteam_id = Long.parseLong(line[0]);
             teams.add(line[3]);
-            PlayerForecast forecast = new PlayerForecast(
+            Player forecast = new Player(
                     tournament.getId(),
-                    Long.parseLong(line[0]),
+                    fanteam_id,
                     Long.parseLong(line[1]),
                     line[2],
                     line[3],
@@ -117,5 +121,6 @@ public class TournamentController {
             );
             tournamentTeamsRepository.save(tournamentTeam);
         }
+        return fanteam_id;
     }
 }

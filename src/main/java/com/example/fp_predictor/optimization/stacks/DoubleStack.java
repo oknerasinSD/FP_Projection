@@ -1,13 +1,13 @@
 package com.example.fp_predictor.optimization.stacks;
 
-import com.example.fp_predictor.analysis.prediction.PlayerForecast;
+import com.example.fp_predictor.domain.Player;
 
 /**
  * Класс для представления дабл-стеков.
  */
 public class DoubleStack implements Stackable {
 
-    private final PlayerForecast[] players = new PlayerForecast[2];
+    private final Player[] players = new Player[2];
 
     private double price;
 
@@ -15,7 +15,7 @@ public class DoubleStack implements Stackable {
 
     private String team;
 
-    public DoubleStack(PlayerForecast player1, PlayerForecast player2) {
+    public DoubleStack(Player player1, Player player2) {
         players[0] = player1;
         players[1] = player2;
         price = player1.getPrice() + player2.getPrice();
@@ -23,11 +23,11 @@ public class DoubleStack implements Stackable {
         team = player1.getTeam();
     }
 
-    public PlayerForecast getPlayer1() {
+    public Player getPlayer1() {
         return players[0];
     }
 
-    public PlayerForecast getPlayer2() {
+    public Player getPlayer2() {
         return players[1];
     }
 
@@ -47,7 +47,7 @@ public class DoubleStack implements Stackable {
     }
 
     @Override
-    public PlayerForecast[] getPlayers() {
+    public Player[] getPlayers() {
         return players;
     }
 

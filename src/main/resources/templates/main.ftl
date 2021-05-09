@@ -2,7 +2,7 @@
 
 <@c.page>
 
-    Список турниров
+    <h1 class="display-3">Список турниров</h1>
 
     <div class="card-columns">
         <#list tournaments as tournament>

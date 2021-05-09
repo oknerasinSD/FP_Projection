@@ -18,22 +18,23 @@ create table user_role (
 
 create table tournament (
                             id bigserial not null,
+                            fanteam_id int8,
                             title varchar(255),
                             league varchar(25),
-                            startDate date,
-                            startTime time,
-                            endDate date,
-                            endTime time,
+                            start_date date,
+                            start_time time,
+                            end_date date,
+                            end_time time,
                             filename varchar(255),
                             primary key (id)
 );
 
-create table player_forecast(
+create table player(
                                 id bigserial not null,
                                 system_tournament_id int8 not null,
                                 fanteam_tournament_id int8,
                                 fanteam_player_id int8,
-                                player_name varchar(255),
+                                name varchar(255),
                                 team varchar(25),
                                 position varchar(25),
                                 expected_points double precision,

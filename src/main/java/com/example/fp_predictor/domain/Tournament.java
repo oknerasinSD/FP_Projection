@@ -15,29 +15,32 @@ public class Tournament {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
     private long id;
+    private long fanteam_id;
     private String title;
     private String league;
-    @Column(name = "startdate")
     private Date startDate;
-    @Column(name = "starttime")
     private Time startTime;
-    @Column(name = "enddate")
     private Date endDate;
-    @Column(name = "endtime")
     private Time endTime;
     private String filename = "";
 
     public Tournament() {
     }
 
-    public Tournament(String title, String league, Date startDate, Time startTime, Date endDate, Time endTime) {
+    public Tournament(
+            String title,
+            String league,
+            Date startDate,
+            Time startTime,
+            Date endDate,
+            Time endTime
+    ) {
         this.title = title;
         this.league = league;
         this.startDate = startDate;
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
-        filename = league.split(":")[0] + ".png";
     }
 
     public Tournament(String title, String league) {
@@ -67,6 +70,14 @@ public class Tournament {
 
     public String convertId() {
         return String.valueOf(id);
+    }
+
+    public long getFanteam_id() {
+        return fanteam_id;
+    }
+
+    public void setFanteam_id(long fanteam_id) {
+        this.fanteam_id = fanteam_id;
     }
 
     public String getTitle() {

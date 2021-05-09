@@ -1,6 +1,7 @@
 package com.example.fp_predictor.optimization.stacks;
 
 import com.example.fp_predictor.analysis.prediction.PlayerForecast;
+import com.example.fp_predictor.domain.Player;
 import com.example.fp_predictor.optimization.stacks.data.Teams;
 import com.example.fp_predictor.scraping.League;
 
@@ -15,7 +16,7 @@ public class Stacks {
     private final League league;
 
     /** Список игроков, из которого собираются стеки. */
-    private List<PlayerForecast> forecasts;
+    private List<Player> forecasts;
 
     /** Список команд, игроков которых пользователь хочет видеть в фэнтези-составе. */
     private final Set<String> chosenTeams;
@@ -33,7 +34,7 @@ public class Stacks {
     private List<DoubleStack> restDoubleStacks = new ArrayList<>();
 
     /** Мапа вида <Команда : Список игроков команды>. */
-    private Map<String, List<PlayerForecast>> forecastsByTeam = new HashMap<>();
+    private Map<String, List<Player>> forecastsByTeam = new HashMap<>();
 
     /** Мапа вида <Команда : Список дабл-стеков команды>. */
     private Map<String, List<DoubleStack>> doubleStacksByTeam = new HashMap<>();
@@ -47,7 +48,7 @@ public class Stacks {
      * @param league - лига, для турнира по которой проводится расчет.
      * @param chosenTeams - выбранные пользователем команды.
      */
-    public Stacks(List<PlayerForecast> forecasts, League league, Set<String> chosenTeams) {
+    public Stacks(List<Player> forecasts, League league, Set<String> chosenTeams) {
         this.forecasts = forecasts;
         this.league = league;
         this.chosenTeams = chosenTeams;
@@ -76,10 +77,10 @@ public class Stacks {
     private void buildForecastsByTeam(League league) {
         List<String> teams = new Teams().getTeams(league);
         for (String team : teams) {
-            List<PlayerForecast> newList = new ArrayList<>();
+            List<Player> newList = new ArrayList<>();
             forecastsByTeam.put(team, newList);
         }
-        for (PlayerForecast player : forecasts) {
+        for (Player player : forecasts) {
             forecastsByTeam.get(player.getTeam()).add(player);
         }
     }
@@ -120,7 +121,7 @@ public class Stacks {
      */
     private void buildDoubleStacksByTeam() {
         for (String team : forecastsByTeam.keySet()) {
-            List<PlayerForecast> teamList = forecastsByTeam.get(team);
+            List<Player> teamList = forecastsByTeam.get(team);
             List<DoubleStack> teamDoubleStacks = new ArrayList<>();
             for (int i = 0; i < teamList.size() - 1; ++i) {
                 for (int j = i + 1; j < teamList.size(); ++j) {
@@ -137,7 +138,7 @@ public class Stacks {
      */
     private void buildTripleStacksByTeam() {
         for (String team : forecastsByTeam.keySet()) {
-            List<PlayerForecast> teamList = forecastsByTeam.get(team);
+            List<Player> teamList = forecastsByTeam.get(team);
             List<TripleStack> teamTripleStacks = new ArrayList<>();
             for (int i = 0; i < teamList.size() - 2; ++i) {
                 for(int j = i + 1; j < teamList.size() - 1; ++j) {
@@ -163,7 +164,7 @@ public class Stacks {
         return league;
     }
 
-    public List<PlayerForecast> getForecasts() {
+    public List<Player> getForecasts() {
         return forecasts;
     }
 

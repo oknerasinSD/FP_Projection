@@ -1,6 +1,7 @@
 package com.example.fp_predictor.optimization.knapsack;
 
 import com.example.fp_predictor.analysis.prediction.PlayerForecast;
+import com.example.fp_predictor.domain.Player;
 import com.example.fp_predictor.optimization.stacks.DoubleStack;
 import com.example.fp_predictor.optimization.stacks.Stackable;
 import com.example.fp_predictor.optimization.stacks.TripleStack;
@@ -17,7 +18,7 @@ import java.util.*;
 public class FantasyTeam {
 
     /** ID турнира в системе FanTeam. */
-    private int tournamentId;
+    private long tournamentId;
 
     /** Список трипл-стеков команды. */
     private List<TripleStack> tripleStacks = new ArrayList<>();
@@ -52,10 +53,10 @@ public class FantasyTeam {
     private double viceCaptainExpectedPoints = 0;
 
     /** ID капитана в системе FanTeam. */
-    private int captainId;
+    private long captainId;
 
     /** ID вице-капитана в системе FanTeam. */
-    private int viceCaptainId;
+    private long viceCaptainId;
 
     public FantasyTeam(int tournamentId) {
         this.tournamentId = tournamentId;
@@ -66,7 +67,7 @@ public class FantasyTeam {
             TripleStack tripleStack2,
             TripleStack tripleStack3,
             DoubleStack doubleStack,
-            int tournamentId
+            long tournamentId
     ) {
         this.tournamentId = tournamentId;
         tripleStacks.addAll(Arrays.asList(tripleStack1, tripleStack2, tripleStack3));
@@ -108,18 +109,18 @@ public class FantasyTeam {
      * @param stackable - проверяемый стек.
      */
     private void checkStackForCaptains(Stackable stackable) {
-        for (PlayerForecast player : stackable.getPlayers()) {
+        for (Player player : stackable.getPlayers()) {
             if (player.getExpectedPoints() > captainExpectedPoints) {
                 viceCaptainExpectedPoints = captainExpectedPoints;
                 viceCaptainName = captainName;
                 viceCaptainId = captainId;
                 captainExpectedPoints = player.getExpectedPoints();
                 captainName = player.getName();
-                captainId = player.getId();
+                captainId = player.getFanteamPlayerId();
             } else if (player.getExpectedPoints() > viceCaptainExpectedPoints) {
                 viceCaptainExpectedPoints = player.getExpectedPoints();
                 viceCaptainName = player.getName();
-                viceCaptainId = player.getId();
+                viceCaptainId = player.getFanteamPlayerId();
             }
         }
     }
@@ -149,7 +150,7 @@ public class FantasyTeam {
         int defenders = positions.get("defender");
         int midfielders = positions.get("midfielder");
         int forwards = positions.get("forward");
-        for (PlayerForecast player : stackable.getPlayers()) {
+        for (Player player : stackable.getPlayers()) {
             if ("goalkeeper".equals(player.getPosition())) {
                 ++goalkeepers;
             } else if ("defender".equals(player.getPosition())) {
@@ -180,7 +181,7 @@ public class FantasyTeam {
      * @param stack - стек.
      */
     private void sumStackPositionsAndPrice(Stackable stack) {
-        for (PlayerForecast player : stack.getPlayers()) {
+        for (Player player : stack.getPlayers()) {
              positions.put(player.getPosition(), positions.get(player.getPosition()) + 1);
              price += player.getPrice();
         }
@@ -233,12 +234,12 @@ public class FantasyTeam {
         FileWriter writer = new FileWriter(file);
         writer.write(tournamentId + ",");
         for (TripleStack stack : tripleStacks) {
-            for (PlayerForecast player : stack.getPlayers()) {
-                writer.write(player.getId() + ",");
+            for (Player player : stack.getPlayers()) {
+                writer.write(player.getFanteamPlayerId() + ",");
             }
         }
-        for (PlayerForecast player : doubleStacks.get(0).getPlayers()) {
-            writer.write(player.getId() + ",");
+        for (Player player : doubleStacks.get(0).getPlayers()) {
+            writer.write(player.getFanteamPlayerId() + ",");
         }
         writer.write(captainId + ",");
         writer.write(String.valueOf(viceCaptainId));

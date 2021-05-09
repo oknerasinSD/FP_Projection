@@ -1,6 +1,7 @@
 package com.example.fp_predictor.optimization.knapsack;
 
 import com.example.fp_predictor.analysis.prediction.PlayerForecast;
+import com.example.fp_predictor.domain.Player;
 import com.example.fp_predictor.optimization.stacks.DoubleStack;
 import com.example.fp_predictor.optimization.stacks.Stackable;
 import com.example.fp_predictor.optimization.stacks.Stacks;
@@ -17,7 +18,7 @@ import java.util.Set;
 public class Greedy {
 
     /** ID турнира в системе FanTeam. */
-    private int tournamentId;
+    private long tournamentId;
 
     /** Стеки для построения фэнтези-команды. */
     private Stacks stacks;
@@ -46,7 +47,7 @@ public class Greedy {
      * @param league - лига, для турнира по которой проводится расчет.
      * @param chosenTeams - выбранные пользователем команды.
      */
-    public Greedy(List<PlayerForecast> forecasts, League league, Set<String> chosenTeams, int tournamentId) {
+    public Greedy(List<Player> forecasts, League league, Set<String> chosenTeams, long tournamentId) {
 
         this.chosenTeams = chosenTeams;
         this.tournamentId = tournamentId;

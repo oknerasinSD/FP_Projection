@@ -3,7 +3,7 @@ package com.example.fp_predictor.domain;
 import javax.persistence.*;
 
 @Entity
-public class PlayerForecast {
+public class Player {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,16 +12,16 @@ public class PlayerForecast {
     private long systemTournamentId;
     private long fanteamTournamentId;
     private long fanteamPlayerId;
-    private String playerName;
+    private String name;
     private String team;
     private String position;
     private double expectedPoints;
     private double price;
 
-    public PlayerForecast() {
+    public Player() {
     }
 
-    public PlayerForecast(
+    public Player(
             long systemTournamentId,
             long fanteamTournamentId,
             long fanteamPlayerId,
@@ -33,7 +33,7 @@ public class PlayerForecast {
         this.systemTournamentId = systemTournamentId;
         this.fanteamTournamentId = fanteamTournamentId;
         this.fanteamPlayerId = fanteamPlayerId;
-        this.playerName = playerName;
+        this.name = playerName;
         this.team = team;
         this.position = position;
         this.expectedPoints = expectedPoints;
@@ -64,12 +64,12 @@ public class PlayerForecast {
         this.fanteamPlayerId = fanteamPlayerId;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getName() {
+        return name;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setName(String playerName) {
+        this.name = playerName;
     }
 
     public String getTeam() {
