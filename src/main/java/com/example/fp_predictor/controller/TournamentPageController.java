@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.*;
 
 @Controller
@@ -80,13 +81,18 @@ public class TournamentPageController {
         List<Player> players = extractPlayersByPositions(finalTeam);
         String filename = createCsvFile(players, tournament.getFanteam_id());
         model.addAttribute("players", players);
-        model.addAttribute("file", filename);
+        model.addAttribute("filename", filename);
+        model.addAttribute("uploadPath", uploadPath);
         return "resultTeam";
     }
 
     private String createCsvFile(List<Player> players, long id) throws IOException {
-        String filename = uploadPath + File.separator + UUID.randomUUID().toString() + ".csv";
-        File csvOutput = new File(filename);
+        String filename = UUID.randomUUID().toString() + ".csv";
+        File directory = new File(uploadPath + File.separator + "csv");
+        File csvOutput = new File(directory + File.separator + filename);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
         if (!csvOutput.exists()) {
             csvOutput.createNewFile();
         }

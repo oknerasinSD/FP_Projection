@@ -88,7 +88,6 @@ public class TournamentController {
         tournamentRepository.save(tournament);
         long fanteam_id = parseForecastsAndTeams(file, tournament);
         tournamentRepository.setFanteamId(fanteam_id, tournament.getId());
-        System.out.println("HERE!!!!!!!!!!!!!!!");
 
         return "redirect:/";
     }

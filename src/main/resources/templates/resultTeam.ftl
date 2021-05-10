@@ -7,7 +7,7 @@
         <div style="align-content: center">
             <h1 class="display-3">
                 <a type="text pull-left">Ваш фэнтези-состав</a>
-                <button type="submit" class="btn btn-secondary pull-right">Скачать</button>
+                <a href="/download_csv_file?filename=${filename}" class="btn btn-secondary pull-right">Скачать</a>
             </h1>
         </div>
 
