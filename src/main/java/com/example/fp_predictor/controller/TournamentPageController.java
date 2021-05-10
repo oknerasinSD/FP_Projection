@@ -5,19 +5,22 @@ import com.example.fp_predictor.domain.Tournament;
 import com.example.fp_predictor.exeptions.UnknownLeagueException;
 import com.example.fp_predictor.optimization.knapsack.FantasyTeam;
 import com.example.fp_predictor.optimization.knapsack.Greedy;
-import com.example.fp_predictor.optimization.stacks.Stacks;
 import com.example.fp_predictor.optimization.stacks.TripleStack;
 import com.example.fp_predictor.repository.PlayerRepository;
 import com.example.fp_predictor.repository.TournamentRepository;
 import com.example.fp_predictor.repository.TournamentTeamRepository;
 import com.example.fp_predictor.scraping.League;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -31,6 +34,9 @@ public class TournamentPageController {
 
     @Autowired
     private TournamentRepository tournamentRepository;
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @GetMapping("/tournament")
     public String open(@RequestParam("id") long id, Model model) {
@@ -48,7 +54,7 @@ public class TournamentPageController {
             @RequestParam(required = false) String team3,
             @RequestParam(required = false) String team4,
             Model model
-    ) {
+    ) throws IOException {
         Tournament tournament = tournamentRepository.findById(id);
         Set<String> teams = new HashSet<>();
         if (team1 != null) {
@@ -71,9 +77,29 @@ public class TournamentPageController {
         );
         greedy.solve();
         FantasyTeam finalTeam = greedy.getFinalTeam();
-        List<Player> playersByPosition = extractPlayersByPositions(finalTeam);
-        model.addAttribute("players", playersByPosition);
+        List<Player> players = extractPlayersByPositions(finalTeam);
+        String filename = createCsvFile(players, tournament.getFanteam_id());
+        model.addAttribute("players", players);
+        model.addAttribute("file", filename);
         return "resultTeam";
+    }
+
+    private String createCsvFile(List<Player> players, long id) throws IOException {
+        String filename = uploadPath + File.separator + UUID.randomUUID().toString() + ".csv";
+        File csvOutput = new File(filename);
+        if (!csvOutput.exists()) {
+            csvOutput.createNewFile();
+        }
+        FileWriter writer = new FileWriter(csvOutput);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(id).append(",");
+        for (Player player : players) {
+            stringBuilder.append(player.getFanteamPlayerId()).append(",");
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        writer.write(stringBuilder.toString());
+        writer.close();
+        return filename;
     }
 
     private List<Player> extractPlayersByPositions(FantasyTeam team) {

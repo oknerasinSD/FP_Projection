@@ -2,32 +2,42 @@
 
 <@c.page>
 
-    <h1 class="display-3">Ваш фэнтези-состав</h1>
+    <div style="align-content: center">
 
-    <table class="table table-striped">
+        <div style="align-content: center">
+            <h1 class="display-3">
+                <a type="text pull-left">Ваш фэнтези-состав</a>
+                <button type="submit" class="btn btn-secondary pull-right">Скачать</button>
+            </h1>
+        </div>
 
-        <thead>
-        <tr>
-            <th scope="col">Игрок</th>
-            <th scope="col">Команда</th>
-            <th scope="col">Позиция</th>
-            <th scope="col">Цена</th>
-            <th scope="col">Ожидаемые очки</th>
-        </tr>
-        </thead>
+        <div>
+            <table class="table table-striped">
 
-        <tbody>
-        <#list players as player>
-            <tr>
-                <td>${player.name}</td>
-                <td>${player.team}</td>
-                <td>${player.position}</td>
-                <td>${player.price}</td>
-                <td>${player.expectedPoints}</td>
-            </tr>
-        </#list>
-        </tbody>
+                <thead>
+                <tr>
+                    <th scope="col">Игрок</th>
+                    <th scope="col">Команда</th>
+                    <th scope="col">Позиция</th>
+                    <th scope="col">Цена</th>
+                    <th scope="col">Ожидаемые очки</th>
+                </tr>
+                </thead>
 
-    </table>
+                <tbody>
+                <#list players as player>
+                    <tr>
+                        <td>${player.name}</td>
+                        <td>${player.team}</td>
+                        <td>${player.position}</td>
+                        <td>${player.price}</td>
+                        <td>${player.expectedPoints}</td>
+                    </tr>
+                </#list>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
 
 </@c.page>
