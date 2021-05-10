@@ -19,9 +19,9 @@
             </li>
             <li class="nav-item">
                 <#if !user??>
-                <a class="nav-link" href="/login">Авторизация/Регистрация</a>
-            </#if>
-            <#if user??>
+                    <a class="nav-link" href="/login">Авторизация/Регистрация</a>
+                </#if>
+                <#if user??>
             <li class="nav-item">
                 <a class="nav-link" href="/user/profile">Профиль</a>
             </li>
@@ -29,7 +29,7 @@
             <#if isAdmin>
                 <li class="nav-item">
                     <a class="nav-link" href="/user">Список пользователей</a>
-                 </li>
+                </li>
             </#if>
             <#if isAdmin>
                 <li class="nav-item">

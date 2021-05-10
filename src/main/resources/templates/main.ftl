@@ -2,9 +2,9 @@
 
 <@c.page>
 
-    <h1 class="display-3">Список турниров</h1>
+    <h1 class="display-4">Список турниров</h1>
 
-    <div class="card-columns">
+    <div class="card-columns" style="margin-top: 2%">
         <#list tournaments as tournament>
             <div class="card my-3">
                 <div class="m-2">

@@ -54,7 +54,7 @@
 
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <div>
-            <button type="submit" class="btn btn-primary">Подобрать команду</button>
+            <button type="submit" class="btn btn-outline-dark btn-lg" style="margin-top: 3%">Подобрать состав</button>
         </div>
 
     </form>

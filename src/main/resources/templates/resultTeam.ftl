@@ -7,11 +7,15 @@
         <div style="align-content: center">
             <h1 class="display-3">
                 <a type="text pull-left">Ваш фэнтези-состав</a>
-                <a href="/download_csv_file?filename=${filename}" class="btn btn-secondary pull-right">Скачать</a>
+                <a href="/download_csv_file?filename=${filename}"
+                   class="btn btn-outline-dark btn-lg float-right"
+                   style="margin-top: 2.5%">
+                    Загрузить
+                </a>
             </h1>
         </div>
 
-        <div>
+        <div style="margin-top: 2%">
             <table class="table table-striped">
 
                 <thead>
