@@ -7,7 +7,7 @@ import com.example.fp_predictor.domain.Player;
  */
 public interface Stackable {
 
-    public double getPrice();
+    public int getPrice_x_10();
     public double getExpectedPoints();
     public double getValue();
     public Player[] getPlayers();

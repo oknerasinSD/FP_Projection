@@ -17,6 +17,7 @@ public class Player {
     private String position;
     private double expectedPoints;
     private double price;
+    /*private int price_x_10;*/
 
     public Player() {
     }
@@ -38,6 +39,7 @@ public class Player {
         this.position = position;
         this.expectedPoints = expectedPoints;
         this.price = price;
+        /*price_x_10 = (int) (price * 10);*/
     }
 
     public long getSystemTournamentId() {
@@ -102,5 +104,14 @@ public class Player {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getPrice_x_10() {
+        return (int) (price * 10);
+    }
+
+    @Override
+    public String toString() {
+        return name + " " + team + " " + price + " " + expectedPoints;
     }
 }

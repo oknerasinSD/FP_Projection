@@ -1,6 +1,5 @@
 package com.example.fp_predictor.optimization.stacks;
 
-import com.example.fp_predictor.analysis.prediction.PlayerForecast;
 import com.example.fp_predictor.domain.Player;
 
 /**
@@ -10,7 +9,7 @@ public class TripleStack implements Stackable {
 
     private final Player[] players = new Player[3];
 
-    private double price;
+    private int price_x_10;
 
     private double expectedPoints;
 
@@ -20,7 +19,7 @@ public class TripleStack implements Stackable {
         players[0] = player1;
         players[1] = player2;
         players[2] = player3;
-        this.price = player1.getPrice() + player2.getPrice() + player3.getPrice();
+        this.price_x_10 = player1.getPrice_x_10() + player2.getPrice_x_10() + player3.getPrice_x_10();
         this.expectedPoints = player1.getExpectedPoints() + player2.getExpectedPoints() + player3.getExpectedPoints();
         team = player1.getTeam();
     }
@@ -49,7 +48,7 @@ public class TripleStack implements Stackable {
 
     @Override
     public double getValue() {
-        return expectedPoints / price;
+        return expectedPoints / price_x_10;
     }
 
     @Override
@@ -58,8 +57,8 @@ public class TripleStack implements Stackable {
     }
 
     @Override
-    public double getPrice() {
-        return price;
+    public int getPrice_x_10() {
+        return price_x_10;
     }
 
     @Override

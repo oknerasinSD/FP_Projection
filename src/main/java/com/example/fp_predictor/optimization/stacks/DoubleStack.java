@@ -9,7 +9,7 @@ public class DoubleStack implements Stackable {
 
     private final Player[] players = new Player[2];
 
-    private double price;
+    private int price_x_10;
 
     private double expectedPoints;
 
@@ -18,7 +18,7 @@ public class DoubleStack implements Stackable {
     public DoubleStack(Player player1, Player player2) {
         players[0] = player1;
         players[1] = player2;
-        price = player1.getPrice() + player2.getPrice();
+        price_x_10 = player1.getPrice_x_10() + player2.getPrice_x_10();
         expectedPoints = player1.getExpectedPoints() + player2.getExpectedPoints();
         team = player1.getTeam();
     }
@@ -43,7 +43,7 @@ public class DoubleStack implements Stackable {
 
     @Override
     public double getValue() {
-        return expectedPoints / price;
+        return expectedPoints / price_x_10;
     }
 
     @Override
@@ -52,8 +52,8 @@ public class DoubleStack implements Stackable {
     }
 
     @Override
-    public double getPrice() {
-        return 0;
+    public int getPrice_x_10() {
+        return price_x_10;
     }
 
     @Override

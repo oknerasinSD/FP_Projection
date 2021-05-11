@@ -1,6 +1,5 @@
 package com.example.fp_predictor.optimization.stacks;
 
-import com.example.fp_predictor.analysis.prediction.PlayerForecast;
 import com.example.fp_predictor.domain.Player;
 import com.example.fp_predictor.optimization.stacks.data.Teams;
 import com.example.fp_predictor.scraping.League;
@@ -42,6 +41,10 @@ public class Stacks {
     /** Мапа вида <Команда : Список трипл-стеков команды>. */
     private Map<String, List<TripleStack>> tripleStacksByTeam = new HashMap<>();
 
+    private List<Stackable> stacksForChoice0123 = new ArrayList<>();
+
+    private List<Stackable> stacksForChoice4 = new ArrayList<>();
+
     /**
      * Конструктор.
      * @param forecasts - список объектов с ожиданием и ценами для отдельных игроков.
@@ -68,6 +71,12 @@ public class Stacks {
         if (chosenTeams.size() != 4) {
             buildRestStacks();
         }
+        stacksForChoice0123.addAll(chosenTripleStacks);
+        stacksForChoice0123.addAll(chosenDoubleStacks);
+        stacksForChoice0123.addAll(restTripleStacks);
+        stacksForChoice0123.addAll(restDoubleStacks);
+        stacksForChoice4.addAll(chosenTripleStacks);
+        stacksForChoice4.addAll(chosenDoubleStacks);
     }
 
     /**
@@ -83,6 +92,103 @@ public class Stacks {
         for (Player player : forecasts) {
             forecastsByTeam.get(player.getTeam()).add(player);
         }
+        filterForecastByTeam();
+    }
+
+    private void filterForecastByTeam() {
+        for (String team : forecastsByTeam.keySet()) {
+
+            Player goalkeeper = null;
+            List<Player> defendersList = new ArrayList<>();
+            List<Player> midfieldersList = new ArrayList<>();
+            List<Player> forwardsList = new ArrayList<>();
+
+            goalkeeper = buildPositionsLists(team, goalkeeper, defendersList, midfieldersList, forwardsList);
+            sortPositionLists(defendersList, midfieldersList, forwardsList);
+
+            forecastsByTeam.get(team).clear();
+            if (goalkeeper != null) {
+                forecastsByTeam.get(team).add(goalkeeper);
+            }
+            int defendersCount = addDefendersToForecasts(team, defendersList);
+            int midfieldersCount = addMidfieldersToForecasts(team, midfieldersList);
+            int forwardsCount = addForwardsToForecasts(team, forwardsList);
+        }
+
+    }
+
+    private int addForwardsToForecasts(String team, List<Player> forwardsList) {
+        int forwardsCount = 0;
+        if (forwardsList.size() >= 2) {
+            forecastsByTeam.get(team).add(forwardsList.get(0));
+            forecastsByTeam.get(team).add(forwardsList.get(1));
+            forwardsCount = 2;
+        } else {
+            for (Player player : forwardsList) {
+                forecastsByTeam.get(team).add(player);
+                ++forwardsCount;
+            }
+        }
+        return forwardsCount;
+    }
+
+    private int addMidfieldersToForecasts(String team, List<Player> midfieldersList) {
+        int midfieldersCount = 0;
+        if (midfieldersList.size() >= 2) {
+            forecastsByTeam.get(team).add(midfieldersList.get(0));
+            forecastsByTeam.get(team).add(midfieldersList.get(1));
+            midfieldersCount = 2;
+        } else {
+            for (Player player : midfieldersList) {
+                forecastsByTeam.get(team).add(player);
+                ++midfieldersCount;
+            }
+        }
+        return midfieldersCount;
+    }
+
+    private int addDefendersToForecasts(String team, List<Player> defendersList) {
+        int defendersCount = 0;
+        if (defendersList.size() >= 2) {
+            forecastsByTeam.get(team).add(defendersList.get(0));
+            forecastsByTeam.get(team).add(defendersList.get(1));
+            defendersCount = 2;
+        } else {
+            for (Player player : defendersList) {
+                ++defendersCount;
+                forecastsByTeam.get(team).add(player);
+            }
+        }
+        if (team == "LIV") {
+            System.out.println(defendersList);
+        }
+        return defendersCount;
+    }
+
+    private void sortPositionLists(List<Player> defendersList, List<Player> midfieldersList, List<Player> forwardsList) {
+        defendersList.sort(Comparator.comparingDouble((Player o) -> -o.getExpectedPoints()));
+        midfieldersList.sort(Comparator.comparingDouble((Player o) -> -o.getExpectedPoints()));
+        forwardsList.sort(Comparator.comparingDouble((Player o) -> -o.getExpectedPoints()));
+    }
+
+    private Player buildPositionsLists(String team, Player goalkeeper, List<Player> defendersList, List<Player> midfieldersList, List<Player> forwardsList) {
+        for (Player player : forecastsByTeam.get(team)) {
+            switch (player.getPosition()) {
+                case "goalkeeper":
+                    goalkeeper = player;
+                    continue;
+                case "defender":
+                    defendersList.add(player);
+                    break;
+                case "midfielder":
+                    midfieldersList.add(player);
+                    break;
+                case "forward":
+                    forwardsList.add(player);
+                    break;
+            }
+        }
+        return goalkeeper;
     }
 
     /**
@@ -190,5 +296,17 @@ public class Stacks {
 
     public Map<String, List<TripleStack>> getTripleStacksByTeam() {
         return tripleStacksByTeam;
+    }
+
+    public List<Stackable> getStacksForChoice0123() {
+        return stacksForChoice0123;
+    }
+
+    public List<Stackable> getStacksForChoice4() {
+        return stacksForChoice4;
+    }
+
+    public Map<String, List<Player>> getForecastsByTeam() {
+        return forecastsByTeam;
     }
 }

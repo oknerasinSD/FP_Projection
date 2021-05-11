@@ -1,4 +1,4 @@
-package com.example.fp_predictor.exeptions;
+package com.example.fp_predictor.exceptions;
 
 /**
  * Исключение, выбрасываемое при обработки турнира неизвестной лиги.

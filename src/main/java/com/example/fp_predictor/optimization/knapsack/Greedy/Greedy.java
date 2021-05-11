@@ -1,7 +1,8 @@
-package com.example.fp_predictor.optimization.knapsack;
+package com.example.fp_predictor.optimization.knapsack.Greedy;
 
 import com.example.fp_predictor.analysis.prediction.PlayerForecast;
 import com.example.fp_predictor.domain.Player;
+import com.example.fp_predictor.optimization.knapsack.FantasyTeam;
 import com.example.fp_predictor.optimization.stacks.DoubleStack;
 import com.example.fp_predictor.optimization.stacks.Stackable;
 import com.example.fp_predictor.optimization.stacks.Stacks;

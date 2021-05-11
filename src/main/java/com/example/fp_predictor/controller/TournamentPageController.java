@@ -2,9 +2,9 @@ package com.example.fp_predictor.controller;
 
 import com.example.fp_predictor.domain.Player;
 import com.example.fp_predictor.domain.Tournament;
-import com.example.fp_predictor.exeptions.UnknownLeagueException;
+import com.example.fp_predictor.exceptions.UnknownLeagueException;
 import com.example.fp_predictor.optimization.knapsack.FantasyTeam;
-import com.example.fp_predictor.optimization.knapsack.Greedy;
+import com.example.fp_predictor.optimization.knapsack.dynamic.Dynamic;
 import com.example.fp_predictor.optimization.stacks.TripleStack;
 import com.example.fp_predictor.repository.PlayerRepository;
 import com.example.fp_predictor.repository.TournamentRepository;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.*;
 
 @Controller
@@ -70,14 +69,14 @@ public class TournamentPageController {
         if (team4 != null) {
             teams.add(team4);
         }
-        Greedy greedy = new Greedy(
+        Dynamic dynamic = new Dynamic(
                 playerForecastRepository.findByTournamentId(id),
                 getLeague(tournament),
                 teams,
                 tournament.getFanteam_id()
         );
-        greedy.solve();
-        FantasyTeam finalTeam = greedy.getFinalTeam();
+        dynamic.solve();
+        FantasyTeam finalTeam = dynamic.getFinalTeam();
         List<Player> players = extractPlayersByPositions(finalTeam);
         String filename = createCsvFile(players, tournament.getFanteam_id());
         model.addAttribute("players", players);
