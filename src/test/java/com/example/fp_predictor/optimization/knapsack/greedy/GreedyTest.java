@@ -1,16 +1,17 @@
-/*
 package com.example.fp_predictor.optimization.knapsack;
 
 import com.example.fp_predictor.analysis.prediction.ExpectedPoints;
 import com.example.fp_predictor.analysis.prediction.PlayerForecast;
+import com.example.fp_predictor.domain.Player;
+import com.example.fp_predictor.optimization.knapsack.greedy.Greedy;
 import com.example.fp_predictor.scraping.League;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class GreedyTest {
 
@@ -35,12 +36,32 @@ public class GreedyTest {
         teams3.add("LIV");
         teams3.add("ARS");
 
-        ExpectedPoints expectedPoints = new ExpectedPoints(35);
-        List<PlayerForecast> players = expectedPoints.count();
-        Greedy greedy = new Greedy(players, League.EPL, teams3, expectedPoints.getTournamentId());
+        List<Player> players = parseFile(1);
+        Greedy greedy = new Greedy(players, League.EPL, Collections.emptySet(), 1);
         greedy.solve();
         System.out.println(greedy.getFinalTeam());
-        greedy.getFinalTeam().createFanTeamInputFile();
+        /*greedy.getFinalTeam().createFanTeamInputFile();*/
+    }
+
+    private List<Player> parseFile(long fanteam_id) throws IOException {
+        FileReader reader = new FileReader("PredictionOutput.csv");
+        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(0).build();
+        List<Player> result = new ArrayList<>();
+        String[] line;
+        while ((line = csvReader.readNext()) != null) {
+            fanteam_id = Long.parseLong(line[0]);
+            Player forecast = new Player(
+                    1,
+                    fanteam_id,
+                    Long.parseLong(line[1]),
+                    line[2],
+                    line[3],
+                    line[4],
+                    Double.parseDouble(line[5]),
+                    Double.parseDouble(line[6])
+            );
+            result.add(forecast);
+        }
+        return result;
     }
 }
-*/

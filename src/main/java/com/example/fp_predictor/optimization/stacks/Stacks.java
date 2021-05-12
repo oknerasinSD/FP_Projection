@@ -41,9 +41,7 @@ public class Stacks {
     /** Мапа вида <Команда : Список трипл-стеков команды>. */
     private Map<String, List<TripleStack>> tripleStacksByTeam = new HashMap<>();
 
-    private List<Stackable> stacksForChoice0123 = new ArrayList<>();
-
-    private List<Stackable> stacksForChoice4 = new ArrayList<>();
+    private List<Stackable> allStacks = new ArrayList<>();
 
     /**
      * Конструктор.
@@ -64,21 +62,41 @@ public class Stacks {
         buildForecastsByTeam(league);
         buildDoubleStacksByTeam();
         buildTripleStacksByTeam();
-        if (chosenTeams.size() != 0) {
-            buildChosenTripleStacks();
-            buildChosenDoubleStacks();
+        buildSortedAllStacks();
+    }
+
+    private void buildSortedAllStacks() {
+        switch (chosenTeams.size()) {
+            case 0:
+                buildRestStacks();
+                restTripleStacks.sort(Comparator.comparingDouble((TripleStack o) -> -o.getValue()));
+                restDoubleStacks.sort(Comparator.comparingDouble((DoubleStack o) -> -o.getValue()));
+                allStacks.addAll(restTripleStacks);
+                allStacks.addAll(restDoubleStacks);
+                break;
+            case 1:
+            case 2:
+            case 3:
+                buildRestStacks();
+                buildChosenTripleStacks();
+                buildChosenDoubleStacks();
+                chosenTripleStacks.sort(Comparator.comparingDouble((TripleStack o) -> -o.getValue()));
+                chosenDoubleStacks.sort(Comparator.comparingDouble((DoubleStack o) -> -o.getValue()));
+                restTripleStacks.sort(Comparator.comparingDouble((TripleStack o) -> -o.getValue()));
+                restDoubleStacks.sort(Comparator.comparingDouble((DoubleStack o) -> -o.getValue()));
+                allStacks.addAll(chosenTripleStacks);
+                allStacks.addAll(chosenDoubleStacks);
+                allStacks.addAll(restTripleStacks);
+                allStacks.addAll(restDoubleStacks);
+                break;
+            case 4:
+                buildChosenTripleStacks();
+                buildChosenDoubleStacks();
+                allStacks.addAll(chosenTripleStacks);
+                allStacks.addAll(chosenDoubleStacks);
+                allStacks.sort(Comparator.comparingDouble((Stackable o) -> -o.getValue()));
+                break;
         }
-        if (chosenTeams.size() != 4) {
-            buildRestStacks();
-        }
-        stacksForChoice0123.addAll(chosenTripleStacks);
-        stacksForChoice0123.addAll(chosenDoubleStacks);
-        stacksForChoice0123.addAll(restTripleStacks);
-        stacksForChoice0123.addAll(restDoubleStacks);
-        chosenTripleStacks.sort(Comparator.comparingDouble((TripleStack o) -> -o.getValue()));
-        chosenDoubleStacks.sort(Comparator.comparingDouble((DoubleStack o) -> -o.getValue()));
-        stacksForChoice4.addAll(chosenTripleStacks);
-        stacksForChoice4.addAll(chosenDoubleStacks);
     }
 
     /**
@@ -102,29 +120,28 @@ public class Stacks {
 
             Player goalkeeper = null;
             List<Player> defendersList = new ArrayList<>();
-            List<Player> midfieldersList = new ArrayList<>();
-            List<Player> forwardsList = new ArrayList<>();
+            List<Player> attackList = new ArrayList<>();
 
-            goalkeeper = buildPositionsLists(team, goalkeeper, defendersList, midfieldersList, forwardsList);
-            sortPositionLists(defendersList, midfieldersList, forwardsList);
+            goalkeeper = buildPositionsLists(team, goalkeeper, defendersList, attackList);
+            sortPositionLists(defendersList, attackList);
 
             forecastsByTeam.get(team).clear();
             if (goalkeeper != null) {
                 forecastsByTeam.get(team).add(goalkeeper);
             }
             int defendersCount = addDefendersToForecasts(team, defendersList);
-            int midfieldersCount = addMidfieldersToForecasts(team, midfieldersList);
-            int forwardsCount = addForwardsToForecasts(team, forwardsList);
+            int forwardsCount = addForwardsToForecasts(team, attackList);
         }
 
     }
 
     private int addForwardsToForecasts(String team, List<Player> forwardsList) {
         int forwardsCount = 0;
-        if (forwardsList.size() >= 2) {
+        if (forwardsList.size() >= 3) {
             forecastsByTeam.get(team).add(forwardsList.get(0));
             forecastsByTeam.get(team).add(forwardsList.get(1));
-            forwardsCount = 2;
+            forecastsByTeam.get(team).add(forwardsList.get(2));
+            forwardsCount = 3;
         } else {
             for (Player player : forwardsList) {
                 forecastsByTeam.get(team).add(player);
@@ -132,22 +149,6 @@ public class Stacks {
             }
         }
         return forwardsCount;
-    }
-
-    private int addMidfieldersToForecasts(String team, List<Player> midfieldersList) {
-        int midfieldersCount = 0;
-        if (midfieldersList.size() >= 3) {
-            forecastsByTeam.get(team).add(midfieldersList.get(0));
-            forecastsByTeam.get(team).add(midfieldersList.get(1));
-            forecastsByTeam.get(team).add(midfieldersList.get(2));
-            midfieldersCount = 3;
-        } else {
-            for (Player player : midfieldersList) {
-                forecastsByTeam.get(team).add(player);
-                ++midfieldersCount;
-            }
-        }
-        return midfieldersCount;
     }
 
     private int addDefendersToForecasts(String team, List<Player> defendersList) {
@@ -165,13 +166,17 @@ public class Stacks {
         return defendersCount;
     }
 
-    private void sortPositionLists(List<Player> defendersList, List<Player> midfieldersList, List<Player> forwardsList) {
+    private void sortPositionLists(List<Player> defendersList, List<Player> forwardsList) {
         defendersList.sort(Comparator.comparingDouble((Player o) -> -o.getExpectedPoints()));
-        midfieldersList.sort(Comparator.comparingDouble((Player o) -> -o.getExpectedPoints()));
         forwardsList.sort(Comparator.comparingDouble((Player o) -> -o.getExpectedPoints()));
     }
 
-    private Player buildPositionsLists(String team, Player goalkeeper, List<Player> defendersList, List<Player> midfieldersList, List<Player> forwardsList) {
+    private Player buildPositionsLists(
+            String team,
+            Player goalkeeper,
+            List<Player> defendersList,
+            List<Player> attackList
+    ) {
         for (Player player : forecastsByTeam.get(team)) {
             switch (player.getPosition()) {
                 case "goalkeeper":
@@ -181,10 +186,8 @@ public class Stacks {
                     defendersList.add(player);
                     break;
                 case "midfielder":
-                    midfieldersList.add(player);
-                    break;
                 case "forward":
-                    forwardsList.add(player);
+                    attackList.add(player);
                     break;
             }
         }
@@ -298,12 +301,8 @@ public class Stacks {
         return tripleStacksByTeam;
     }
 
-    public List<Stackable> getStacksForChoice0123() {
-        return stacksForChoice0123;
-    }
-
-    public List<Stackable> getStacksForChoice4() {
-        return stacksForChoice4;
+    public List<Stackable> getAllStacks() {
+        return allStacks;
     }
 
     public Map<String, List<Player>> getForecastsByTeam() {

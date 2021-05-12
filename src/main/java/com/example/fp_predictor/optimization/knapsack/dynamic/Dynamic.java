@@ -19,6 +19,7 @@ public class Dynamic {
     private long fanTeamTournamentId;
     private List<Stackable> stacksList;
     private Stacks stacks;
+    int startLimit = 0;
 
     public Dynamic(List<Player> players, League league, Set<String> chosenTeams, long fanTeamTournamentId) {
         this.chosenTeams = chosenTeams;
@@ -29,44 +30,38 @@ public class Dynamic {
     }
 
     public void solve() {
+        stacksList = stacks.getAllStacks();
+        matrix = new MatrixElement[stacksList.size() + 1][1001];
+        defineStartLimit();
+        count();
+    }
+
+    private void defineStartLimit() {
         switch (chosenTeams.size()) {
             case 0:
-                solveFor0ChosenTeams();
+                startLimit = stacksList.size();
                 break;
             case 1:
-                break;
             case 2:
-                break;
             case 3:
+                String firstTeam = stacksList.get(0).getTeam();
+                while (firstTeam.equals(stacksList.get(startLimit).getTeam())) {
+                    ++startLimit;
+                }
+                /*startLimit = 1;*/
                 break;
             case 4:
-                solveFor4ChosenTeams();
+                startLimit = stacksList.size();
                 break;
         }
     }
 
-    private void solveFor0ChosenTeams() {
-        stacksList = stacks.getStacksForChoice0123();
-        matrix = new MatrixElement[stacksList.size() + 1][1001];
-        count();
-    }
-
-    private void solveFor1ChosenTeam() {
-
-    }
-
-    private void solveFor4ChosenTeams() {
-        stacksList = stacks.getStacksForChoice4();
-        matrix = new MatrixElement[stacksList.size() + 1][1001];
-        count();
-    }
-
     private void count() {
         initMatrix();
-        int startLimit = 1;
         System.out.println(stacksList.size());
+        System.out.println(startLimit);
         for (int i = 1; i <= stacksList.size(); i++) {
-            /*System.out.println(i);*/
+            System.out.println(i);
             for (int j = 1; j < matrix[i].length; j++) {
                 matrix[i][j].putAll(matrix[i - 1][j]);
                 int delta = j - stacksList.get(i - 1).getPrice_x_10();
@@ -78,6 +73,7 @@ public class Dynamic {
                     }
                 } else {
                     for (MapKey mapKey : matrix[i - 1][j].getKeySet()) {
+                        int newPrice = j + stacksList.get(i - 1).getPrice_x_10();
                         if (mapKey.containsTeam(stacksList.get(i - 1).getTeam())) {
                             continue;
                         }
@@ -89,7 +85,6 @@ public class Dynamic {
                                 && matrix[i - 1][j].get(mapKey).getTripleStacks().size() == 3) {
                             continue;
                         }
-                        int newPrice = j + stacksList.get(i - 1).getPrice_x_10();
                         if (newPrice <= 1000) {
                             FantasyTeam fantasyTeam = new FantasyTeam(
                                     matrix[i - 1][j].get(mapKey),
@@ -105,6 +100,10 @@ public class Dynamic {
                                 MapKey newMapKey = new MapKey(mapKey, stacksList.get(i - 1));
                                 if (!matrix[i][newPrice].containsKey(newMapKey)
                                         || newTeamBetter(matrix[i][newPrice], newMapKey, fantasyTeam)) {
+                                    if (fantasyTeam.getTripleStacks().size() == 3
+                                        && fantasyTeam.getPrice_x_10() < 700) {
+                                        continue;
+                                    }
                                     matrix[i][newPrice].remove(newMapKey);
                                     matrix[i][newPrice].put(newMapKey, fantasyTeam);
                                 }

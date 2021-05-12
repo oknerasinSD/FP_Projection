@@ -89,174 +89,24 @@ public class Greedy {
      * Решение для случая, когда пользователь выбрал 4 команды.
      */
     private void solveFor4chosenTeams() {
-        sortChosenStacks();
-        for (int i = 0; i < chosenTripleStacks.size() - 2; ++i) {
-            String team1 = chosenTripleStacks.get(i).getTeam();
-            for (int j = i + 1; j < chosenTripleStacks.size() - 1; ++j) {
-                String team2 = chosenTripleStacks.get(j).getTeam();
-                if (team1.equals(team2)) {
-                    continue;
-                }
-                for (int k = j + 1; k < chosenTripleStacks.size(); ++k) {
-                    String team3 = chosenTripleStacks.get(k).getTeam();
-                    if (team1.equals(team3) || team2.equals(team3)) {
-                        continue;
-                    }
-                    for (int s = 0; s < chosenDoubleStacks.size(); ++s) {
-                        String team4 = chosenDoubleStacks.get(s).getTeam();
-                        if (team1.equals(team4) || team2.equals(team4) || team3.equals(team4)) {
-                            continue;
-                        }
-                        FantasyTeam currentTeam = new FantasyTeam(
-                                chosenTripleStacks.get(i),
-                                chosenTripleStacks.get(j),
-                                chosenTripleStacks.get(k),
-                                chosenDoubleStacks.get(s),
-                                tournamentId
-                        );
-                        if (currentTeam.isValid()) {
-                            finalTeam = currentTeam;
-                        }
-                        if (finalTeam != null) break;
-                    }
-                    if (finalTeam != null) break;
-                }
-                if (finalTeam != null) break;
-            }
-            if (finalTeam != null) break;
-        }
     }
 
     /**
      * Реализация для случая, когда пользователь выбрал 1 команду.
      */
     private void solveFor1chosenTeam() {
-        sortAllStacks();
-        for (TripleStack tripleStack : chosenTripleStacks) {
-            String team1 = tripleStack.getTeam();
-            for (int i = 0; i < restTripleStacks.size() - 1; i++) {
-                String team2 = restTripleStacks.get(i).getTeam();
-                if (team1.equals(team2)) {
-                    continue;
-                }
-                for (int j = i + 1; j < restTripleStacks.size(); j++) {
-                    String team3 = restTripleStacks.get(j).getTeam();
-                    if (team1.equals(team3) || team2.equals(team3)) {
-                        continue;
-                    }
-                    for (DoubleStack doubleStack : restDoubleStacks) {
-                        String team4 = doubleStack.getTeam();
-                        if (team1.equals(team4) || team2.equals(team4) || team3.equals(team4)) {
-                            continue;
-                        }
-                        FantasyTeam currentTeam = new FantasyTeam(
-                                tripleStack,
-                                restTripleStacks.get(i),
-                                restTripleStacks.get(j),
-                                doubleStack,
-                                tournamentId
-                        );
-                        if (currentTeam.isValid()) {
-                            finalTeam = currentTeam;
-                            break;
-                        }
-                    }
-                    if (finalTeam != null) {
-                        break;
-                    }
-                }
-                if (finalTeam != null) {
-                    break;
-                }
-            }
-            if (finalTeam != null) {
-                break;
-            }
-        }
     }
 
     /**
      * Реализация для случая, когда пользователь выбрал 2 команды.
      */
     private void solveFor2ChosenTeams() {
-        sortAllStacks();
-        for (int i = 0; i < chosenTripleStacks.size() - 1; ++i) {
-            String team1 = chosenTripleStacks.get(i).getTeam();
-            for (int j = i + 1; j < chosenTripleStacks.size(); ++j) {
-                String team2 = chosenTripleStacks.get(j).getTeam();
-                if (team1.equals(team2)) {
-                    continue;
-                }
-                for (int k = j + 1; k < restTripleStacks.size(); ++k) {
-                    String team3 = restTripleStacks.get(k).getTeam();
-                    if (team1.equals(team3) || team2.equals(team3)) {
-                        continue;
-                    }
-                    for (int s = 0; s < restDoubleStacks.size(); ++s) {
-                        String team4 = restDoubleStacks.get(s).getTeam();
-                        if (team1.equals(team4) || team2.equals(team4) || team3.equals(team4)) {
-                            continue;
-                        }
-                        FantasyTeam currentTeam = new FantasyTeam(
-                                chosenTripleStacks.get(i),
-                                chosenTripleStacks.get(j),
-                                restTripleStacks.get(k),
-                                restDoubleStacks.get(s),
-                                tournamentId
-                        );
-                        if (currentTeam.isValid()) {
-                            finalTeam = currentTeam;
-                        }
-                        if (finalTeam != null) break;
-                    }
-                    if (finalTeam != null) break;
-                }
-                if (finalTeam != null) break;
-            }
-            if (finalTeam != null) break;
-        }
     }
 
     /**
      * Реализация для случая, когда пользователь выбрал 3 команды.
      */
     private void solveFor3chosenTeams() {
-        sortAllStacks();
-        for (int i = 0; i < chosenTripleStacks.size() - 2; ++i) {
-            String team1 = chosenTripleStacks.get(i).getTeam();
-            for (int j = i + 1; j < chosenTripleStacks.size() - 1; ++j) {
-                String team2 = chosenTripleStacks.get(j).getTeam();
-                if (team1.equals(team2)) {
-                    continue;
-                }
-                for (int k = j + 1; k < chosenTripleStacks.size(); ++k) {
-                    String team3 = chosenTripleStacks.get(k).getTeam();
-                    if (team1.equals(team3) || team2.equals(team3)) {
-                        continue;
-                    }
-                    for (int s = 0; s < restDoubleStacks.size(); ++s) {
-                        String team4 = restDoubleStacks.get(s).getTeam();
-                        if (team1.equals(team4) || team2.equals(team4) || team3.equals(team4)) {
-                            continue;
-                        }
-                        FantasyTeam currentTeam = new FantasyTeam(
-                                chosenTripleStacks.get(i),
-                                chosenTripleStacks.get(j),
-                                chosenTripleStacks.get(k),
-                                restDoubleStacks.get(s),
-                                tournamentId
-                        );
-                        if (currentTeam.isValid()) {
-                            finalTeam = currentTeam;
-                        }
-                        if (finalTeam != null) break;
-                    }
-                    if (finalTeam != null) break;
-                }
-                if (finalTeam != null) break;
-            }
-            if (finalTeam != null) break;
-        }
     }
 
     /**
@@ -264,16 +114,28 @@ public class Greedy {
      */
     private void solveFor0chosenTeams() {
         sortRestStacks();
-        for (int i = 0; i < restTripleStacks.size() - 2; ++i) {
+        int size = restTripleStacks.size();
+        FantasyTeam[][][] fantasyTeams = new FantasyTeam[size - 2][size - 1][size];
+        for (int i = 0; i < size - 2; ++i) {
             String team1 = restTripleStacks.get(i).getTeam();
-            for (int j = i + 1; j < restTripleStacks.size() - 1; ++j) {
+            fantasyTeams[i][0][0] = new FantasyTeam(restTripleStacks.get(i), tournamentId);
+            for (int j = i + 1; j < size - 1; ++j) {
                 String team2 = restTripleStacks.get(j).getTeam();
                 if (team1.equals(team2)) {
                     continue;
                 }
-                for (int k = j + 1; k < restTripleStacks.size(); ++k) {
+                fantasyTeams[i][j][0] = new FantasyTeam(fantasyTeams[i][0][0], restTripleStacks.get(j), tournamentId);
+                if (!fantasyTeams[i][j][0].isPreliminarilyValid()) {
+                    continue;
+                }
+                for (int k = j + 1; k < size; ++k) {
                     String team3 = restTripleStacks.get(k).getTeam();
                     if (team1.equals(team3) || team2.equals(team3)) {
+                        continue;
+                    }
+                    fantasyTeams[i][j][k] =
+                            new FantasyTeam(fantasyTeams[i][j][0], restTripleStacks.get(k), tournamentId);
+                    if (fantasyTeams[i][j][k].isPreliminarilyValid()) {
                         continue;
                     }
                     for (DoubleStack doubleStack : restDoubleStacks) {
