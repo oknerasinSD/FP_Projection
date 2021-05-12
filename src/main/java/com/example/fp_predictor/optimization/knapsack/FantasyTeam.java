@@ -307,6 +307,14 @@ public class FantasyTeam {
         return price_x_10;
     }
 
+    public long getCaptainId() {
+        return captainId;
+    }
+
+    public long getViceCaptainId() {
+        return viceCaptainId;
+    }
+
     @Override
     public String toString() {
         return tripleStacks + " " + doubleStacks;

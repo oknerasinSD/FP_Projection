@@ -58,10 +58,10 @@ public class Dynamic {
 
     private void count() {
         initMatrix();
-        System.out.println(stacksList.size());
-        System.out.println(startLimit);
+        /*System.out.println(stacksList.size());
+        System.out.println(startLimit);*/
         for (int i = 1; i <= stacksList.size(); i++) {
-            System.out.println(i);
+            /*System.out.println(i);*/
             for (int j = 1; j < matrix[i].length; j++) {
                 matrix[i][j].putAll(matrix[i - 1][j]);
                 int delta = j - stacksList.get(i - 1).getPrice_x_10();

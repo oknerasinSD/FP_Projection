@@ -78,14 +78,24 @@ public class TournamentPageController {
         dynamic.solve();
         FantasyTeam finalTeam = dynamic.getFinalTeam();
         List<Player> players = extractPlayersByPositions(finalTeam);
-        String filename = createCsvFile(players, tournament.getFanteam_id());
+        String filename = createCsvFile(
+                players,
+                tournament.getFanteam_id(),
+                finalTeam.getCaptainId(),
+                finalTeam.getViceCaptainId()
+        );
         model.addAttribute("players", players);
         model.addAttribute("filename", filename);
         model.addAttribute("uploadPath", uploadPath);
         return "resultTeam";
     }
 
-    private String createCsvFile(List<Player> players, long id) throws IOException {
+    private String createCsvFile(
+            List<Player> players,
+            long tournamentId,
+            long captainId,
+            long viceCaptainId
+    ) throws IOException {
         String filename = UUID.randomUUID().toString() + ".csv";
         File directory = new File(uploadPath + File.separator + "csv");
         File csvOutput = new File(directory + File.separator + filename);
@@ -97,11 +107,12 @@ public class TournamentPageController {
         }
         FileWriter writer = new FileWriter(csvOutput);
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(id).append(",");
+        stringBuilder.append(tournamentId).append(",");
+        System.out.println(players.size());
         for (Player player : players) {
             stringBuilder.append(player.getFanteamPlayerId()).append(",");
         }
-        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        stringBuilder.append(captainId).append(",").append(viceCaptainId);
         writer.write(stringBuilder.toString());
         writer.close();
         return filename;
