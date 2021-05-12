@@ -100,10 +100,6 @@ public class Dynamic {
                                 MapKey newMapKey = new MapKey(mapKey, stacksList.get(i - 1));
                                 if (!matrix[i][newPrice].containsKey(newMapKey)
                                         || newTeamBetter(matrix[i][newPrice], newMapKey, fantasyTeam)) {
-                                    if (fantasyTeam.getTripleStacks().size() == 3
-                                        && fantasyTeam.getPrice_x_10() < 700) {
-                                        continue;
-                                    }
                                     matrix[i][newPrice].remove(newMapKey);
                                     matrix[i][newPrice].put(newMapKey, fantasyTeam);
                                 }

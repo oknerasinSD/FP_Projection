@@ -15,10 +15,6 @@ import java.util.Map;
  */
 public class Scraper {
 
-//    /** Ссылка на таблицу */
-//    private static final String TABLE_REFERENCE =
-//            "table.min_width tr";
-
     private static final String TABLE_REFERENCE = "table.stats_table";
     private Map<String, String> links;
 
@@ -26,9 +22,19 @@ public class Scraper {
      * Запуск парсинга.
      * @throws IOException - ошибка при построении списка с объектами, содержащими HTML-код таблиц для парсинга.
      */
-    public List<ParsedPlayer> scrape() throws IOException {
+    public List<ParsedPlayer> scrape(League league) throws IOException {
         Data data = new Data();
-        links = data.getEplLinks();
+        switch (league) {
+            case EPL:
+                links = data.getEplLinks();
+                break;
+            case LA_LIGA:
+                links = data.getLaLiga();
+                break;
+            case SERIE_A:
+                links = data.getSerieA_links();
+                break;
+        }
         return parseTables(data);
     }
 

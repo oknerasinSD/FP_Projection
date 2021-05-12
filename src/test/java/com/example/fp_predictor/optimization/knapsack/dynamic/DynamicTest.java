@@ -16,15 +16,15 @@ public class DynamicTest {
     public void dynamicTest() throws IOException {
         long fanTeamId = 0;
         List<Player> players = parseFile(fanTeamId);
-        Set<String> teams = new HashSet<>(Arrays.asList("LIV"));
-        Dynamic dynamic = new Dynamic(players, League.EPL, teams, fanTeamId);
+        Set<String> teams = new HashSet<>(Arrays.asList("TOR", "SAS", "LAZ", "BOL"));
+        Dynamic dynamic = new Dynamic(players, League.SERIE_A, teams, fanTeamId);
         dynamic.solve();
         System.out.println(dynamic.getFinalTeam());
     }
 
     private List<Player> parseFile(long fanteam_id) throws IOException {
         FileReader reader = new FileReader("PredictionOutput.csv");
-        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(0).build();
+        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
         List<Player> result = new ArrayList<>();
         String[] line;
         while ((line = csvReader.readNext()) != null) {

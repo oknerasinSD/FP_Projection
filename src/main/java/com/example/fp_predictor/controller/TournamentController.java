@@ -94,7 +94,7 @@ public class TournamentController {
 
     private long parseForecastsAndTeams(MultipartFile file, Tournament tournament) throws IOException {
         Reader reader = new InputStreamReader(file.getInputStream());
-        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(0).build();
+        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
         Set<String> teams = new HashSet<>();
         long fanteam_id = 0;
         String[] line;

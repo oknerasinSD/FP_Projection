@@ -1,5 +1,6 @@
 package com.example.fp_predictor.analysis.prediction;
 
+import com.example.fp_predictor.scraping.League;
 import com.example.fp_predictor.scraping.ParsedPlayer;
 import com.example.fp_predictor.scraping.Scraper;
 
@@ -18,7 +19,7 @@ public class ExpectedPoints {
     private final int gameWeek;
 
     /** ID турнира в системе FanTeam. */
-    private int tournamentId;
+    private int fanTeamTournamentId;
 
     /** Мапа с общим xG для каждой команды. */
     private final Map<String, Double> teamXgMap = new HashMap<>();
@@ -41,8 +42,11 @@ public class ExpectedPoints {
     /** Список с результатами прогноза. */
     private final List<PlayerForecast> forecast = new ArrayList<>();
 
-    public ExpectedPoints(int gameWeek) {
-        this.gameWeek = gameWeek;
+    private final League league;
+
+    public ExpectedPoints(int gameWeek, League league) {
+        this.gameWeek = --gameWeek;
+        this.league = league;
     }
 
     /**
@@ -51,7 +55,7 @@ public class ExpectedPoints {
      */
     public List<PlayerForecast> count() throws IOException {
 
-        List<ParsedPlayer> parsedPlayers = new Scraper().scrape();
+        List<ParsedPlayer> parsedPlayers = new Scraper().scrape(league);
         List<FanTeamPlayer> fanTeamPlayers = readFanTeamPlayers();
         countTeamXg(parsedPlayers);
         readBookmakersData();
@@ -228,7 +232,7 @@ public class ExpectedPoints {
         scanner.nextLine();
         while (scanner.hasNext()) {
             String[] currentLine = scanner.nextLine().split(",");
-            tournamentId = Integer.parseInt(currentLine[0]);
+            fanTeamTournamentId = Integer.parseInt(currentLine[0]);
             if ("injured".equals(currentLine[5]) || "unexpected".equals(currentLine[5])) {
                 continue;
             }
@@ -252,9 +256,10 @@ public class ExpectedPoints {
     public void writeData() throws IOException {
         File outputFile = new File("PredictionOutput.csv");
         FileWriter writer = new FileWriter(outputFile);
+        writer.write("tournament_id,player_id,name,team,position,expected_points,price\n");
         for (PlayerForecast player : forecast) {
             writer.write(
-                    tournamentId + ","
+                    fanTeamTournamentId + ","
                             + player.getId() + ","
                             + player.getName() + ","
                             + player.getTeam() + ","
@@ -266,8 +271,8 @@ public class ExpectedPoints {
         writer.close();
     }
 
-    public int getTournamentId() {
-        return tournamentId;
+    public int getFanTeamTournamentId() {
+        return fanTeamTournamentId;
     }
 
     public int getGameWeek() {

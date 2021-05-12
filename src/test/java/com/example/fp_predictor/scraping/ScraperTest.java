@@ -9,8 +9,9 @@ public class ScraperTest {
 
     @Test
     public void testScrape() throws IOException {
+
         Scraper scraper = new Scraper();
-        List<ParsedPlayer> players = scraper.scrape();
+        List<ParsedPlayer> players = scraper.scrape(League.SERIE_A);
         for (ParsedPlayer player : players) {
             System.out.println(player.toString());
         }

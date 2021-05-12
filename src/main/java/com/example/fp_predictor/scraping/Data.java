@@ -27,6 +27,29 @@ public class Data {
             Map.entry("WOL", "https://fbref.com/en/squads/8cec06e1/Wolverhampton-Wanderers-Stats")
     );
 
+    private final Map<String, String> serieA_links = Map.ofEntries(
+            Map.entry("ATA", "https://fbref.com/en/squads/922493f3/Atalanta-Stats"),
+            Map.entry("BEN", "https://fbref.com/en/squads/4fcb34fd/Benevento-Stats"),
+            Map.entry("BOL", "https://fbref.com/en/squads/1d8099f8/Bologna-Stats"),
+            Map.entry("CAG", "https://fbref.com/en/squads/c4260e09/Cagliari-Stats"),
+            Map.entry("CRO", "https://fbref.com/en/squads/3074d7b1/Crotone-Stats"),
+            Map.entry("FIO", "https://fbref.com/en/squads/421387cf/Fiorentina-Stats"),
+            Map.entry("GEN", "https://fbref.com/en/squads/658bf2de/Genoa-Stats"),
+            Map.entry("VER", "https://fbref.com/en/squads/0e72edf2/Hellas-Verona-Stats"),
+            Map.entry("INT", "https://fbref.com/en/squads/d609edc0/Internazionale-Stats"),
+            Map.entry("JUV", "https://fbref.com/en/squads/e0652b02/Juventus-Stats"),
+            Map.entry("LAZ", "https://fbref.com/en/squads/7213da33/Lazio-Stats"),
+            Map.entry("ACM", "https://fbref.com/en/squads/dc56fe14/Milan-Stats"),
+            Map.entry("NAP", "https://fbref.com/en/squads/d48ad4ff/Napoli-Stats"),
+            Map.entry("PAR", "https://fbref.com/en/squads/eab4234c/Parma-Stats"),
+            Map.entry("ROM", "https://fbref.com/en/squads/cf74a709/Roma-Stats"),
+            Map.entry("SAM", "https://fbref.com/en/squads/8ff9e3b3/Sampdoria-Stats"),
+            Map.entry("SAS", "https://fbref.com/en/squads/e2befd26/Sassuolo-Stats"),
+            Map.entry("SPE", "https://fbref.com/en/squads/68449f6d/Spezia-Stats"),
+            Map.entry("TOR", "https://fbref.com/en/squads/105360fe/Torino-Stats"),
+            Map.entry("UDI", "https://fbref.com/en/squads/04eea015/Udinese-Stats")
+    );
+
     private final String[] playersTableBannedItems = {
             "ParsedPlayer",
             "Squad Total",
@@ -62,5 +85,13 @@ public class Data {
 
     public Map<String, String> getEplLinks() {
         return eplLinks;
+    }
+
+    public Map<String, String> getSerieA_links() {
+        return serieA_links;
+    }
+
+    public Map<String, String> getLaLiga() {
+        return null;
     }
 }

@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.format.DateTimeFormatter;
-import java.util.Set;
 
 @Entity
 public class Tournament {

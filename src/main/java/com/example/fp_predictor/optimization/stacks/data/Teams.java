@@ -30,6 +30,29 @@ public class Teams {
             "WOL"
     );
 
+    private List<String> serieA_teams = Arrays.asList(
+            "ATA",
+            "BEN",
+            "BOL",
+            "CAG",
+            "CRO",
+            "FIO",
+            "GEN",
+            "VER",
+            "INT",
+            "JUV",
+            "LAZ",
+            "ACM",
+            "NAP",
+            "PAR",
+            "ROM",
+            "SAM",
+            "SAS",
+            "SPE",
+            "TOR",
+            "UDI"
+    );
+
     private List<String> laLigaTeams;
 
     public List<String> getTeams(League league) {
@@ -38,6 +61,8 @@ public class Teams {
                 return eplTeams;
             case LA_LIGA:
                 return laLigaTeams;
+            case SERIE_A:
+                return serieA_teams;
             default:
                 return null;
         }

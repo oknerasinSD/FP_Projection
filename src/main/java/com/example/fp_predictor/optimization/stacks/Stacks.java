@@ -63,6 +63,18 @@ public class Stacks {
         buildDoubleStacksByTeam();
         buildTripleStacksByTeam();
         buildSortedAllStacks();
+        /*for (String team : tripleStacksByTeam.keySet()) {
+            for (TripleStack tripleStack : tripleStacksByTeam.get(team)) {
+                System.out.println(tripleStack);
+            }
+            System.out.println();
+        }
+        for (String team : doubleStacksByTeam.keySet()) {
+            for (DoubleStack doubleStack : doubleStacksByTeam.get(team)) {
+                System.out.println(doubleStack);
+            }
+            System.out.println();
+        }*/
     }
 
     private void buildSortedAllStacks() {
