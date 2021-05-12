@@ -17,7 +17,7 @@ public class DynamicTest {
         long fanTeamId = 0;
         List<Player> players = parseFile(fanTeamId);
         Set<String> teams = new HashSet<>(Arrays.asList("LIV", "EVE", "WHU", "CRY"));
-        Dynamic dynamic = new Dynamic(players, League.EPL, teams, fanTeamId);
+        Dynamic dynamic = new Dynamic(players, League.EPL, Collections.emptySet(), fanTeamId);
         dynamic.solve();
         System.out.println(dynamic.getFinalTeam());
     }

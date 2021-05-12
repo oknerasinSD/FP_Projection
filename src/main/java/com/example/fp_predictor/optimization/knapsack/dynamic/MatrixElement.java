@@ -27,6 +27,10 @@ public class MatrixElement {
         }
     }
 
+    public void remove(MapKey key) {
+        matrixElement.remove(key);
+    }
+
     private boolean newTeamBetter(MatrixElement matrixElement, MapKey key) {
         return this.matrixElement.containsKey(key)
                 && matrixElement.getKeyTeamExpectedPoints(key) > this.getKeyTeamExpectedPoints(key);

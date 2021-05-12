@@ -75,6 +75,8 @@ public class Stacks {
         stacksForChoice0123.addAll(chosenDoubleStacks);
         stacksForChoice0123.addAll(restTripleStacks);
         stacksForChoice0123.addAll(restDoubleStacks);
+        chosenTripleStacks.sort(Comparator.comparingDouble((TripleStack o) -> -o.getValue()));
+        chosenDoubleStacks.sort(Comparator.comparingDouble((DoubleStack o) -> -o.getValue()));
         stacksForChoice4.addAll(chosenTripleStacks);
         stacksForChoice4.addAll(chosenDoubleStacks);
     }
@@ -134,10 +136,11 @@ public class Stacks {
 
     private int addMidfieldersToForecasts(String team, List<Player> midfieldersList) {
         int midfieldersCount = 0;
-        if (midfieldersList.size() >= 2) {
+        if (midfieldersList.size() >= 3) {
             forecastsByTeam.get(team).add(midfieldersList.get(0));
             forecastsByTeam.get(team).add(midfieldersList.get(1));
-            midfieldersCount = 2;
+            forecastsByTeam.get(team).add(midfieldersList.get(2));
+            midfieldersCount = 3;
         } else {
             for (Player player : midfieldersList) {
                 forecastsByTeam.get(team).add(player);
@@ -158,9 +161,6 @@ public class Stacks {
                 ++defendersCount;
                 forecastsByTeam.get(team).add(player);
             }
-        }
-        if (team == "LIV") {
-            System.out.println(defendersList);
         }
         return defendersCount;
     }

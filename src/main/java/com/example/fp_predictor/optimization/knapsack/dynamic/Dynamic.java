@@ -51,6 +51,10 @@ public class Dynamic {
         count();
     }
 
+    private void solveFor1ChosenTeam() {
+
+    }
+
     private void solveFor4ChosenTeams() {
         stacksList = stacks.getStacksForChoice4();
         matrix = new MatrixElement[stacksList.size() + 1][1001];
@@ -59,13 +63,14 @@ public class Dynamic {
 
     private void count() {
         initMatrix();
-        /*System.out.println(stacksList.size());*/
+        int startLimit = 1;
+        System.out.println(stacksList.size());
         for (int i = 1; i <= stacksList.size(); i++) {
             /*System.out.println(i);*/
             for (int j = 1; j < matrix[i].length; j++) {
                 matrix[i][j].putAll(matrix[i - 1][j]);
                 int delta = j - stacksList.get(i - 1).getPrice_x_10();
-                if (delta == 0) {
+                if (i <= startLimit && delta == 0) {
                     MapKey mapKey = new MapKey(stacksList.get(i - 1));
                     FantasyTeam fantasyTeam = new FantasyTeam(stacksList.get(i - 1), fanTeamTournamentId);
                     if (!matrix[i][j].containsKey(mapKey) || newTeamBetter(matrix[i][j], mapKey, fantasyTeam)) {
@@ -77,11 +82,11 @@ public class Dynamic {
                             continue;
                         }
                         if (stacksList.get(i - 1) instanceof DoubleStack
-                            && matrix[i - 1][j].get(mapKey).getDoubleStacks().size() == 1) {
+                                && matrix[i - 1][j].get(mapKey).getDoubleStacks().size() == 1) {
                             continue;
                         }
                         if (stacksList.get(i - 1) instanceof TripleStack
-                            && matrix[i - 1][j].get(mapKey).getTripleStacks().size() == 3) {
+                                && matrix[i - 1][j].get(mapKey).getTripleStacks().size() == 3) {
                             continue;
                         }
                         int newPrice = j + stacksList.get(i - 1).getPrice_x_10();
@@ -100,6 +105,7 @@ public class Dynamic {
                                 MapKey newMapKey = new MapKey(mapKey, stacksList.get(i - 1));
                                 if (!matrix[i][newPrice].containsKey(newMapKey)
                                         || newTeamBetter(matrix[i][newPrice], newMapKey, fantasyTeam)) {
+                                    matrix[i][newPrice].remove(newMapKey);
                                     matrix[i][newPrice].put(newMapKey, fantasyTeam);
                                 }
                             }

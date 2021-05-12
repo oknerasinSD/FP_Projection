@@ -166,7 +166,7 @@ public class FantasyTeam {
             return false;
         } else {
             sumTeamPositions();
-            return checkPositions() && price_x_10 <= 1000;
+            return checkPositions() /*&& price_x_10 <= 1000*/;
         }
     }
 
@@ -177,7 +177,7 @@ public class FantasyTeam {
             sumTeamPositions();
             return price_x_10 <= 1000
                     && positions.get("goalkeeper") <= 1
-                    && positions.get("defender") <= 5
+                    && positions.get("defender") <= 3
                     && positions.get("midfielder") <= 5
                     && positions.get("forward") <= 3;
         }
@@ -233,7 +233,7 @@ public class FantasyTeam {
      */
     private boolean checkPositions() {
         return positions.get("goalkeeper") == 1
-                && positions.get("defender") >= 3 && positions.get("defender") <= 5
+                && positions.get("defender") == 3 /*&& positions.get("defender") <= 5*/
                 && positions.get("midfielder") >= 2 && positions.get("midfielder") <= 5
                 && positions.get("forward") >= 1 && positions.get("forward") <= 3;
     }

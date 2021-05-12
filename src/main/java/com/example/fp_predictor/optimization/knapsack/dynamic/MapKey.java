@@ -3,8 +3,7 @@ package com.example.fp_predictor.optimization.knapsack.dynamic;
 import com.example.fp_predictor.domain.Player;
 import com.example.fp_predictor.optimization.stacks.Stackable;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class MapKey {
 
@@ -90,7 +89,16 @@ public class MapKey {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+
+        String[] teamsArray = {"", "", "", ""};
+        int count = 0;
+        for (String team : teams) {
+            teamsArray[0] = team;
+        }
+        return Objects.hash(
+                goalkeepers, defenders, midfielders, forwards,
+                teamsArray[0], teamsArray[1], teamsArray[2], teamsArray[3]
+        );
     }
 
     @Override
@@ -112,5 +120,10 @@ public class MapKey {
                 && forwards == mapKey.getForwards();
 
         return sameTeams && sameLineUp;
+    }
+
+    @Override
+    public String toString() {
+        return teams + " " + goalkeepers + " " + defenders + " " + midfielders + " " + forwards;
     }
 }

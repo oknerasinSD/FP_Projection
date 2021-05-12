@@ -22,6 +22,21 @@ public class TripleStack implements Stackable {
         this.price_x_10 = player1.getPrice_x_10() + player2.getPrice_x_10() + player3.getPrice_x_10();
         this.expectedPoints = player1.getExpectedPoints() + player2.getExpectedPoints() + player3.getExpectedPoints();
         team = player1.getTeam();
+        checkDefensiveStackingFine();
+    }
+
+    private void checkDefensiveStackingFine() {
+        int defensivePlayers = 0;
+        for (Player player : players) {
+            if (player.getPosition().equals("defender") || player.getPosition().equals("goalkeeper")) {
+                ++defensivePlayers;
+            }
+        }
+        if (defensivePlayers == 2) {
+            expectedPoints -= 1;
+        } else if (defensivePlayers == 3) {
+            expectedPoints -= 3;
+        }
     }
 
     public Player getPlayer1() {

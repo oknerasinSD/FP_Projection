@@ -21,6 +21,16 @@ public class DoubleStack implements Stackable {
         price_x_10 = player1.getPrice_x_10() + player2.getPrice_x_10();
         expectedPoints = player1.getExpectedPoints() + player2.getExpectedPoints();
         team = player1.getTeam();
+        checkDefensiveStackingFine();
+    }
+
+    private void checkDefensiveStackingFine() {
+        String position1 = getPlayer1().getPosition();
+        String position2 = getPlayer2().getPosition();
+        if ((position1.equals("defender") && (position2.equals("defender") || position2.equals("goalkeeper"))
+            || position1.equals("goalkeeper") && position2.equals("defender"))) {
+            expectedPoints -= 1;
+        }
     }
 
     public Player getPlayer1() {

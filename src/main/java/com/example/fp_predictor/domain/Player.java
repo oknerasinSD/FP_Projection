@@ -112,6 +112,6 @@ public class Player {
 
     @Override
     public String toString() {
-        return name + " " + team + " " + price + " " + expectedPoints;
+        return name + " " + team + " " + price;
     }
 }
