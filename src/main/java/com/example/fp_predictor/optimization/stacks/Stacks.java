@@ -149,11 +149,15 @@ public class Stacks {
 
     private int addForwardsToForecasts(String team, List<Player> forwardsList) {
         int forwardsCount = 0;
-        if (forwardsList.size() >= 3) {
+        if (forwardsList.size() >= 4) {
             forecastsByTeam.get(team).add(forwardsList.get(0));
             forecastsByTeam.get(team).add(forwardsList.get(1));
             forecastsByTeam.get(team).add(forwardsList.get(2));
-            forwardsCount = 3;
+            /*if (chosenTeams.size() == 4) {
+                forecastsByTeam.get(team).add(forwardsList.get(3));
+            }*/
+            forecastsByTeam.get(team).add(forwardsList.get(3));
+            forwardsCount = 4;
         } else {
             for (Player player : forwardsList) {
                 forecastsByTeam.get(team).add(player);

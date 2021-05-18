@@ -1,5 +1,6 @@
 package com.example.fp_predictor.analysis.prediction;
 
+import com.example.fp_predictor.domain.Player;
 import com.example.fp_predictor.scraping.League;
 import com.example.fp_predictor.scraping.ParsedPlayer;
 import com.example.fp_predictor.scraping.Scraper;
@@ -39,6 +40,9 @@ public class ExpectedPoints {
     /** Мапа с коэфициентами на ТБ 0.5. */
     private final Map<String, Double> over05Map = new HashMap<>();
 
+    /** Мапа с голевым ожиданием команд. */
+    private final Map<String, Double> exactTotalMap = new HashMap<>();
+
     /** Список с результатами прогноза. */
     private final List<PlayerForecast> forecast = new ArrayList<>();
 
@@ -65,15 +69,20 @@ public class ExpectedPoints {
         for (FanTeamPlayer fanTeamPlayer : fanTeamPlayers) {
             for (ParsedPlayer parsedPlayer : parsedPlayers) {
                 if (isSamePlayer(fanTeamPlayer, parsedPlayer)) {
-                    forecast.add(new PlayerForecast(
-                                    fanTeamPlayer.getId(),
-                                    parsedPlayer.getName(),
-                                    fanTeamPlayer.getTeam(),
-                                    fanTeamPlayer.getPosition(),
-                                    countPlayerPoints(fanTeamPlayer, parsedPlayer),
-                                    fanTeamPlayer.getPrice()
-                            )
-                    );
+                    /*System.out.println(fanTeamPlayer.getTeam());
+                    System.out.println(over05Map.keySet());
+                    System.out.println(exactTotalMap.keySet());*/
+                    if (over05Map.containsKey(fanTeamPlayer.getTeam()) || exactTotalMap.containsKey(fanTeamPlayer.getTeam())) {
+                        forecast.add(new PlayerForecast(
+                                        fanTeamPlayer.getId(),
+                                        parsedPlayer.getName(),
+                                        fanTeamPlayer.getTeam(),
+                                        fanTeamPlayer.getPosition(),
+                                        countPlayerPoints(fanTeamPlayer, parsedPlayer),
+                                        fanTeamPlayer.getPrice()
+                                )
+                        );
+                    }
                 }
             }
         }
@@ -100,6 +109,7 @@ public class ExpectedPoints {
         while (scanner.hasNext()) {
             String[] currentLine = scanner.nextLine().split(" ");
             opponentsMap.put(currentLine[0], currentLine[1]);
+            opponentsMap.put(currentLine[1], currentLine[0]);
         }
     }
 
@@ -143,7 +153,15 @@ public class ExpectedPoints {
             String[] currentLine = scanner.nextLine().split(" ");
             cleanSheetMultipliers.put(currentLine[0], Double.valueOf(currentLine[1]));
             winMultipliers.put(currentLine[0], Double.valueOf(currentLine[2]));
-            over05Map.put(currentLine[0], Double.valueOf(currentLine[3]));
+            if (currentLine.length == 4) {
+                over05Map.put(currentLine[0], Double.valueOf(currentLine[3]));
+            } else {
+                double expectedGoals = 0;
+                for (int i = 3; i < currentLine.length; ++i) {
+                    expectedGoals += (i - 3) * (1 / Double.parseDouble(currentLine[i]));
+                }
+                exactTotalMap.put(currentLine[0], expectedGoals);
+            }
         }
     }
 
@@ -159,7 +177,12 @@ public class ExpectedPoints {
         double timeShare = (double) parsedPlayer.getMinutesPlayed() / totalTimePlayedInTournament;
         double xgShare = parsedPlayer.getTotalXg() / teamXgMap.get(fanTeamPlayer.getTeam()) / timeShare;
         double xaShare = parsedPlayer.getTotalXa() / teamXgMap.get(fanTeamPlayer.getTeam()) / timeShare;
-        double expectedTeamGoals = -Math.log(1 - 1 / over05Map.get(fanTeamPlayer.getTeam()));
+        double expectedTeamGoals;
+        if (over05Map.containsKey(fanTeamPlayer.getTeam())) {
+            expectedTeamGoals = -Math.log(1 - 1 / over05Map.get(fanTeamPlayer.getTeam()));
+        } else {
+            expectedTeamGoals = exactTotalMap.get(fanTeamPlayer.getTeam());
+        }
         double expectedPlayerGoals = xgShare * expectedTeamGoals;
         double expectedPlayerAssists = xaShare * expectedTeamGoals;
         double expectedImpact = 1 / winMultipliers.get(fanTeamPlayer.getTeam()) * fanTeamScoring.positiveImpact
@@ -169,6 +192,9 @@ public class ExpectedPoints {
         result = difPositionsEstimation(fanTeamPlayer, fanTeamScoring, result, expectedPlayerGoals, timeShare);
         result = addBookingEstimation(parsedPlayer, fanTeamScoring, result);
         result += expectedImpact;
+        if (fanTeamPlayer.getPosition().equals("goalkeeper")) {
+            result += 1.5;
+        }
 
         return result;
     }
@@ -266,6 +292,21 @@ public class ExpectedPoints {
                             + player.getPosition() + ","
                             + player.getExpectedPoints() + ","
                             + player.getPrice() + "\n"
+            );
+        }
+        writer.close();
+    }
+
+    public void writeLocalData() throws IOException {
+        File outputFile = new File("LocalOutput.txt");
+        FileWriter writer = new FileWriter(outputFile);
+        for (PlayerForecast player : forecast) {
+            writer.write(
+                    player.getName() + "\t"
+                            + player.getTeam() + "\t"
+                            + player.getPosition() + "\t"
+                            + player.getPrice() + "\t"
+                            + player.getExpectedPoints() + "\n"
             );
         }
         writer.close();

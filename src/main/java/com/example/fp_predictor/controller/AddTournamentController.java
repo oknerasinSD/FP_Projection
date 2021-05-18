@@ -26,7 +26,7 @@ import java.sql.Time;
 import java.util.*;
 
 @Controller
-public class TournamentController {
+public class AddTournamentController {
 
     @Autowired
     private TournamentRepository tournamentRepository;

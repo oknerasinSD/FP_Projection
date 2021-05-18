@@ -16,22 +16,22 @@ public class DynamicTest {
     public void dynamicTest() throws IOException {
         long fanTeamId = 0;
         List<Player> players = parseFile(fanTeamId);
-        Set<String> teams = new HashSet<>(Arrays.asList("TOR", "SAS", "LAZ", "BOL"));
-        Dynamic dynamic = new Dynamic(players, League.SERIE_A, teams, fanTeamId);
+        Set<String> teams = new HashSet<>(Arrays.asList("LIV", "SOU", "EVE", "FUL"));
+        Dynamic dynamic = new Dynamic(players, League.EPL, Collections.emptySet(), fanTeamId);
         dynamic.solve();
         System.out.println(dynamic.getFinalTeam());
     }
 
-    private List<Player> parseFile(long fanteam_id) throws IOException {
+    private List<Player> parseFile(long fanTeamId) throws IOException {
         FileReader reader = new FileReader("PredictionOutput.csv");
         CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
         List<Player> result = new ArrayList<>();
         String[] line;
         while ((line = csvReader.readNext()) != null) {
-            fanteam_id = Long.parseLong(line[0]);
+            fanTeamId = Long.parseLong(line[0]);
             Player forecast = new Player(
                     1,
-                    fanteam_id,
+                    fanTeamId,
                     Long.parseLong(line[1]),
                     line[2],
                     line[3],

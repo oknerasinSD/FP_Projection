@@ -35,14 +35,14 @@ public class Scraper {
                 links = data.getSerieA_links();
                 break;
         }
-        return parseTables(data);
+        return parse(data);
     }
 
     /**
      * Парсинг статистики из HTML-кода таблиц.
      * @param data - объект с вспомогательными данными.
      */
-    private List<ParsedPlayer> parseTables(Data data) throws IOException {
+    private List<ParsedPlayer> parse(Data data) throws IOException {
         List<ParsedPlayer> players = new ArrayList<>();
         for (String team : links.keySet()) {
             Document document = Jsoup.connect(links.get(team)).get();

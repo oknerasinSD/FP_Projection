@@ -9,8 +9,9 @@ public class ExpectedPointsTest {
 
     @Test
     public void countTest() throws IOException {
-        ExpectedPoints expectedPoints = new ExpectedPoints(36, League.SERIE_A);
+        ExpectedPoints expectedPoints = new ExpectedPoints(37, League.EPL);
         expectedPoints.count();
         expectedPoints.writeData();
+        expectedPoints.writeLocalData();
     }
 }

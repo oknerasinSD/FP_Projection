@@ -8,10 +8,10 @@ import java.util.List;
 public class ScraperTest {
 
     @Test
-    public void testScrape() throws IOException {
+    public void demoScrape() throws IOException {
 
         Scraper scraper = new Scraper();
-        List<ParsedPlayer> players = scraper.scrape(League.SERIE_A);
+        List<ParsedPlayer> players = scraper.scrape(League.EPL);
         for (ParsedPlayer player : players) {
             System.out.println(player.toString());
         }

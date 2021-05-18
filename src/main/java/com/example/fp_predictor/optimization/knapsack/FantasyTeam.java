@@ -166,8 +166,19 @@ public class FantasyTeam {
             return false;
         } else {
             sumTeamPositions();
-            return checkPositions() /*&& price_x_10 <= 1000*/;
+            return checkPositions() && checkTeams();
         }
+    }
+
+    private boolean checkTeams() {
+        Set<String> teams = new HashSet<>();
+        for (TripleStack tripleStack : tripleStacks) {
+            teams.add(tripleStack.getTeam());
+        }
+        for (DoubleStack doubleStack : doubleStacks) {
+            teams.add(doubleStack.getTeam());
+        }
+        return teams.size() == 4;
     }
 
     public boolean isPreliminarilyValid() {
