@@ -72,7 +72,7 @@
 
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <div>
-            <button type="submit" class="btn btn-primary">Добавить</button>
+            <button type="submit" class="btn btn-outline-dark btn-lg" style="margin-top: 2%">Добавить турнир</button>
         </div>
 
     </form>

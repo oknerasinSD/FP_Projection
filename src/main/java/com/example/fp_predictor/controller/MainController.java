@@ -2,6 +2,7 @@ package com.example.fp_predictor.controller;
 
 import com.example.fp_predictor.domain.Tournament;
 import com.example.fp_predictor.repository.TournamentRepository;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,12 +24,9 @@ public class MainController {
 
     @GetMapping("/")
     public String open(Model model) {
-        ArrayList<Tournament> tournaments = new ArrayList<>();
-        for (Tournament tournament : tournamentRepository.findAll()) {
-            tournaments.add(tournament);
-        }
+        ArrayList<Tournament> tournaments = Lists.newArrayList(tournamentRepository.findAll());
         tournaments.sort(Comparator.comparing((Tournament::getStartDate)));
-        model.addAttribute("tournaments", tournamentRepository.findAll());
+        model.addAttribute("tournaments", tournaments);
         return "main";
     }
 }

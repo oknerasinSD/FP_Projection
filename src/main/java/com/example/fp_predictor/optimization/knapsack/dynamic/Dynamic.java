@@ -123,7 +123,7 @@ public class Dynamic {
     private void defineStartLimit() {
         switch (chosenTeams.size()) {
             case 0:
-                startLimit = (int) (stacksList.size());
+                startLimit = (int) (stacksList.size() * 0.005);
                 break;
             case 1:
             case 2:

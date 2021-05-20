@@ -3,6 +3,7 @@ package com.example.fp_predictor.service;
 import com.example.fp_predictor.domain.UserRole;
 import com.example.fp_predictor.domain.User;
 import com.example.fp_predictor.repository.UserRepository;
+import com.google.common.hash.Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +42,9 @@ public class UserService implements UserDetailsService {
         user.setActive(true);
         user.setRoles(Collections.singleton(UserRole.USER));
         user.setActivationCode(UUID.randomUUID().toString());
+        String passwordSha256 = Hashing.sha256()
+                .hashString(user.getPassword(), StandardCharsets.UTF_8)
+                .toString();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         sendMessage(user);

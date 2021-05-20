@@ -20,14 +20,9 @@
                         <a>Окончание: ${tournament.endDate} ${tournament.getStringEndTime()}</a>
                     </div>
 
-                    <#--<div style="text-align: center">
-                        <a>Окончание: ${tournament.endDate} ${tournament.endTime.hours}:${tournament.endTime.minutes}</a>
-                    </div>-->
-                    <#--<div>
-                        <#if tournament.filename??>
-                            <img src="/img/${tournament.filename}">
-                        </#if>
-                    </div>-->
+                    <div style="margin-top: 2%">
+                        <img src="/img/${tournament.league}.jpg" class="rounded mx-auto d-block">
+                    </div>
 
                 </div>
             </div>

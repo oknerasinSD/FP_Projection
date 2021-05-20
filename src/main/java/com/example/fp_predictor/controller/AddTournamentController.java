@@ -67,7 +67,7 @@ public class AddTournamentController {
 
         Tournament tournament = new Tournament(
                 title,
-                league,
+                defineLeagueEng(league),
                 sqlStartDate,
                 sqlStartTime,
                 sqlEndDate,
@@ -121,5 +121,21 @@ public class AddTournamentController {
             tournamentTeamsRepository.save(tournamentTeam);
         }
         return fanteam_id;
+    }
+
+    private String defineLeagueEng(String league) {
+        String leagueEng = "";
+        switch (league) {
+            case "Англия: АПЛ":
+                leagueEng = "England";
+                break;
+            case "Италия: Серия А":
+                leagueEng = "Italy";
+                break;
+            case "Испания: Ла Лига":
+                leagueEng = "Spain";
+                break;
+        }
+        return leagueEng;
     }
 }

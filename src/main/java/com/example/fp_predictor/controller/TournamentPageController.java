@@ -40,10 +40,80 @@ public class TournamentPageController {
 
     @GetMapping("/tournament")
     public String open(@RequestParam("id") long id, Model model) {
-        List<String> teams = tournamentTeamRepository.findByTournamentId(id);
+        List<String> shortTeams = tournamentTeamRepository.findByTournamentId(id);
+        List<String> teams = translateTeams(shortTeams);
         Collections.sort(teams);
-        model.addAttribute("teams", teams);
+        model.addAttribute("teams", shortTeams);
         return "tournamentPage";
+    }
+
+    private List<String> translateTeams(List<String> shortTeams) {
+        List<String> teams = new ArrayList<>();
+        for (String team : shortTeams) {
+            switch (team) {
+                case "ARS":
+                    teams.add("Арсенал");
+                    break;
+                case "AV":
+                    teams.add("Астон Вилла");
+                    break;
+                case "BHA":
+                    teams.add("Брайтон");
+                    break;
+                case "BUR":
+                    teams.add("Бернли");
+                    break;
+                case "CHE":
+                    teams.add("Челси");
+                    break;
+                case "CRY":
+                    teams.add("Кристал Пэлас");
+                    break;
+                case "EVE":
+                    teams.add("Эвертон");
+                    break;
+                case "FUL":
+                    teams.add("Фулхэм");
+                    break;
+                case "LEE":
+                    teams.add("Лидс");
+                    break;
+                case "LEI":
+                    teams.add("Лестер");
+                    break;
+                case "LIV":
+                    teams.add("Ливерпуль");
+                    break;
+                case "MCI":
+                    teams.add("Манчестер Сити");
+                    break;
+                case "MUN":
+                    teams.add("Манчестер Юнайтед");
+                    break;
+                case "NEW":
+                    teams.add("Ньюкасл");
+                    break;
+                case "SHU":
+                    teams.add("Шеффилд");
+                    break;
+                case "SOU":
+                    teams.add("Саутгемптон");
+                    break;
+                case "TOT":
+                    teams.add("Тоттенхэм");
+                    break;
+                case "WBA":
+                    teams.add("Вест Бром");
+                    break;
+                case "WHU":
+                    teams.add("Вест Хэм");
+                    break;
+                case "WOL":
+                    teams.add("Вулверхэмптон");
+                    break;
+            }
+        }
+        return teams;
     }
 
     @PostMapping("/tournament")
@@ -90,13 +160,18 @@ public class TournamentPageController {
         return "resultTeam";
     }
 
-    private String createCsvFile(
-            List<Player> players,
-            long tournamentId,
-            long captainId,
-            long viceCaptainId
-    ) throws IOException {
-        String filename = UUID.randomUUID().toString() + ".csv";
+    /**
+     * Создание csv-файла со сформированным составом для регистрации в турнир.
+     * @param players - список игроков;
+     * @param tournamentId - ID турнира в системе FanTeam;
+     * @param captainId - ID капитана команды в системе FanTeam,
+     * @param viceCaptainId - ID вице-капитана команды в системе FanTeam,
+     * @return - название сформированного файла.
+     * @throws IOException - ошибка записи данных в файл.
+     */
+    private String createCsvFile(List<Player> players, long tournamentId, long captainId, long viceCaptainId)
+            throws IOException {
+        String filename = UUID.randomUUID() + ".csv";
         File directory = new File(uploadPath + File.separator + "csv");
         File csvOutput = new File(directory + File.separator + filename);
         if (!directory.exists()) {
@@ -144,11 +219,11 @@ public class TournamentPageController {
 
     private League getLeague(Tournament tournament) {
         switch (tournament.getLeague()) {
-            case "Англия: АПЛ":
+            case "England":
                 return League.EPL;
-            case "Испания: Ла Лига":
+            case "Spain":
                 return League.LA_LIGA;
-            case "Италия: Серия А":
+            case "Italy":
                 return League.SERIE_A;
             default:
                 throw new UnknownLeagueException();
