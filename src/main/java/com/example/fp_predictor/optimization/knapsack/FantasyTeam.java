@@ -79,7 +79,6 @@ public class FantasyTeam {
     public FantasyTeam(Stackable stackable, long fanTeamTournamentId) {
         this.fanTeamTournamentId = fanTeamTournamentId;
         addUnknownStack(stackable);
-        findCaptains();
         countExpectedPoints();
         price_x_10 = stackable.getPrice_x_10();
     }
@@ -89,18 +88,8 @@ public class FantasyTeam {
         tripleStacks.addAll(team.getTripleStacks());
         doubleStacks.addAll(team.getDoubleStacks());
         this.addUnknownStack(stack);
-        findCaptains();
         countExpectedPoints();
         price_x_10 = team.price_x_10 + stack.getPrice_x_10();
-    }
-
-    public FantasyTeam(List<Stackable> stackables, int tournamentId) {
-        this.fanTeamTournamentId = tournamentId;
-        for (Stackable stackable : stackables) {
-            addUnknownStack(stackable);
-        }
-        findCaptains();
-        countExpectedPoints();
     }
 
     private void countExpectedPoints() {
@@ -120,7 +109,7 @@ public class FantasyTeam {
      * Поиск капитана и вице-капитана.
      * Капитаном считается игрок с наивысшим матожиданием, вице-капитаном - игрок со вторым наивысшим матожиданием.
      */
-    private void findCaptains() {
+    public void findCaptains() {
         for (TripleStack stack : tripleStacks) {
             checkStackForCaptains(stack);
         }
@@ -186,6 +175,35 @@ public class FantasyTeam {
             return false;
         } else {
             sumTeamPositions();
+            int goalkeepers = positions.get("goalkeeper");
+            int defenders = positions.get("defender");
+            int midfielders = positions.get("midfielder");
+            int forwards = positions.get("forward");
+            if (tripleStacks.size() == 3 || doubleStacks.size() == 0) {
+                if (goalkeepers == 0 && (defenders < 2 || midfielders == 0)) {
+                    return false;
+                }
+                if (defenders == 0) {
+                    return false;
+                }
+                if (defenders == 1 && (midfielders < 2 || forwards == 0)) {
+                    return false;
+                }
+                if (defenders == 2 && midfielders == 0) {
+                    return false;
+                }
+                if (midfielders == 0 && forwards == 0) {
+                    return false;
+                }
+            }
+            if (tripleStacks.size() == 2 || doubleStacks.size() == 1) {
+                if (defenders == 0 && (goalkeepers == 1 || midfielders < 2 || forwards == 0)) {
+                    return false;
+                }
+                if (defenders == 1 && goalkeepers == 1 && midfielders < 3) {
+                    return false;
+                }
+            }
             return price_x_10 <= 1000
                     && positions.get("goalkeeper") <= 1
                     && positions.get("defender") <= 3
@@ -231,7 +249,7 @@ public class FantasyTeam {
      */
     private void sumStackPositions(Stackable stack) {
         for (Player player : stack.getPlayers()) {
-             positions.put(player.getPosition(), positions.get(player.getPosition()) + 1);
+            positions.put(player.getPosition(), positions.get(player.getPosition()) + 1);
         }
     }
 

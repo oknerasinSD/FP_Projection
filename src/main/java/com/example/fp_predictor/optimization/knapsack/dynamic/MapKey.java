@@ -13,12 +13,16 @@ public class MapKey {
 
     /** Количество вратарей в составе. */
     private int goalkeepers = 0;
+
     /** Количество защитников в составе. */
     private int defenders = 0;
+
     /** Количество полузащитников в составе. */
     private int midfielders = 0;
+
     /** Количество нападающих в составе. */
     private int forwards = 0;
+
     /** Множество команд, из игроков которых состоит состав. */
     private final Set<String> teams;
 

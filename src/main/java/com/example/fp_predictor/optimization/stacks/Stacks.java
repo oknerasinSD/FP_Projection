@@ -63,26 +63,14 @@ public class Stacks {
         buildDoubleStacksByTeam();
         buildTripleStacksByTeam();
         buildSortedAllStacks();
-        /*for (String team : tripleStacksByTeam.keySet()) {
-            for (TripleStack tripleStack : tripleStacksByTeam.get(team)) {
-                System.out.println(tripleStack);
-            }
-            System.out.println();
-        }
-        for (String team : doubleStacksByTeam.keySet()) {
-            for (DoubleStack doubleStack : doubleStacksByTeam.get(team)) {
-                System.out.println(doubleStack);
-            }
-            System.out.println();
-        }*/
     }
 
     private void buildSortedAllStacks() {
         switch (chosenTeams.size()) {
             case 0:
                 buildRestStacks();
-                restTripleStacks.sort(Comparator.comparingDouble((TripleStack o) -> -o.getValue()));
-                restDoubleStacks.sort(Comparator.comparingDouble((DoubleStack o) -> -o.getValue()));
+                restTripleStacks.sort(Comparator.comparingDouble((TripleStack o) -> -o.getPrice_x_10()));
+                restDoubleStacks.sort(Comparator.comparingDouble((DoubleStack o) -> -o.getPrice_x_10()));
                 allStacks.addAll(restTripleStacks);
                 allStacks.addAll(restDoubleStacks);
                 break;
@@ -149,15 +137,11 @@ public class Stacks {
 
     private int addForwardsToForecasts(String team, List<Player> forwardsList) {
         int forwardsCount = 0;
-        if (forwardsList.size() >= 4) {
+        if (forwardsList.size() >= 3) {
             forecastsByTeam.get(team).add(forwardsList.get(0));
             forecastsByTeam.get(team).add(forwardsList.get(1));
             forecastsByTeam.get(team).add(forwardsList.get(2));
-            /*if (chosenTeams.size() == 4) {
-                forecastsByTeam.get(team).add(forwardsList.get(3));
-            }*/
-            forecastsByTeam.get(team).add(forwardsList.get(3));
-            forwardsCount = 4;
+            forwardsCount = 3;
         } else {
             for (Player player : forwardsList) {
                 forecastsByTeam.get(team).add(player);

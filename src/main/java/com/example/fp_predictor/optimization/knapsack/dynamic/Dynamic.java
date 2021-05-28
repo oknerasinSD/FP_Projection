@@ -2,8 +2,10 @@ package com.example.fp_predictor.optimization.knapsack.dynamic;
 
 import com.example.fp_predictor.domain.Player;
 import com.example.fp_predictor.optimization.knapsack.FantasyTeam;
+import com.example.fp_predictor.optimization.stacks.DoubleStack;
 import com.example.fp_predictor.optimization.stacks.Stackable;
 import com.example.fp_predictor.optimization.stacks.Stacks;
+import com.example.fp_predictor.optimization.stacks.TripleStack;
 import com.example.fp_predictor.scraping.League;
 
 import java.util.List;
@@ -57,8 +59,9 @@ public class Dynamic {
         initMatrix();
         System.out.println(stacksList.size());
         for (int i = 1; i <= stacksList.size(); i++) {
+            System.out.println(i);
             for (int j = 1; j < matrix[i].length; j++) {
-                matrix[i][j].combine(matrix[i - 1][j]);
+                matrix[i][j].putAll(matrix[i - 1][j]);
                 int delta = j - stacksList.get(i - 1).getPrice_x_10();
                 if (delta == 0 && i <= startLimit) {
                     MapKey mapKey = new MapKey(stacksList.get(i - 1));
@@ -66,28 +69,42 @@ public class Dynamic {
                     if (!matrix[i][j].containsKey(mapKey) || newTeamBetter(matrix[i][j], mapKey, fantasyTeam)) {
                         matrix[i][j].put(mapKey, fantasyTeam);
                     }
-                } else {
-                    for (MapKey mapKey : matrix[i - 1][j].getKeySet()) {
-                        int newPrice = j + stacksList.get(i - 1).getPrice_x_10();
-                        if (newPrice <= budget) {
-                            FantasyTeam fantasyTeam = new FantasyTeam(
-                                    matrix[i - 1][j].get(mapKey),
-                                    stacksList.get(i - 1),
-                                    fanTeamTournamentId
-                            );
-                            if (fantasyTeam.isValid()
-                                    && fantasyTeam.getExpectedPoints() > finalTeam.getExpectedPoints()) {
-                                finalTeam = fantasyTeam;
-                                continue;
-                            }
-                            if (fantasyTeam.isPreliminarilyValid()) {
-                                MapKey newMapKey = new MapKey(mapKey, stacksList.get(i - 1));
-                                if (!matrix[i][newPrice].containsKey(newMapKey)
-                                        || newTeamBetter(matrix[i][newPrice], newMapKey, fantasyTeam)) {
-                                    matrix[i][newPrice].put(newMapKey, fantasyTeam);
-                                }
+                } else if (delta > 0 && matrix[i - 1][delta].getKeySet().size() != 0) {
+                    for (MapKey mapKey : matrix[i - 1][delta].getKeySet()) {
+                        if (mapKey.containsTeam(stacksList.get(i - 1).getTeam())) {
+                            continue;
+                        }
+                        if (stacksList.get(i - 1) instanceof DoubleStack
+                                && matrix[i - 1][delta].get(mapKey).getTripleStacks().size() != 3) {
+                            continue;
+                        }
+                        if (stacksList.get(i - 1) instanceof DoubleStack
+                                && matrix[i - 1][delta].get(mapKey).getDoubleStacks().size() == 1) {
+                            continue;
+                        }
+                        if (stacksList.get(i - 1) instanceof TripleStack
+                                && matrix[i - 1][delta].get(mapKey).getTripleStacks().size() == 3) {
+                            continue;
+                        }
+                        FantasyTeam fantasyTeam = new FantasyTeam(
+                                matrix[i - 1][delta].get(mapKey),
+                                stacksList.get(i - 1),
+                                fanTeamTournamentId
+                        );
+                        if (fantasyTeam.isValid()
+                                && fantasyTeam.getExpectedPoints() > finalTeam.getExpectedPoints()) {
+                            fantasyTeam.findCaptains();
+                            finalTeam = fantasyTeam;
+                            continue;
+                        }
+                        if (fantasyTeam.isPreliminarilyValid()) {
+                            MapKey newMapKey = new MapKey(mapKey, stacksList.get(i - 1));
+                            if (!matrix[i][j].containsKey(newMapKey)
+                                    || newTeamBetter(matrix[i][j], newMapKey, fantasyTeam)) {
+                                matrix[i][j].put(newMapKey, fantasyTeam);
                             }
                         }
+
                     }
                 }
             }
@@ -123,7 +140,8 @@ public class Dynamic {
     private void defineStartLimit() {
         switch (chosenTeams.size()) {
             case 0:
-                startLimit = (int) (stacksList.size() * 0.005);
+            case 4:
+                startLimit = stacks.getRestTripleStacks().size();
                 break;
             case 1:
             case 2:
@@ -132,9 +150,6 @@ public class Dynamic {
                 while (firstTeam.equals(stacksList.get(startLimit).getTeam())) {
                     ++startLimit;
                 }
-                break;
-            case 4:
-                startLimit = stacksList.size();
                 break;
         }
     }

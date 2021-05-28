@@ -28,6 +28,10 @@ public class MatrixElement {
         matrixElement.put(key, value);
     }
 
+    public void putAll(MatrixElement element) {
+        matrixElement.putAll(element.matrixElement);
+    }
+
     public void combine(MatrixElement matrixElement) {
         for (MapKey key : matrixElement.getKeySet()) {
             if (!this.matrixElement.containsKey(key) || newTeamBetter(matrixElement, key)) {

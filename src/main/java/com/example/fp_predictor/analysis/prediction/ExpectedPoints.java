@@ -242,9 +242,6 @@ public class ExpectedPoints {
                 result += expectedPlayerGoals * fanTeamScoring.forwardGoal;
                 result += timeShare;
                 break;
-            case "goalkeeper":
-                result += 1.5;
-                break;
         }
         return result;
     }
